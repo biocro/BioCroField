@@ -19,19 +19,19 @@ biomass_table.harvest_point <- function(..., zero_when_missing = c()) {
     )))
 
     # Specify all the column names for the data table
-    cnames <- c(
-        'year', 'doy', 'hour', 'time',
-        all_components,
-        'LAI', 'SLA',
-        'agb_per_plant_row', 'agb_per_plant_partitioning'
-    )
+    initial_columns <- c('crop', 'variety', 'year', 'doy', 'hour', 'time')
+
+    final_columns <-
+        c('LAI', 'SLA', 'agb_per_plant_row', 'agb_per_plant_partitioning')
+
+    cnames <- c(initial_columns, all_components, final_columns)
 
     # Form a data frame
     biomass <- stats::setNames(
         data.frame(matrix(
             NA,
             nrow = length(x),
-            ncol = 8 + length(all_components)
+            ncol = length(cnames)
         )),
         cnames
     )
@@ -39,17 +39,14 @@ biomass_table.harvest_point <- function(..., zero_when_missing = c()) {
     # Fill in the rows
     for (i in seq_along(x)) {
         hpp <- x[[i]]
-        biomass$year[i] <- hpp$year
-        biomass$doy[i] <- hpp$doy
-        biomass$hour[i] <- hpp$hour
-        biomass$time[i] <- hpp$time
-        for (comp in names(hpp$all_components_biocro)) {
-            biomass[[comp]][i] <- hpp$all_components_biocro[[comp]]
+
+        for (name in c(initial_columns, final_columns)) {
+            biomass[i, name] <- hpp[[name]]
         }
-        biomass$LAI[i] <- hpp$LAI
-        biomass$SLA[i] <- hpp$SLA
-        biomass$agb_per_plant_row[i] <- hpp$agb_per_plant_row
-        biomass$agb_per_plant_partitioning[i] <- hpp$agb_per_plant_partitioning
+
+        for (comp in names(hpp$all_components_biocro)) {
+            biomass[i, comp] <- hpp$all_components_biocro[[comp]]
+        }
     }
 
     # Some components should be set to zero when they weren't measured
