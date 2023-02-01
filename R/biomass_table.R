@@ -1,4 +1,4 @@
-biomass_table <- function(...) {
+biomass_table <- function(..., zero_when_missing = c()) {
     x <- list(...)
 
     types <- lapply(x, class)

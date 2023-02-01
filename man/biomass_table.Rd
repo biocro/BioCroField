@@ -10,7 +10,7 @@
 }
 
 \usage{
-  biomass_table(\dots)
+  biomass_table(\dots, zero_when_missing = c())
 
   \method{biomass_table}{harvest_point}(\dots, zero_when_missing = c())
 }

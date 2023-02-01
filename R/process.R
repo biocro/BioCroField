@@ -2,6 +2,30 @@ process <- function(x) {
     UseMethod('process', x)
 }
 
+# Get the relative weights and LMA values. Here we make the following
+# calculations:
+# - agb_weight is the total weight of the partitioning component weights that
+#   are designated as being part of the aboveground biomass, in g
+# - relative_components is the weight of each partitioning component relative to
+#   the partitioning aboveground biomass (dimensionless)
+# - components_per_row are the weight of each component in g per meter of row,
+#   determined by multipling the measured agb per meter by the relative
+#   component fractions.
+# - components_per_area is the weight of each component in g per square meter of
+#   field, determined by dividing the weight per row by the row spacing in m.
+# - components_biocro is the weight per area converted to biocro units (Mg / ha)
+# - LMA is the leaf mass per area in g / m^2
+# - LAI is the leaf area index (m^2 leaf / m^2 ground)
+# - SLA is the specific leaf area in ha / Mg
+# - agb_per_plant_row is the average aboveground mass per plant along the
+#   section of row
+# - agb_per_plant_partitioning is the average aboveground mass per plant among
+#   the plants selected for partitioning
+#
+# Notes:
+# - 1 g / m^2 * (1 Mg / 1e6 g) * (1e4 m^2 / 1 ha) = 1e-2 Mg / ha
+# - 1 m^2 / g * (1e6 g / 1 Mg) * (1 ha / 1e4 m^2) = 1e2 ha / Mg
+# - 1 g / cm^2 * (100 cm / m)^2 = 1e4 g / m^2
 process.harvest_point <- function(x) {
     # TO-DO: account for possibility that some pieces of information are not
     # present

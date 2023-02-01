@@ -25,12 +25,12 @@
     trap_component_weights,
     partitioning_nplants = NA,
     agb_nplants = NA,
-    ...
+    \dots
   )
 }
 
 \arguments{
-  \item{...}{
+  \item{\dots}{
     Any additional arguments to pass to \code{\link{list}} when creating the
     \code{harvest_point} object.
   }
