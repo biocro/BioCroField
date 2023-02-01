@@ -11,3 +11,6 @@ S3method(process, harvest_point)
 export(biomass_table)
 export(biomass_table.harvest_point)
 S3method(biomass_table, harvest_point)
+
+# Adding initial biomass data based on seed weight
+export(add_seed_biomass)
