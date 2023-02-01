@@ -1,0 +1,18 @@
+Package: BioCroField
+Version: 0.1.0
+Title: Tools for BioCro Field Data
+Description: A collection of tools for processing field data related to BioCro
+    crop growth simulations.
+Authors@R: c(
+    person("Edward B.", "Lochocki", role = c('cre', 'aut'),
+           email = "eloch@illinois.edu",
+           comment = c(ORCID = "0000-0002-4912-9783")),
+    person("BioCroField authors", role = "cph")
+    )
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports:
+Suggests:
+VignetteBuilder: knitr
+URL: https://github.com/BioCro/BioCroField

@@ -1,0 +1,13 @@
+# Basic methods for `harvest_point` class
+export(harvest_point)
+export(is.harvest_point)
+
+# Processing a `harvest_point`
+export(process)
+export(process.harvest_point)
+S3method(process, harvest_point)
+
+# Consolidating a list of `harvest_point` objects
+export(biomass_table)
+export(biomass_table.harvest_point)
+S3method(biomass_table, harvest_point)
