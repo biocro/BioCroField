@@ -51,6 +51,14 @@ process.harvest_point <- function(x) {
         NA
     }
 
+    # Estimate the plant population (plants per acre) from the number of plants
+    # collected for above-ground biomass measurements, using 1 acre = 4047 m^2
+    population <- if (!is.na(x$agb_nplants)) {
+        x$agb_nplants / (x$agb_row_length * x$row_spacing) * 4047
+    } else {
+        NA
+    }
+
     # Relative component weights from plants that were partitioned, normalized
     # by the above-ground biomass from those plants
     relative_components <- lapply(
@@ -134,7 +142,8 @@ process.harvest_point <- function(x) {
         trap_components_biocro = trap_components_biocro,
         all_components_biocro = all_components_biocro,
         agb_per_plant_partitioning = agb_per_plant_partitioning,
-        agb_per_plant_row = agb_per_plant_row
+        agb_per_plant_row = agb_per_plant_row,
+        population = population
     )
 
     for (name in names(new_info)) {
