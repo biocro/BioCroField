@@ -7,6 +7,7 @@
 harvest_point <- function(
     crop,
     variety,
+    location,
     year,
     doy,
     hour,
@@ -45,6 +46,7 @@ harvest_point <- function(
     should_be_character <- list(
         crop = crop,
         variety = variety,
+        location = location,
         agb_components = agb_components
     )
 
@@ -57,6 +59,7 @@ harvest_point <- function(
     hp <- list(
         crop = crop,
         variety = variety,
+        location = location,
         year = year,
         doy = doy,
         hour = hour,

@@ -28,10 +28,11 @@ add_seed_biomass <- function(
     initial_biomass <- biomass_df[1, ]
     initial_biomass[1, ] <- NA
 
-    # Reset the crop name and variety, which we can safely assume to be the same
-    # across the entire data frame
+    # Reset the crop name, variety, and location, which we can safely assume to
+    # be the same across the entire data frame
     initial_biomass$crop <- biomass_df$crop[1]
     initial_biomass$variety <- biomass_df$variety[1]
+    initial_biomass$location <- biomass_df$location[1]
 
     # Specify the time
     initial_biomass$year <- year

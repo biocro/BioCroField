@@ -19,7 +19,8 @@ biomass_table.harvest_point <- function(..., zero_when_missing = c()) {
     )))
 
     # Specify all the column names for the data table
-    initial_columns <- c('crop', 'variety', 'year', 'doy', 'hour', 'time')
+    initial_columns <-
+        c('crop', 'variety', 'location', 'year', 'doy', 'hour', 'time')
 
     final_columns <-
         c('LAI', 'SLA', 'agb_per_plant_row', 'agb_per_plant_partitioning')

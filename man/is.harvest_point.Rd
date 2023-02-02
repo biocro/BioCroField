@@ -32,6 +32,7 @@
 hp <- harvest_point(
   crop = 'soybean',
   variety = 'ld11',
+  location = 'energy farm',
   year = 2023,
   doy = 186,
   hour = 12,
