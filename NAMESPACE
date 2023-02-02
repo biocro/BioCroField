@@ -14,3 +14,6 @@ S3method(biomass_table, harvest_point)
 
 # Adding initial biomass data based on seed weight
 export(add_seed_biomass)
+
+# Convenience function for opening data record sheets
+export(access_sheet)
