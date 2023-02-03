@@ -84,20 +84,32 @@ process.harvest_point <- function(x) {
         function(cpa) {cpa * 1e-2}
     ) # Mg / ha
 
-    # Leaf mass per area
-    LMA <- if (x$partitioning_leaf_area > 0) {
-        x$partitioning_component_weights$leaf /
-            x$partitioning_leaf_area * 1e4 # g / m^2
+    # Leaf mass per leaf area. We should only calculate this if there is a
+    # partitioned leaf mass and a partitioned leaf area; even in that case, if
+    # the leaf area is not positive, we still should not calculate LMA.
+    LMA <- if(!is.null(x$partitioning_component_weights$leaf) && !is.na(x$partitioning_leaf_area)) {
+        if (x$partitioning_leaf_area > 0) {
+                x$partitioning_component_weights$leaf /
+                    x$partitioning_leaf_area * 1e4 # g / m^2
+        } else {
+            NA
+        }
     } else {
         NA
     }
 
     # Leaf area index. Units are dimensionless from
-    # (g / m^2 ground) / (g / m^2 leaf)
-    LAI <- if (x$partitioning_leaf_area > 0) {
-        components_per_area$leaf / LMA
+    # (g / m^2 ground) / (g / m^2 leaf). We should only calculate this if there
+    # is a leaf mass per ground area and a partitioned leaf area; in that case,
+    # LAI should be set to zero when the leaf area is zero.
+    LAI <- if(!is.null(components_per_area$leaf) && !is.na(x$partitioning_leaf_area)) {
+        if (x$partitioning_leaf_area > 0) {
+            components_per_area$leaf / LMA
+        } else {
+            0.0
+        }
     } else {
-        0
+        NA
     }
 
     # Specific leaf area in the units typically used in BioCro
