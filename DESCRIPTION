@@ -12,7 +12,8 @@ Authors@R: c(
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports:
 Suggests:
+    knitr,
+    rmarkdown
 VignetteBuilder: knitr
 URL: https://github.com/BioCro/BioCroField

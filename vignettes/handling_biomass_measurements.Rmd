@@ -1,0 +1,386 @@
+---
+title: "Handling Biomass Measurements"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    number_sections: true
+vignette: >
+  %\VignetteIndexEntry{Handling Biomass Measurements}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography: biomass_references.bib
+link-citations: yes
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 5,
+  fig.height = 5,
+  fig.align = "center"
+)
+```
+
+# Overview
+
+The `BioCroField` package includes several features related to processing raw
+data from biomass harvests, with the ultimate goal of producing values that are
+useful in the context of crop growth modeling. In particular, the package
+includes the following:
+
+- A crop harvest record sheet that can be used in the field to record relevant
+  data.
+
+- An R function that accepts all the information from a crop harvest record
+  sheet and stores it in a convenient data structure.
+
+- Additional R functions that calculate key variables from the raw measurements
+  and reorganize the results into a convenient format.
+
+Together, these features provide a straightforward system for obtaining data and
+for creating a full record of its analysis. After collecting and measuring the
+plant material, a complete description of the data can be created as follows:
+
+- Store images of the completed crop harvest record sheets in a directory.
+
+- Store the commands used to digitize and process the data (such as the ones
+  in the [A Full Example] section of this document) as an R script in the same
+  directory.
+
+- Save the final biomass data table as a plain-text file in the same directory
+  using `write.csv`.
+
+Now the final biomass values will be available in a simple CSV format, and the
+exact steps taken to analyze the data will be clear to anyone who looks at this
+directory in the future, including yourself! Even though some details are not
+immediately apparent from the script, the documentation for the functions from
+`BioCroField` will describe how the calculations were made.
+
+The rest of this document explains the types of biomass measurements that are
+important in the context of crop growth modeling (in the [Biomass and Leaf Area]
+section), the general steps required to make these measurements (in the
+[Making Measurements] section), and how `BioCroField` can be used to process the
+resulting measurements (in the [Using BioCroField] section). The final section
+([A Full Example]) shows a realistic example of how the functions from
+`BioCroField` can be used to process a full biomass data set from a field
+season.
+
+Throughout the document, we will provide several examples of R commands. These
+examples will use functions from the `BioCroField` and `lattice` R packages,
+which must be loaded first using commands such as the following:
+
+```{r setup}
+# Load required packages
+library(BioCroField)
+library(lattice)
+```
+
+If the `lattice` package is not installed on your R setup, you can install it by
+typing `install.packages('lattice')`.
+
+# Biomass and Leaf Area
+
+When farmers and crop scientists want to compare the productivity of different
+fields or varieties, they use a quantity called _yield_, which can be defined as
+the amount of harvested material per unit area. This is a loose and flexible
+definition; the type of harvested material depends on the particular crop in
+question; the amount can be specified as a volume, weight, or mass; and there
+are several systems of units customarily used in different locations around the
+world. Nevertheless, yield has proven to be a useful concept, at least partially
+because it is an _intrinsic_ property that does not depend on the size of the
+field in which the crops were grown.
+
+It is interesting to note that the harvested material _per plant_ is far less
+useful. As crops are grown at higher densities, competition between the plants
+increases, and each plant tends to produce less output. Thus, the harvest per
+plant depends not only on the crop's inhererent productivity but also the degree
+of competition between plants. On the other hand, there is often a fairly wide
+range of plant _population_ (the number of plants per unit area) that can result
+in identical or similar yield; for example, maize in Illinois sown between April
+5 and May 5 can reach 97% or higher of the maximum yield for populations between
+24,000 and 36,000 plants per acre @nafziger_corn_1994. Thus, in most
+circumstances, the yield (on a per area basis) better reflects the true
+productivity of a crop without the complicating influence of competition.
+
+In the context of crop growth modeling, we are typically interested in
+predicting the yield (as a mass per unit area) of a particular crop variety in a
+particular location. To do this, however, it is generally necessary to predict
+the amount of other plant components (as masses per unit area), such as the
+following:
+
+- _Leaf_: The amount of leaf mass determines the amount of carbon the crop is
+  able to assimilate through the process of photosynthesis, so leaf mass is
+  critical for calculating growth rates.
+
+- _Root_: The amount of root mass determines the amount of water and nitrogen
+  the crop is able to obtain from the soil.
+
+- _Litter_: As a crop ages, it begins to lose tissue through the process of
+  senescence. Some of the lost mass is recycled to other parts of the plant, and
+  the remainder is shed, forming the litter. The competing processes of growth
+  and senescence determine the masses of components like the leaf and root.
+
+- _Total_: Besides the components mentioned above, the crop also uses carbon to
+  grow its stem and other reproductive material like flowers and pods. For
+  accurate predictions, it is essential to accurately model the distribution of
+  carbon throughout all the crop components.
+
+Therefore, to validate a crop model, it is important to have experimental
+measurements for all these crop components, ideally at multiple times throughout
+a growing season. In addition to these masses, it is critical to measure the
+_leaf area index_ (LAI), defined as the leaf area per unit ground area, which
+also plays a key role in simulating photosynthesis at the canopy level. If the
+model is able to reproduce these mass and leaf area measurements, we can have
+more faith that it will be able to make accurate yield predictions in other
+situations.
+
+# Making Measurements
+
+To make measurements of these important quantities, it is necessary to sow
+multiple plots and harvest plants from a single randomly-chosen plot several
+times throughout a growing season, ending at the final harvest. Each plot should
+also contain a wire mesh litter trap of known area, and each harvest will
+generally include the following steps:
+
+1. Choose a section of a row with a known length; count the plants contained in
+   the row section; cut each stem just above the ground; and collect all the
+   above-ground portions of each plant in a bag to be dried and weighed. This
+   can provide estimates for the population, the above-ground biomass (AGB) per
+   unit area, and the AGB per plant. For this measurement, a length of row
+   containing approximately 1-4 dozen plants (depending on their size and
+   spacing) should be used.
+
+2. Choose a smaller number of sequential plants (often half a dozen); cut each
+   stem just above the ground; dig up and clean the roots of these plants; split
+   the above-ground portions of the plants into components such as the stem,
+   the living leaves, any senesced leaves still attached to the plant, and any
+   reproductive parts like flowers or pods; and collect each separate component
+   into a bag to be dried and weighed. Combined with the AGB measurements above,
+   this process can provide estimates for the mass per area of each partitioned
+   component. It also provides a second estimate of the AGB per plant that can
+   be compared to the one determined in the previous step to determine whether
+   the plants chosen for paritioning were representative of the plot as a whole.
+
+3. Measure the total area of the living leaves that were partitioned in the
+   previous step. This process can provide an estimate for the
+   _specific leaf area_ (SLA), defined as the leaf area per leaf mass. Then the
+   SLA and the leaf mass per unit area determined in the previous step can be
+   used to estimate the LAI.
+
+4. Collect any litter that has fallen into the litter trap and put it in a bag
+   to be dried and weighed. Combined with any senesced material still attached
+   to the plant, this can provide an estimate for the litter formed through the
+   process of senescence.
+
+Note the importance of drying the collected tissue before weighing. The wet
+weight can vary greatly throughout the day and does not give an accurate
+reflection of the amount of material that has been truly incorporated into the
+structure of a crop. For instance, two meters of freshly cut sorghum plants
+often weighs more than two meters of freshly cut maize plants, but the maize is
+often heavier after drying because sorghum retains more water in its stems.
+
+# Using BioCroField
+
+## Crop Harvest Record Sheets
+
+The `BioCroField` R package includes a carefully designed crop harvest record
+sheet that includes clearly-labeled blank areas for recording all of the harvest
+information described above. Each sheet represents the harvest of one plot at
+one time. Using these sheets in the field will help you stay organized, and make
+sure your data is organized in a way that will facilitate later analysis. The
+record sheet can be accessed from R by using the `access_sheet` function from
+`BioCroField` as follows:
+
+```{r access_sheet, eval = FALSE}
+access_sheet('harvest')
+```
+
+The sheet is also available via the `BioCroField`
+[GitHub website](https://github.com/biocro/BioCroField/blob/main/inst/data_record_sheets/harvest.pdf).
+
+When using this sheet, it is recommended to electronically fill out any fields
+whose values are known beforehand (such as location, year, row spacing, name,
+and contact) and then print out the necessary number of paper copies you will
+need throughout a field season.
+
+## Digitizing Data
+
+The `harvest_point` function from `BioCroField` has been designed to digitize
+the data from one of these crop harvest record sheets. The names of the input
+arguments to this function generally match the fields present on the crop
+harvest record sheets, making it simple and straighforward to transfer values
+from the sheet to a computer.
+
+The output from this function is a `harvest_point` object that represents all
+the information from the sheet. From a technical point of view, a
+`harvest_point` object is just an R list with a particular set of named
+elements. More information is available via the built-in help system by typing
+`?harvest_point` in the R terminal.
+
+## Processing and Organizing Data
+
+Once the data from one or more harvest record sheets has been stored as an
+equal number of `harvest_point` objects, it is possible to convert the raw
+weights, lengths, and areas into more convenient values like biomass per unit
+area and leaf area index. This can be done automatically using the `process`
+function from `BioCroField`, which processes a single `harvest_point` object to
+convert its information into a more useful form. The output from `process` is
+a `harvest_point` object that has additional named elements that represent the
+newly calculated values. More information is available via the built-in help
+system by typing `?process` in the R terminal.
+
+Once the data from one or more harvest record sheets has been processed, it can
+be reorganized into a `data.frame`, which is often a convenient way to store and
+use the data. This can be done using the `biomass_table` function from
+`BioCroField`, which accepts multiple `harvest_point` objects, extracts the most
+important information from each one, and stores the information in one row of a
+`data.frame`. With the data in this format, it can also be easily saved in a
+file using the `write.csv` function from base R. More information is available
+via the built-in help system by typing `?biomass_table` in the R terminal.
+
+## Including Seed Mass
+
+It is often useful to include information about the seeds that were originally
+sown, such as the sowing date and the initial biomass per unit area in the
+field, even though this is not truly "harvest" information. These details can be
+included in a biomass data table (as created by `biomass_table`) using the
+`add_seed_biomass` function from `BioCroField`. More information is available
+via the built-in help system by typing `?add_seed_biomass` in the R terminal.
+
+# A Full Example
+
+In this section, we will provide an example where biomass data from three
+separate harvests are combined into a table along with information about the
+initial seed mass. _Note_: this is not real data, and "GM4000" is not a real
+soybean variety, although the values here are reasonable for a typical
+commercial soybean cultivar.
+
+```{r}
+# Specify some pieces of information that are the same for all harvests
+crop <- 'soybean'
+variety <- 'GM4000'
+location <- 'UIUC'
+year <- 2022
+hour <- 12
+agb_row_length <- 2
+row_spacing <- 0.7
+trap_area <- 0.2
+partitioning_nplants <- 6
+
+# Store the measured data values as a list of harvest_point objects
+biomass_measurements <- list(
+  harvest_point(
+    crop = crop,
+    variety = variety,
+    location = location,
+    plot = 2,
+    year = year,
+    doy = 185,
+    hour = hour,
+    row_spacing = row_spacing,
+    partitioning_leaf_area = 500,
+    partitioning_component_weights = list(leaf = 2.5, stem = 1.5, root = 1.4),
+    agb_components = c('leaf', 'stem'),
+    agb_row_length = agb_row_length,
+    agb_weight = 50,
+    trap_area = trap_area,
+    trap_component_weights = list(),
+    partitioning_nplants = partitioning_nplants,
+    agb_nplants = 46
+  ),
+  harvest_point(
+    crop = crop,
+    variety = variety,
+    location = location,
+    plot = 3,
+    year = year,
+    doy = 235,
+    hour = hour,
+    row_spacing = row_spacing,
+    partitioning_leaf_area = 9000,
+    partitioning_component_weights = list(leaf = 35, stem = 55, root = 15, pod = 30),
+    agb_components = c('leaf', 'stem', 'pod'),
+    agb_row_length = agb_row_length,
+    agb_weight = 1100,
+    trap_area = trap_area,
+    trap_component_weights = list(leaf_litter = 3.2, stem_litter = 1.5),
+    partitioning_nplants = partitioning_nplants,
+    agb_nplants = 47
+  ),
+  harvest_point(
+    crop = crop,
+    variety = variety,
+    location = location,
+    plot = 1,
+    year = year,
+    doy = 275,
+    hour = hour,
+    row_spacing = row_spacing,
+    partitioning_leaf_area = 0,
+    partitioning_component_weights = list(leaf = 0, stem = 40, root = 13, pod = 175, seed = 130),
+    agb_components = c('leaf', 'stem', 'pod'),
+    agb_row_length = agb_row_length,
+    agb_weight = 1000,
+    trap_area = trap_area,
+    trap_component_weights = list(leaf_litter = 45, stem_litter = 15),
+    partitioning_nplants = partitioning_nplants,
+    agb_nplants = 51
+  )
+)
+
+# Convert measured values into masses per area in BioCro units
+processed_biomass_measurements <- lapply(biomass_measurements, process)
+
+# Specify mass values that should be set to zero when not explicitly measured
+zero_when_missing <- c('pod', 'leaf_litter', 'stem_litter')
+
+# Reorganize values into a data frame
+soybean_biomass <- do.call(
+  biomass_table,
+  c(processed_biomass_measurements, list(zero_when_missing = zero_when_missing))
+)
+
+# Add the initial values to the data frame
+soybean_biomass <- add_seed_biomass(
+  soybean_biomass,
+  year = year,
+  doy = 152,
+  hour = hour,
+  seed_mass = 0.17,
+  planting_density = 150000,
+  zero_when_missing = zero_when_missing
+)
+```
+
+Now we can take a look at the final data values:
+```{r}
+str(soybean_biomass)
+```
+
+It is also easy to graph them:
+```{r}
+xyplot(
+  leaf + stem + root + pod + leaf_litter + stem_litter ~ doy,
+  data = soybean_biomass,
+  type = 'b',
+  pch = 16,
+  auto = TRUE,
+  grid = TRUE,
+  xlab = 'Day of year (2022)',
+  ylab = 'Biomass (Mg / ha)'
+)
+```
+
+Optionally, the final biomass table can be saved as a CSV file or as an R data
+file; one or both of these commands could be included in a processing script:
+
+```{r, eval = FALSE}
+# Save the data as an R data file
+save(soybean_biomass, file = 'soybean_biomass.RData')
+
+# Save the data as a CSV file
+write.csv(soybean_biomass, file = 'soybean_biomass.csv', row.names = FALSE)
+```
+
+# References
