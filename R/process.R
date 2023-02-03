@@ -34,8 +34,11 @@ process.harvest_point <- function(x) {
     time <- x$doy + x$hour / 24.0
 
     # Above-ground biomass from the plants that were partitioned (in g)
-    partitioning_agb_weight <-
+    partitioning_agb_weight <- if (length(x$agb_components) > 0) {
         sum(as.numeric(x$partitioning_component_weights[x$agb_components]))
+    } else {
+        NA
+    }
 
     # Compare above-ground biomass per plant among the plants used for
     # partitioning and the section of row used for above-ground biomass.
