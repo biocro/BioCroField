@@ -16,4 +16,4 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
-URL: https://github.com/BioCro/BioCroField
+URL: https://github.com/BioCro/BioCroField, https://biocro.github.io/BioCroField/
