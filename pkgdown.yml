@@ -3,7 +3,7 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   handling_biomass_measurements: handling_biomass_measurements.html
-last_built: 2023-02-03T17:35Z
+last_built: 2023-02-03T17:46Z
 urls:
   reference: https://biocro.github.io/BioCroField/reference
   article: https://biocro.github.io/BioCroField/articles
