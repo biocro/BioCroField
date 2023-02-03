@@ -22,7 +22,7 @@
     partitioning_leaf_area = NA,
     partitioning_component_weights = list(),
     agb_nplants = NA,
-    agb_components = list(),
+    agb_components = character(),
     agb_row_length = NA,
     agb_weight = NA,
     trap_area = NA,
