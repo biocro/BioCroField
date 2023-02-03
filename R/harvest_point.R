@@ -8,6 +8,7 @@ harvest_point <- function(
     crop,
     variety,
     location,
+    plot,
     year,
     doy,
     hour,
@@ -47,6 +48,7 @@ harvest_point <- function(
         crop = crop,
         variety = variety,
         location = location,
+        plot = plot,
         agb_components = agb_components
     )
 
@@ -60,6 +62,7 @@ harvest_point <- function(
         crop = crop,
         variety = variety,
         location = location,
+        plot = plot,
         year = year,
         doy = doy,
         hour = hour,
