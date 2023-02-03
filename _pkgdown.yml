@@ -1,4 +1,7 @@
 url: https://biocro.github.io/BioCroField/
 template:
   bootstrap: 5
-
+  bootswatch: flatly
+  theme: arrow-light
+  includes:
+    before_body: "padding-top: 70px;"
