@@ -42,25 +42,14 @@ process.harvest_point <- function(x) {
 
     # Compare above-ground biomass per plant among the plants used for
     # partitioning and the section of row used for above-ground biomass.
-    agb_per_plant_partitioning <- if (!is.na(x$partitioning_nplants)) {
+    agb_per_plant_partitioning <-
         partitioning_agb_weight / x$partitioning_nplants
-    } else {
-        NA
-    }
 
-    agb_per_plant_row = if (!is.na(x$agb_nplants)) {
-        x$agb_weight / x$agb_nplants
-    } else {
-        NA
-    }
+    agb_per_plant_row <- x$agb_weight / x$agb_nplants
 
     # Estimate the plant population (plants per acre) from the number of plants
     # collected for above-ground biomass measurements, using 1 acre = 4047 m^2
-    population <- if (!is.na(x$agb_nplants)) {
-        x$agb_nplants / (x$agb_row_length * x$row_spacing) * 4047
-    } else {
-        NA
-    }
+    population <- x$agb_nplants / (x$agb_row_length * x$row_spacing) * 4047
 
     # Relative component weights from plants that were partitioned, normalized
     # by the above-ground biomass from those plants
