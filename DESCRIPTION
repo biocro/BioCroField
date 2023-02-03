@@ -15,7 +15,8 @@ LazyData: true
 Suggests:
     knitr,
     rmarkdown,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    lattice
 VignetteBuilder: knitr
 URL: https://github.com/BioCro/BioCroField, https://biocro.github.io/BioCroField/
 Config/testthat/edition: 3

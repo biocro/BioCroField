@@ -5,23 +5,23 @@
 
 # Constructor
 harvest_point <- function(
-    crop,
-    variety,
-    location,
-    plot,
-    year,
-    doy,
-    hour,
-    row_spacing,
-    partitioning_leaf_area,
-    partitioning_component_weights,
-    agb_components,
-    agb_row_length,
-    agb_weight,
-    trap_area,
-    trap_component_weights,
+    crop = NA,
+    variety = NA,
+    location = NA,
+    plot = NA,
+    year = NA,
+    doy = NA,
+    hour = 12,
+    row_spacing = NA,
     partitioning_nplants = NA,
+    partitioning_leaf_area = NA,
+    partitioning_component_weights = list(),
     agb_nplants = NA,
+    agb_components = list(),
+    agb_row_length = NA,
+    agb_weight = NA,
+    trap_area = NA,
+    trap_component_weights = list(),
     ...
 )
 {
