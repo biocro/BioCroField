@@ -194,3 +194,29 @@ test_that("SLA is calculated only when possible", {
         5
     )
 })
+
+test_that("trap_components_biocro are calculated only when possible", {
+    expect_identical(hpp$trap_components_biocro, list())
+
+    expect_identical(
+        process(harvest_point(
+            trap_component_weights = list(a = 1, b = 3)
+        ))$trap_components_biocro,
+        list(a = as.numeric(NA), b = as.numeric(NA))
+    )
+
+    expect_identical(
+        process(harvest_point(
+            trap_area = 0.2
+        ))$trap_components_biocro,
+        list()
+    )
+
+    expect_equal(
+        process(harvest_point(
+            trap_area = 0.2,
+            trap_component_weights = list(a = 1, b = 3)
+        ))$trap_components_biocro,
+        list(a = 0.05, b = 0.15)
+    )
+})

@@ -27,8 +27,9 @@ process <- function(x) {
 # - 1 m^2 / g * (1e6 g / 1 Mg) * (1 ha / 1e4 m^2) = 1e2 ha / Mg
 # - 1 g / cm^2 * (100 cm / m)^2 = 1e4 g / m^2
 process.harvest_point <- function(x) {
-    # TO-DO: account for possibility that some pieces of information are not
-    # present
+    # In this function, we won't do any type checking; we can assume that has
+    # been addressed by `harvest_point`. Instead, the main goal is to make sure
+    # that we can handle incomplete information in the inputs.
 
     # The time (as specified in BioCro)
     time <- x$doy + x$hour / 24.0
@@ -99,16 +100,10 @@ process.harvest_point <- function(x) {
     # Specific leaf area in the units typically used in BioCro
     SLA <- 1 / LMA * 1e2 # ha / Mg
 
-    # Biomass from litter trap
-    trap_components_per_area <- lapply(
-        x$trap_component_weights,
-        function(tcw) {tcw / x$trap_area}
-    ) # g / m^2
-
-    # Convert the trap components per area to units typically used in BioCro
+    # Biomass from litter trap in units typically used in BioCro
     trap_components_biocro <- lapply(
-        trap_components_per_area,
-        function(tcpa) {tcpa * 1e-2}
+        x$trap_component_weights,
+        function(tcw) {tcw / x$trap_area * 1e-2}
     ) # Mg / ha
 
     # Combine all components
@@ -136,7 +131,6 @@ process.harvest_point <- function(x) {
         LMA = LMA,
         LAI = LAI,
         SLA = SLA,
-        trap_components_per_area = trap_components_per_area,
         trap_components_biocro = trap_components_biocro,
         all_components_biocro = all_components_biocro
     )
