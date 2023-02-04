@@ -44,7 +44,9 @@ biomass_table.harvest_point <- function(..., zero_when_missing = c()) {
         hpp <- x[[i]]
 
         for (name in c(initial_columns, final_columns)) {
-            biomass[i, name] <- hpp[[name]]
+            if (name %in% names(hpp)) {
+                biomass[i, name] <- hpp[[name]]
+            }
         }
 
         for (comp in names(hpp$all_components_biocro)) {
