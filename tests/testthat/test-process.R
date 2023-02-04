@@ -115,3 +115,82 @@ test_that("components_biocro are calculated only when possible", {
         list(a = 0.025, b = 0.075)
     )
 })
+
+test_that("LMA is calculated only when possible", {
+    expect_na(hpp$LMA)
+
+    expect_na(process(harvest_point(partitioning_leaf_area = 1))$LMA)
+
+    expect_na(process(harvest_point(partitioning_component_weights = list(leaf = 1)))$LMA)
+
+    expect_equal(
+        process(harvest_point(
+            partitioning_leaf_area = 500,
+            partitioning_component_weights = list(leaf = 1)
+        ))$LMA,
+        20
+    )
+})
+
+test_that("LAI is calculated only when possible", {
+    expect_na(hpp$LAI)
+
+    expect_na(
+        process(harvest_point(
+            agb_components = c('leaf', 'stem'),
+            partitioning_leaf_area = 500,
+            partitioning_component_weights = list(leaf = 2, stem = 2, root = 0.5)
+        ))$LAI
+    )
+
+    expect_na(
+        process(harvest_point(
+            agb_weight = 10, agb_row_length = 2, row_spacing = 0.5,
+            partitioning_leaf_area = 500,
+            partitioning_component_weights = list(leaf = 2, stem = 2, root = 0.5)
+        ))$LAI
+    )
+
+    expect_na(
+        process(harvest_point(
+            agb_weight = 10, agb_row_length = 2, row_spacing = 0.5,
+            agb_components = c('leaf', 'stem'),
+            partitioning_component_weights = list(leaf = 2, stem = 2, root = 0.5)
+        ))$LAI
+    )
+
+    # A leaf with zero mass and zero area should have zero LAI
+    expect_equal(
+        process(harvest_point(
+            partitioning_leaf_area = 0,
+            partitioning_component_weights = list(leaf = 0, stem = 2, root = 0.5)
+        ))$LAI,
+        0.0
+    )
+
+    expect_equal(
+        process(harvest_point(
+            agb_weight = 10, agb_row_length = 2, row_spacing = 0.5,
+            agb_components = c('leaf', 'stem'),
+            partitioning_leaf_area = 500,
+            partitioning_component_weights = list(leaf = 2, stem = 2, root = 0.5)
+        ))$LAI,
+        0.125
+    )
+})
+
+test_that("SLA is calculated only when possible", {
+    expect_na(hpp$SLA)
+
+    expect_na(process(harvest_point(partitioning_leaf_area = 1))$SLA)
+
+    expect_na(process(harvest_point(partitioning_component_weights = list(leaf = 1)))$SLA)
+
+    expect_equal(
+        process(harvest_point(
+            partitioning_leaf_area = 500,
+            partitioning_component_weights = list(leaf = 1)
+        ))$SLA,
+        5
+    )
+})

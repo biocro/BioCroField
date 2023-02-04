@@ -68,9 +68,9 @@ process.harvest_point <- function(x) {
         function(rc) {rc * agb_per_area}
     ) # Mg / ha
 
-    # Leaf mass per leaf area. We should only calculate this if there is a
-    # partitioned leaf mass and a partitioned leaf area; even in that case, if
-    # the leaf area is not positive, we still should not calculate LMA.
+    # Leaf mass per leaf area (in g / m^2). We should only calculate this if
+    # there is a partitioned leaf mass and a partitioned leaf area; even in that
+    # case, if the leaf area is not positive, we still should not calculate LMA.
     LMA <- if(!is.null(x$partitioning_component_weights$leaf) && !is.na(x$partitioning_leaf_area)) {
         if (x$partitioning_leaf_area > 0) {
                 x$partitioning_component_weights$leaf /

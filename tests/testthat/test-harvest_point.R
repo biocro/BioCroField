@@ -119,6 +119,23 @@ test_that("`agb_components` must be included in `partitioning_component_weights`
     )
 })
 
+test_that("Leaf area can be zero if and only if leaf mass is also zero", {
+    expect_error(
+        harvest_point(partitioning_component_weights = list(leaf = 0), partitioning_leaf_area = 0),
+        NA
+    )
+
+    expect_error(
+        harvest_point(partitioning_component_weights = list(leaf = 1), partitioning_leaf_area = 0),
+        "It is not possible for a leaf with zero area to have a nonzero mass"
+    )
+
+    expect_error(
+        harvest_point(partitioning_component_weights = list(leaf = 0), partitioning_leaf_area = 1),
+        "It is not possible for a leaf with zero mass to have a nonzero area"
+    )
+})
+
 test_that("Extra arguments must be included as `extra`", {
     hp <- harvest_point(construct = 'blah')
     expect_false(is.null(hp$extra$construct))
