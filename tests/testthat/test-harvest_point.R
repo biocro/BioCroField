@@ -7,12 +7,11 @@ test_that("harvest_point produces harvest_point objects", {
 })
 
 test_that("Certain inputs must be length 1", {
-    expect_error(
+    expect_no_error(
         harvest_point(
             agb_components = c('a', 'b'),
             partitioning_component_weights = list(a = 1, b = 2)
-        ),
-        NA
+        )
     )
 
     expect_error(
@@ -22,11 +21,11 @@ test_that("Certain inputs must be length 1", {
 })
 
 test_that("Certain inputs must be numeric, character, or NA", {
-    expect_error(harvest_point(crop = 1), NA)
+    expect_no_error(harvest_point(crop = 1))
 
-    expect_error(harvest_point(crop = 'a'), NA)
+    expect_no_error(harvest_point(crop = 'a'))
 
-    expect_error(harvest_point(crop = NA), NA)
+    expect_no_error(harvest_point(crop = NA))
 
     expect_error(
         harvest_point(crop = list(1)),
@@ -35,14 +34,14 @@ test_that("Certain inputs must be numeric, character, or NA", {
 })
 
 test_that("Certain inputs must be numeric or NA", {
-    expect_error(harvest_point(year = 1), NA)
+    expect_no_error(harvest_point(year = 1))
 
     expect_error(
         harvest_point(year = 'a'),
         "The following inputs should be numeric or NA, but are not: year"
     )
 
-    expect_error(harvest_point(year = NA), NA)
+    expect_no_error(harvest_point(year = NA))
 
     expect_error(
         harvest_point(year = list(1)),
@@ -63,12 +62,11 @@ test_that("Certain inputs must be character", {
         "The following inputs should be character, but are not: agb_components"
     )
 
-    expect_error(
+    expect_no_error(
         harvest_point(
             agb_components = 'a',
             partitioning_component_weights = list(a = 1)
-        ),
-        NA
+        )
     )
 
     expect_error(
@@ -120,9 +118,8 @@ test_that("`agb_components` must be included in `partitioning_component_weights`
 })
 
 test_that("Leaf area can be zero if and only if leaf mass is also zero", {
-    expect_error(
-        harvest_point(partitioning_component_weights = list(leaf = 0), partitioning_leaf_area = 0),
-        NA
+    expect_no_error(
+        harvest_point(partitioning_component_weights = list(leaf = 0), partitioning_leaf_area = 0)
     )
 
     expect_error(
@@ -168,20 +165,11 @@ test_that("Additional arguments must have names", {
 })
 
 test_that("Additional arguments must have length 1 and be numeric, character, or NA", {
-    expect_error(
-        harvest_point(construct = NA),
-        NA
-    )
+    expect_no_error(harvest_point(construct = NA))
 
-    expect_error(
-        harvest_point(construct = '123ABC-9'),
-        NA
-    )
+    expect_no_error(harvest_point(construct = '123ABC-9'))
 
-    expect_error(
-        harvest_point(construct = 0.3),
-        NA
-    )
+    expect_no_error(harvest_point(construct = 0.3))
 
     expect_error(
         harvest_point(construct = c(1, 1)),
