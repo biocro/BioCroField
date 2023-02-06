@@ -220,3 +220,8 @@ test_that("trap_components_biocro are calculated only when possible", {
         list(a = 0.05, b = 0.15)
     )
 })
+
+test_that("Additional arguments are preserved during processing", {
+    hpp <- process(harvest_point(construct = 'blah'))
+    expect_false(is.null(hpp$additional_arguments$construct))
+})

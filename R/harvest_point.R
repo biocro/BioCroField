@@ -25,25 +25,59 @@ harvest_point <- function(
     ...
 )
 {
-    # Get any extra arguments
-    extra = list(...)
+    # Get any additional arguments
+    additional_arguments = list(...)
+
+    # Make sure the component weights and the extras are lists and have names
+    named_list_required <- list(
+        partitioning_component_weights = partitioning_component_weights,
+        trap_component_weights = trap_component_weights,
+        additional_arguments = additional_arguments
+    )
+
+    list_bad <- sapply(named_list_required, function(x) {!is.list(x)})
+
+    names_bad <- sapply(named_list_required, function(x) {
+        if (length(x) > 0) {
+            if (is.null(names(x))) {
+                TRUE
+            } else {
+                any(sapply(names(x), function(n) {is.na(n) || is.null(n) || n == ""}))
+            }
+        } else {
+            FALSE
+        }
+    })
+
+    named_list_bad <- list_bad | names_bad
+
+    if (any(named_list_bad)) {
+        msg <- paste(
+            'The following inputs should be lists of named elements, but are not:',
+            paste(names(named_list_required)[named_list_bad], collapse = ', ')
+        )
+        stop(msg)
+    }
 
     # Make sure certain inputs have length 1
-    should_have_length_1 <- list(
-        crop = crop,
-        variety = variety,
-        location = location,
-        plot = plot,
-        year = year,
-        doy = doy,
-        hour = hour,
-        row_spacing = row_spacing,
-        partitioning_nplants = partitioning_nplants,
-        partitioning_leaf_area = partitioning_leaf_area,
-        agb_nplants = agb_nplants,
-        agb_row_length,
-        agb_weight,
-        trap_area
+    should_have_length_1 <- c(
+        list(
+            crop = crop,
+            variety = variety,
+            location = location,
+            plot = plot,
+            year = year,
+            doy = doy,
+            hour = hour,
+            row_spacing = row_spacing,
+            partitioning_nplants = partitioning_nplants,
+            partitioning_leaf_area = partitioning_leaf_area,
+            agb_nplants = agb_nplants,
+            agb_row_length,
+            agb_weight,
+            trap_area
+        ),
+        additional_arguments
     )
 
     length_bad <- sapply(should_have_length_1, function(x) {length(x) != 1})
@@ -57,11 +91,14 @@ harvest_point <- function(
     }
 
     # Make sure certain inputs are numeric, character, or NA
-    should_be_ncna <- list(
-        crop = crop,
-        variety = variety,
-        location = location,
-        plot = plot
+    should_be_ncna <- c(
+        list(
+            crop = crop,
+            variety = variety,
+            location = location,
+            plot = plot
+        ),
+        additional_arguments
     )
 
     ncna_bad <- sapply(should_be_ncna, function(x) {
@@ -130,37 +167,6 @@ harvest_point <- function(
         stop(msg)
     }
 
-    # Make sure the component weights are lists and have names
-    named_list_required <- list(
-        partitioning_component_weights = partitioning_component_weights,
-        trap_component_weights = trap_component_weights,
-        extra = extra
-    )
-
-    list_bad <- sapply(named_list_required, function(x) {!is.list(x)})
-
-    names_bad <- sapply(named_list_required, function(x) {
-        if (length(x) > 0) {
-            if (is.null(names(x))) {
-                TRUE
-            } else {
-                any(sapply(names(x), function(n) {is.na(n) || is.null(n) || n == ""}))
-            }
-        } else {
-            FALSE
-        }
-    })
-
-    named_list_bad <- list_bad | names_bad
-
-    if (any(named_list_bad)) {
-        msg <- paste(
-            'The following inputs should be lists of named elements, but are not:',
-            paste(names(named_list_required)[named_list_bad], collapse = ', ')
-        )
-        stop(msg)
-    }
-
     # Make sure the agb_components are included in the
     # partitioning_component_weights
     agb_component_bad <- sapply(agb_components, function(x) {
@@ -208,7 +214,7 @@ harvest_point <- function(
         agb_weight = agb_weight,
         trap_area = trap_area,
         trap_component_weights = trap_component_weights,
-        extra = extra
+        additional_arguments = additional_arguments
     )
 
     # Specify the class and return the object

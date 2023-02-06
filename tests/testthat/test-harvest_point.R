@@ -136,7 +136,60 @@ test_that("Leaf area can be zero if and only if leaf mass is also zero", {
     )
 })
 
-test_that("Extra arguments must be included as `extra`", {
+test_that("Additional arguments must be included as `additional_arguments`", {
     hp <- harvest_point(construct = 'blah')
-    expect_false(is.null(hp$extra$construct))
+    expect_false(is.null(hp$additional_arguments$construct))
+})
+
+test_that("Additional arguments must have names", {
+    expect_error(
+        harvest_point(
+            crop = NA,
+            variety = NA,
+            location = NA,
+            plot = NA,
+            year = NA,
+            doy = NA,
+            hour = 12,
+            row_spacing = NA,
+            partitioning_nplants = NA,
+            partitioning_leaf_area = NA,
+            partitioning_component_weights = list(),
+            agb_nplants = NA,
+            agb_components = character(),
+            agb_row_length = NA,
+            agb_weight = NA,
+            trap_area = NA,
+            trap_component_weights = list(),
+            'bad'
+        ),
+        "The following inputs should be lists of named elements, but are not: additional_arguments"
+    )
+})
+
+test_that("Additional arguments must have length 1 and be numeric, character, or NA", {
+    expect_error(
+        harvest_point(construct = NA),
+        NA
+    )
+
+    expect_error(
+        harvest_point(construct = '123ABC-9'),
+        NA
+    )
+
+    expect_error(
+        harvest_point(construct = 0.3),
+        NA
+    )
+
+    expect_error(
+        harvest_point(construct = c(1, 1)),
+        "The following inputs should have length 1, but do not: construct"
+    )
+
+    expect_error(
+        harvest_point(construct = list()),
+        "The following inputs should have length 1, but do not: construct"
+    )
 })

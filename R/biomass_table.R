@@ -18,6 +18,13 @@ biomass_table.harvest_point <- function(..., zero_when_missing = c()) {
         function(hpp) {names(hpp$all_components_biocro)}
     )))
 
+    # Get the names of all the additional arguments that were supplied when the
+    # harvest_point objects were created
+    additional_arguments <- unique(unlist(lapply(
+        x,
+        function(hpp) {names(hpp$additional_arguments)}
+    )))
+
     # Specify all the column names for the data table
     initial_columns <-
         c('crop', 'variety', 'location', 'plot', 'year', 'doy', 'hour', 'time')
@@ -27,7 +34,8 @@ biomass_table.harvest_point <- function(..., zero_when_missing = c()) {
         'agb_per_plant_row', 'agb_per_plant_partitioning', 'population'
     )
 
-    cnames <- c(initial_columns, all_components, final_columns)
+    cnames <-
+        c(initial_columns, all_components, final_columns, additional_arguments)
 
     # Form a data frame
     biomass <- stats::setNames(
@@ -51,6 +59,12 @@ biomass_table.harvest_point <- function(..., zero_when_missing = c()) {
 
         for (comp in names(hpp$all_components_biocro)) {
             biomass[i, comp] <- hpp$all_components_biocro[[comp]]
+        }
+
+        for (arg in additional_arguments) {
+            if (arg %in% names(hpp$additional_arguments)) {
+                biomass[i, arg] <- hpp$additional_arguments[[arg]]
+            }
         }
     }
 
