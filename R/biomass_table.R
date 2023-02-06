@@ -1,4 +1,4 @@
-biomass_table <- function(..., zero_when_missing = c()) {
+biomass_table <- function(..., zero_when_missing = character()) {
     x <- list(...)
 
     types <- lapply(x, class)
@@ -9,8 +9,23 @@ biomass_table <- function(..., zero_when_missing = c()) {
     UseMethod('biomass_table', x[[1]])
 }
 
-biomass_table.harvest_point <- function(..., zero_when_missing = c()) {
+biomass_table.harvest_point <- function(..., zero_when_missing = character()) {
     x <- list(...) # a list of harvest_point objects
+
+    # Make sure certain inputs are character
+    should_be_c <- list(
+        zero_when_missing = zero_when_missing
+    )
+
+    c_bad <- sapply(should_be_c, function(x) {!is.character(x)})
+
+    if (any(c_bad)) {
+        msg <- paste(
+            'The following inputs should be character, but are not:',
+            paste(names(should_be_c)[c_bad], collapse = ', ')
+        )
+        stop(msg)
+    }
 
     # Get the names of all the plant components that we have measurements for
     all_components <- unique(unlist(lapply(

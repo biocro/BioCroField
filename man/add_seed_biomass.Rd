@@ -11,12 +11,12 @@
 \usage{
   add_seed_biomass(
     biomass_df,
-    year,
-    doy,
-    hour,
-    seed_mass,
-    planting_density,
-    zero_when_missing = c(),
+    year = NA,
+    doy = NA,
+    hour = 12,
+    seed_mass = NA,
+    planting_density = NA,
+    zero_when_missing = character(),
     component_fractions = list(leaf = 0.8, stem = 0.1, root = 0.1)
   )
 }
