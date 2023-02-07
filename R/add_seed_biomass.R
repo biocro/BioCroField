@@ -14,12 +14,18 @@ add_seed_biomass <- function(
     seed_mass = NA,
     planting_density = NA,
     zero_when_missing = character(),
-    component_fractions = list(leaf = 0.8, stem = 0.1, root = 0.1)
+    component_fractions = list(),
+    ...
 )
 {
-    # Make sure the component fractions are provided as a list with names
+    # Get any additional arguments
+    additional_arguments = list(...)
+
+    # Make sure the component fractions and extra arguments are provided as
+    # lists with names
     named_list_required <- list(
-        component_fractions = component_fractions
+        component_fractions = component_fractions,
+        additional_arguments = additional_arguments
     )
 
     list_bad <- sapply(named_list_required, function(x) {!is.list(x)})
@@ -47,12 +53,15 @@ add_seed_biomass <- function(
     }
 
     # Make sure certain inputs have length 1
-    should_have_length_1 <- list(
-        year = year,
-        doy = doy,
-        hour = hour,
-        seed_mass = seed_mass,
-        planting_density = planting_density
+    should_have_length_1 <- c(
+        list(
+            year = year,
+            doy = doy,
+            hour = hour,
+            seed_mass = seed_mass,
+            planting_density = planting_density
+        ),
+        additional_arguments
     )
 
     length_bad <- sapply(should_have_length_1, function(x) {length(x) != 1})
@@ -61,6 +70,21 @@ add_seed_biomass <- function(
         msg <- paste(
             'The following inputs should have length 1, but do not:',
             paste(names(should_have_length_1)[length_bad], collapse = ', ')
+        )
+        stop(msg)
+    }
+
+    # Make sure certain inputs are numeric, character, or NA
+    should_be_ncna <- additional_arguments
+
+    ncna_bad <- sapply(should_be_ncna, function(x) {
+        !is.numeric(x) && !is.character(x) && !is.na(x)
+    })
+
+    if (any(ncna_bad)) {
+        msg <- paste(
+            'The following inputs should be numeric, character, or NA, but are not:',
+            paste(names(should_be_ncna)[ncna_bad], collapse = ', ')
         )
         stop(msg)
     }
@@ -115,20 +139,17 @@ add_seed_biomass <- function(
     }
 
     # Make sure the component fractions add to 1
-    if (!isTRUE(all.equal(sum(as.numeric(component_fractions)), 1))) {
+    if (length(component_fractions) > 0 && !isTRUE(all.equal(sum(as.numeric(component_fractions)), 1))) {
         stop('The component_fractions must add to 1')
     }
 
     # If the components are not included in the data frame, add them as new
     # columns initialized to NA.
-    for (comp in names(component_fractions)) {
+    for (comp in c('initial_seed', names(component_fractions), names(additional_arguments))) {
         if (!comp %in% colnames(biomass_df)) {
             biomass_df[[comp]] <- NA
         }
     }
-
-    # Get the total initial biomass
-    total_initial_biomass <- seed_mass * planting_density * 2.47e-6
 
     # Initialize a single-row data frame with the same number of columns as
     # biomass_df, but with all values set to NA
@@ -153,10 +174,19 @@ add_seed_biomass <- function(
         initial_biomass[[comp]] <- 0.0
     }
 
+    # Get the total initial biomass and store it in the new row
+    total_initial_biomass <- seed_mass * planting_density * 2.47e-6
+    initial_biomass$initial_seed <- total_initial_biomass
+
     # Set some column values as fractions of the initial seed mass
     for (comp in names(component_fractions)) {
         initial_biomass[[comp]] <-
             total_initial_biomass * component_fractions[[comp]]
+    }
+
+    # Store the additional arguments
+    for (arg in names(additional_arguments)) {
+        initial_biomass[[arg]] <- additional_arguments[[arg]]
     }
 
     # Add the initial values as the first row of the biomass data frame
