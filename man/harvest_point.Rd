@@ -112,7 +112,7 @@
 
 \examples{
 # Example: Creating a harvest_point object that includes (optional) comments
-# about the stem.
+# about the stem and the leaf litter.
 hp <- harvest_point(
   crop = 'soybean',
   variety = 'ld11',
@@ -122,7 +122,7 @@ hp <- harvest_point(
   doy = 186,
   row_spacing = 0.7,
   partitioning_leaf_area = 500,
-  partitioning_component_weights = list(leaf = 2.5, stem = 1.5, root = 1.4),
+  partitioning_component_weights = list(leaf = 2.5, stem = 1.5, root = 1.4, leaf_litter = 0.2),
   agb_components = c('leaf', 'stem'),
   agb_row_length = 2,
   agb_weight = 50,
@@ -131,7 +131,8 @@ hp <- harvest_point(
   partitioning_nplants = 6,
   agb_nplants = 50,
   stem_comment = 'The stem weight includes petioles',
-  stem_litter_comment = 'The stem litter is entirely petioles'
+  stem_litter_comment = 'The stem litter is entirely petioles',
+  leaf_litter_comment = 'Senesced leaves were present on the plants and in the trap'
 )
 
 str(hp)
