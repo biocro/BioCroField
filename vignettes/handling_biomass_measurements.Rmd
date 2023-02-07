@@ -42,14 +42,14 @@ Together, these features provide a straightforward system for obtaining data and
 for creating a full record of its analysis. After collecting and measuring the
 plant material, a complete description of the data can be created as follows:
 
-- Store images of the completed crop harvest record sheets in a directory.
+1. Store images of the completed crop harvest record sheets in a directory.
 
-- Store the commands used to digitize and process the data (such as the ones
-  in the [A Full Example] section of this document) as an R script in the same
-  directory.
+2. Store the commands used to digitize and process the data (such as the ones
+   in the [A Full Example] section of this document) as an R script in the same
+   directory.
 
-- Save the final biomass data table as a plain-text file in the same directory
-  using `write.csv`.
+3. Save the final biomass data table as a plain-text file in the same directory
+   using `write.csv`.
 
 Now the final biomass values will be available in a simple CSV format, and the
 exact steps taken to analyze the data will be clear to anyone who looks at this
@@ -210,12 +210,62 @@ The `harvest_point` function from `BioCroField` has been designed to digitize
 the data from one of these crop harvest record sheets. The names of the input
 arguments to this function generally match the fields present on the crop
 harvest record sheets, making it simple and straighforward to transfer values
-from the sheet to a computer.
+from the sheet to a computer. For example, a completed crop harvest record sheet
+might look like the following image:
+
+```{r sheet, out.width = '50%', echo = FALSE}
+#| fig.cap = "Example of a completed crop harvest record sheet. This represents
+#|   information from a single biomass harvest performed on 2022-08-23, where
+#|   soybean (var. GM4000) was harvested from plot 3 at UIUC. The row spacing in
+#|   the plot was 0.7 m. A row section 2 m long was harvested for above-ground
+#|   biomass; this section included 47 plants, and its total dry weight was
+#|   1100 g. Six plants were used for partitioning; their total leaf area was
+#|   9000 cm^2, their dry leaf mass was 35 g, their dry stem mass was 55 g,
+#|   their dry root mass was 15 g, and their dry pod mass was 30 g. The leaf,
+#|   stem, and pod components of these plants form their total above-ground
+#|   biomass. Finally, a litter trap in the plot with area 0.2 m^2 was found to
+#|   contain 3.2 g of leaf litter and 1.5 g of stem litter. The plant material
+#|   was dried for 14 days before it was weighed. _Note_: This is not real data,
+#|   and GM4000 is not a real soybean variety, although the values here are
+#|   reasonable for a typical commercial soybean cultivar."
+
+knitr::include_graphics('images/example_harvest_sheet.jpg')
+```
+In this case, the following command can be used to store the information from
+the sheet as an R data structure:
+
+```{r}
+hp <- harvest_point(
+  crop = 'soybean',
+  variety = 'GM4000',
+  location = 'UIUC',
+  plot = 3,
+  year = 2022,
+  doy = 235,
+  row_spacing = 0.7,
+  partitioning_leaf_area = 9000,
+  partitioning_component_weights = list(leaf = 35, stem = 55, root = 15, pod = 30),
+  agb_components = c('leaf', 'stem', 'pod'),
+  agb_row_length = 2,
+  agb_weight = 1100,
+  trap_area = 0.2,
+  trap_component_weights = list(leaf_litter = 3.2, stem_litter = 1.5),
+  partitioning_nplants = 6,
+  agb_nplants = 47
+)
+```
 
 The output from this function is a `harvest_point` object that represents all
 the information from the sheet. From a technical point of view, a
 `harvest_point` object is just an R list with a particular set of named
-elements. More information is available via the built-in help system by typing
+elements. The information stored in it can be viewed with standard R commands
+like `print` or `str`. For example:
+
+```{r}
+str(hp)
+```
+
+More information is available via the built-in help system by typing
 `?harvest_point` in the R terminal.
 
 ## Processing and Organizing Data
@@ -225,19 +275,37 @@ equal number of `harvest_point` objects, it is possible to convert the raw
 weights, lengths, and areas into more convenient values like biomass per unit
 area and leaf area index. This can be done automatically using the `process`
 function from `BioCroField`, which processes a single `harvest_point` object to
-convert its information into a more useful form. The output from `process` is
-a `harvest_point` object that has additional named elements that represent the
-newly calculated values. More information is available via the built-in help
-system by typing `?process` in the R terminal.
+convert its information into a more useful form. The following command
+illustrates how to process the `harvest_point` defined above and view the
+processed values:
+
+```{r}
+hpp <- process(hp)
+
+str(hpp)
+```
+
+The output from `process` is a `harvest_point` object that has additional named
+elements that represent the newly calculated values. More information is
+available via the built-in help system by typing `?process` in the R terminal.
 
 Once the data from one or more harvest record sheets has been processed, it can
 be reorganized into a `data.frame`, which is often a convenient way to store and
 use the data. This can be done using the `biomass_table` function from
-`BioCroField`, which accepts multiple `harvest_point` objects, extracts the most
-important information from each one, and stores the information in one row of a
-`data.frame`. With the data in this format, it can also be easily saved in a
-file using the `write.csv` function from base R. More information is available
-via the built-in help system by typing `?biomass_table` in the R terminal.
+`BioCroField`, which accepts one or more `harvest_point` objects, extracts the
+most important information from each one, and stores the information in one row
+of a `data.frame`. Continuing the example above, we can create a table with one
+row from the single `harvest_point`:
+
+```{r}
+biomass <- biomass_table(hpp)
+
+str(biomass)
+```
+
+With the data in this format, it can also be easily saved in a file using the
+`write.csv` function from base R. More information is available via the built-in
+help system by typing `?biomass_table` in the R terminal.
 
 ## Including Seed Mass
 
@@ -245,14 +313,15 @@ It is often useful to include information about the seeds that were originally
 sown, such as the sowing date and the initial biomass per unit area in the
 field, even though this is not truly "harvest" information. These details can be
 included in a biomass data table (as created by `biomass_table`) using the
-`add_seed_biomass` function from `BioCroField`. More information is available
-via the built-in help system by typing `?add_seed_biomass` in the R terminal.
+`add_seed_biomass` function from `BioCroField`. This operation is included in
+the [Full Example][A Full Example] below. More information is available via the
+built-in help system by typing `?add_seed_biomass` in the R terminal.
 
 # A Full Example
 
 In this section, we will provide an example where biomass data from three
 separate harvests are combined into a table along with information about the
-initial seed mass. _Note_: this is not real data, and "GM4000" is not a real
+initial seed mass. _Note_: This is not real data, and GM4000 is not a real
 soybean variety, although the values here are reasonable for a typical
 commercial soybean cultivar.
 
@@ -262,7 +331,6 @@ crop <- 'soybean'
 variety <- 'GM4000'
 location <- 'UIUC'
 year <- 2022
-hour <- 12
 agb_row_length <- 2
 row_spacing <- 0.7
 trap_area <- 0.2
@@ -277,7 +345,6 @@ biomass_measurements <- list(
     plot = 2,
     year = year,
     doy = 185,
-    hour = hour,
     row_spacing = row_spacing,
     partitioning_leaf_area = 500,
     partitioning_component_weights = list(leaf = 2.5, stem = 1.5, root = 1.4),
@@ -296,7 +363,6 @@ biomass_measurements <- list(
     plot = 3,
     year = year,
     doy = 235,
-    hour = hour,
     row_spacing = row_spacing,
     partitioning_leaf_area = 9000,
     partitioning_component_weights = list(leaf = 35, stem = 55, root = 15, pod = 30),
@@ -315,7 +381,6 @@ biomass_measurements <- list(
     plot = 1,
     year = year,
     doy = 275,
-    hour = hour,
     row_spacing = row_spacing,
     partitioning_leaf_area = 0,
     partitioning_component_weights = list(leaf = 0, stem = 40, root = 13, pod = 175, seed = 130),
@@ -346,7 +411,6 @@ soybean_biomass <- add_seed_biomass(
   soybean_biomass,
   year = year,
   doy = 152,
-  hour = hour,
   seed_mass = 0.17,
   planting_density = 150000,
   zero_when_missing = zero_when_missing

@@ -27,37 +27,34 @@ process <- function(x) {
 # - 1 m^2 / g * (1e6 g / 1 Mg) * (1 ha / 1e4 m^2) = 1e2 ha / Mg
 # - 1 g / cm^2 * (100 cm / m)^2 = 1e4 g / m^2
 process.harvest_point <- function(x) {
-    # TO-DO: account for possibility that some pieces of information are not
-    # present
+    # In this function, we won't do any type checking; we can assume that has
+    # been addressed by `harvest_point`. Instead, the main goal is to make sure
+    # that we can handle incomplete information in the inputs.
 
     # The time (as specified in BioCro)
     time <- x$doy + x$hour / 24.0
 
     # Above-ground biomass from the plants that were partitioned (in g)
-    partitioning_agb_weight <-
+    partitioning_agb_weight <- if (length(x$agb_components) > 0) {
         sum(as.numeric(x$partitioning_component_weights[x$agb_components]))
+    } else {
+        NA
+    }
 
     # Compare above-ground biomass per plant among the plants used for
     # partitioning and the section of row used for above-ground biomass.
-    agb_per_plant_partitioning <- if (!is.na(x$partitioning_nplants)) {
+    agb_per_plant_partitioning <-
         partitioning_agb_weight / x$partitioning_nplants
-    } else {
-        NA
-    }
 
-    agb_per_plant_row = if (!is.na(x$agb_nplants)) {
-        x$agb_weight / x$agb_nplants
-    } else {
-        NA
-    }
+    agb_per_plant_row <- x$agb_weight / x$agb_nplants
 
     # Estimate the plant population (plants per acre) from the number of plants
     # collected for above-ground biomass measurements, using 1 acre = 4047 m^2
-    population <- if (!is.na(x$agb_nplants)) {
-        x$agb_nplants / (x$agb_row_length * x$row_spacing) * 4047
-    } else {
-        NA
-    }
+    population <- x$agb_nplants / (x$agb_row_length * x$row_spacing) * 4047
+
+    # Calculate the above-ground biomass per unit area (in Mg / ha), using
+    # 1 g / m^2 = 1e-2 Mg / ha
+    agb_per_area <- x$agb_weight / (x$agb_row_length * x$row_spacing) * 1e-2
 
     # Relative component weights from plants that were partitioned, normalized
     # by the above-ground biomass from those plants
@@ -66,53 +63,47 @@ process.harvest_point <- function(x) {
         function(pcw) {pcw / partitioning_agb_weight}
     ) # dimensionless from m / (m agb)
 
-    # Estimated weight per unit row length for each component
-    components_per_row <- lapply(
-        relative_components,
-        function(rc) {rc * x$agb_weight / x$agb_row_length}
-    ) # g / m
-
-    # Estimated weight per unit area for each component
-    components_per_area <- lapply(
-        components_per_row,
-        function(cpr) {cpr / x$row_spacing}
-    ) # g / m^2
-
-    # Convert the weight per unit area to the units typically used in BioCro
+    # Mass per unit area for the partitioned components (in Mg / Ha)
     components_biocro <- lapply(
-        components_per_area,
-        function(cpa) {cpa * 1e-2}
+        relative_components,
+        function(rc) {rc * agb_per_area}
     ) # Mg / ha
 
-    # Leaf mass per area
-    LMA <- if (x$partitioning_leaf_area > 0) {
-        x$partitioning_component_weights$leaf /
-            x$partitioning_leaf_area * 1e4 # g / m^2
+    # Leaf mass per leaf area (in g / m^2). We should only calculate this if
+    # there is a partitioned leaf mass and a partitioned leaf area; even in that
+    # case, if the leaf area is not positive, we still should not calculate LMA.
+    LMA <- if(!is.null(x$partitioning_component_weights$leaf) && !is.na(x$partitioning_leaf_area)) {
+        if (x$partitioning_leaf_area > 0) {
+                x$partitioning_component_weights$leaf /
+                    x$partitioning_leaf_area * 1e4 # g / m^2
+        } else {
+            NA
+        }
     } else {
         NA
     }
 
     # Leaf area index. Units are dimensionless from
-    # (g / m^2 ground) / (g / m^2 leaf)
-    LAI <- if (x$partitioning_leaf_area > 0) {
-        components_per_area$leaf / LMA
+    # (g / m^2 ground) / (g / m^2 leaf). We should only calculate this if there
+    # is a leaf mass per ground area and a partitioned leaf area; in that case,
+    # LAI should be set to zero when the leaf area is zero.
+    LAI <- if(!is.null(components_biocro$leaf) && !is.na(x$partitioning_leaf_area)) {
+        if (x$partitioning_leaf_area > 0) {
+            components_biocro$leaf / LMA * 1e2
+        } else {
+            0.0
+        }
     } else {
-        0
+        NA
     }
 
     # Specific leaf area in the units typically used in BioCro
     SLA <- 1 / LMA * 1e2 # ha / Mg
 
-    # Biomass from litter trap
-    trap_components_per_area <- lapply(
-        x$trap_component_weights,
-        function(tcw) {tcw / x$trap_area}
-    ) # g / m^2
-
-    # Convert the trap components per area to units typically used in BioCro
+    # Biomass from litter trap in units typically used in BioCro
     trap_components_biocro <- lapply(
-        trap_components_per_area,
-        function(tcpa) {tcpa * 1e-2}
+        x$trap_component_weights,
+        function(tcw) {tcw / x$trap_area * 1e-2}
     ) # Mg / ha
 
     # Combine all components
@@ -131,19 +122,17 @@ process.harvest_point <- function(x) {
     new_info <- list(
         time = time,
         partitioning_agb_weight = partitioning_agb_weight,
+        agb_per_plant_partitioning = agb_per_plant_partitioning,
+        agb_per_plant_row = agb_per_plant_row,
+        population = population,
+        agb_per_area = agb_per_area,
         relative_components = relative_components,
-        components_per_row = components_per_row,
-        components_per_area = components_per_area,
         components_biocro = components_biocro,
         LMA = LMA,
         LAI = LAI,
         SLA = SLA,
-        trap_components_per_area = trap_components_per_area,
         trap_components_biocro = trap_components_biocro,
-        all_components_biocro = all_components_biocro,
-        agb_per_plant_partitioning = agb_per_plant_partitioning,
-        agb_per_plant_row = agb_per_plant_row,
-        population = population
+        all_components_biocro = all_components_biocro
     )
 
     for (name in names(new_info)) {

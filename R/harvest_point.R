@@ -5,33 +5,117 @@
 
 # Constructor
 harvest_point <- function(
-    crop,
-    variety,
-    location,
-    plot,
-    year,
-    doy,
-    hour,
-    row_spacing,
-    partitioning_leaf_area,
-    partitioning_component_weights,
-    agb_components,
-    agb_row_length,
-    agb_weight,
-    trap_area,
-    trap_component_weights,
+    crop = NA,
+    variety = NA,
+    location = NA,
+    plot = NA,
+    year = NA,
+    doy = NA,
+    hour = 12,
+    row_spacing = NA,
     partitioning_nplants = NA,
+    partitioning_leaf_area = NA,
+    partitioning_component_weights = list(),
     agb_nplants = NA,
+    agb_components = character(),
+    agb_row_length = NA,
+    agb_weight = NA,
+    trap_area = NA,
+    trap_component_weights = list(),
     ...
 )
 {
-    # TO-DO:
-    # - Actually make these checks.
-    # - Check to make sure the `agb_components` are included in the
-    #   `partitioning_component_weights`.
-    # - Check to make sure numeric values are positive.
-    # - Supply more defaults.
-    should_be_numeric <- list(
+    # Get any additional arguments
+    additional_arguments = list(...)
+
+    # Make sure the component weights and the extras are lists and have names
+    named_list_required <- list(
+        partitioning_component_weights = partitioning_component_weights,
+        trap_component_weights = trap_component_weights,
+        additional_arguments = additional_arguments
+    )
+
+    list_bad <- sapply(named_list_required, function(x) {!is.list(x)})
+
+    names_bad <- sapply(named_list_required, function(x) {
+        if (length(x) > 0) {
+            if (is.null(names(x))) {
+                TRUE
+            } else {
+                any(sapply(names(x), function(n) {is.na(n) || is.null(n) || n == ""}))
+            }
+        } else {
+            FALSE
+        }
+    })
+
+    named_list_bad <- list_bad | names_bad
+
+    if (any(named_list_bad)) {
+        msg <- paste(
+            'The following inputs should be lists of named elements, but are not:',
+            paste(names(named_list_required)[named_list_bad], collapse = ', ')
+        )
+        stop(msg)
+    }
+
+    # Make sure certain inputs have length 1
+    should_have_length_1 <- c(
+        list(
+            crop = crop,
+            variety = variety,
+            location = location,
+            plot = plot,
+            year = year,
+            doy = doy,
+            hour = hour,
+            row_spacing = row_spacing,
+            partitioning_nplants = partitioning_nplants,
+            partitioning_leaf_area = partitioning_leaf_area,
+            agb_nplants = agb_nplants,
+            agb_row_length,
+            agb_weight,
+            trap_area
+        ),
+        additional_arguments
+    )
+
+    length_bad <- sapply(should_have_length_1, function(x) {length(x) != 1})
+
+    if (any(length_bad)) {
+        msg <- paste(
+            'The following inputs should have length 1, but do not:',
+            paste(names(should_have_length_1)[length_bad], collapse = ', ')
+        )
+        stop(msg)
+    }
+
+    # Make sure certain inputs are numeric, character, or NA
+    should_be_ncna <- c(
+        list(
+            crop = crop,
+            variety = variety,
+            location = location,
+            plot = plot
+        ),
+        additional_arguments
+    )
+
+    ncna_bad <- sapply(should_be_ncna, function(x) {
+        !is.numeric(x) && !is.character(x) && !is.na(x)
+    })
+
+    if (any(ncna_bad)) {
+        msg <- paste(
+            'The following inputs should be numeric, character, or NA, but are not:',
+            paste(names(should_be_ncna)[ncna_bad], collapse = ', ')
+        )
+        stop(msg)
+    }
+
+    # Make sure certain inputs are numeric or NA; if they are numeric, they
+    # should also be positive
+    should_be_nna <- list(
         year = year,
         doy = doy,
         hour = hour,
@@ -39,23 +123,77 @@ harvest_point <- function(
         partitioning_nplants = partitioning_nplants,
         partitioning_leaf_area = partitioning_leaf_area,
         agb_nplants = agb_nplants,
-        agb_row_length = agb_row_length,
-        agb_weight = agb_weight,
-        trap_area = trap_area
+        agb_row_length,
+        agb_weight,
+        trap_area
     )
 
-    should_be_character <- list(
-        crop = crop,
-        variety = variety,
-        location = location,
-        plot = plot,
+    nna_bad <- sapply(should_be_nna, function(x) {
+        !is.numeric(x) && !is.na(x)
+    })
+
+    if (any(nna_bad)) {
+        msg <- paste(
+            'The following inputs should be numeric or NA, but are not:',
+            paste(names(should_be_nna)[nna_bad], collapse = ', ')
+        )
+        stop(msg)
+    }
+
+    neg_bad <- sapply(should_be_nna, function(x) {
+        is.numeric(x) && x < 0
+    })
+
+    if (any(neg_bad)) {
+        msg <- paste(
+            'The following inputs are numeric and therefore should be positive, but are not:',
+            paste(names(should_be_nna)[neg_bad], collapse = ', ')
+        )
+        stop(msg)
+    }
+
+    # Make sure certain inputs are character
+    should_be_c <- list(
         agb_components = agb_components
     )
 
-    should_be_list_named_numeric <- list(
-        partitioning_component_weights = partitioning_component_weights,
-        trap_component_weights = trap_component_weights
-    )
+    c_bad <- sapply(should_be_c, function(x) {!is.character(x)})
+
+    if (any(c_bad)) {
+        msg <- paste(
+            'The following inputs should be character, but are not:',
+            paste(names(should_be_c)[c_bad], collapse = ', ')
+        )
+        stop(msg)
+    }
+
+    # Make sure the agb_components are included in the
+    # partitioning_component_weights
+    agb_component_bad <- sapply(agb_components, function(x) {
+        !x %in% names(partitioning_component_weights)
+    })
+
+    if (any(agb_component_bad)) {
+        msg <- paste(
+            'The following elements of `agb_components` are not present in `partitioning_component_weights`:',
+            paste(agb_components[agb_component_bad], collapse = ', ')
+        )
+        stop(msg)
+    }
+
+    # Do not allow a leaf with zero area but nonzero mass
+    if (!is.na(partitioning_leaf_area) && partitioning_leaf_area == 0 &&
+        !is.null(partitioning_component_weights$leaf) &&
+            partitioning_component_weights$leaf > 0) {
+        stop("It is not possible for a leaf with zero area to have a nonzero mass")
+    }
+
+    # Do not allow a leaf with zero mass but nonzero area
+    if (!is.na(partitioning_leaf_area) && partitioning_leaf_area > 0 &&
+        !is.null(partitioning_component_weights$leaf) &&
+            partitioning_component_weights$leaf == 0) {
+        stop("It is not possible for a leaf with zero mass to have a nonzero area")
+    }
 
     # Assemble all the information into a list of named elements
     hp <- list(
@@ -76,7 +214,7 @@ harvest_point <- function(
         agb_weight = agb_weight,
         trap_area = trap_area,
         trap_component_weights = trap_component_weights,
-        ...
+        additional_arguments = additional_arguments
     )
 
     # Specify the class and return the object
