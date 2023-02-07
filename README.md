@@ -1,3 +1,7 @@
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/biocro/BioCroField/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/biocro/BioCroField/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
 ## BioCroField
 
 **BioCroField** is a collection of tools for processing field data related to
