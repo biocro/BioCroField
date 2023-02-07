@@ -32,5 +32,5 @@ important use cases.
 
 ### License
 
-The `BioCroField` R package, its documentation, and its associated example
-scripts are licensed under the MIT license.
+The `BioCroField` R package and its documentation are licensed under the MIT
+license.
