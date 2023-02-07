@@ -21,3 +21,6 @@
 ^pkgdown$
 ^\.github$
 # Related to pkgdown
+
+^developer_documentation$
+# Developer documentation directories.
