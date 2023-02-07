@@ -101,7 +101,7 @@ format.</p></li>
 obtaining data and for creating a full record of its analysis. After
 collecting and measuring the plant material, a complete description of
 the data can be created as follows:</p>
-<ul>
+<ol style="list-style-type: decimal">
 <li><p>Store images of the completed crop harvest record sheets in a
 directory.</p></li>
 <li><p>Store the commands used to digitize and process the data (such as
@@ -109,7 +109,7 @@ the ones in the <a href="#a-full-example">A Full Example</a> section of
 this document) as an R script in the same directory.</p></li>
 <li><p>Save the final biomass data table as a plain-text file in the
 same directory using <code>write.csv</code>.</p></li>
-</ul>
+</ol>
 <p>Now the final biomass values will be available in a simple CSV
 format, and the exact steps taken to analyze the data will be clear to
 anyone who looks at this directory in the future, including yourself!
@@ -272,13 +272,84 @@ has been designed to digitize the data from one of these crop harvest
 record sheets. The names of the input arguments to this function
 generally match the fields present on the crop harvest record sheets,
 making it simple and straighforward to transfer values from the sheet to
-a computer.</p>
+a computer. For example, a completed crop harvest record sheet might
+look like the following image:</p>
+<div class="figure" style="text-align: center">
+<img src="images/example_harvest_sheet.jpg" alt="Example of a completed crop harvest record sheet. This represents  information from a single biomass harvest performed on 2022-08-23, where  soybean (var. GM4000) was harvested from plot 3 at UIUC. The row spacing in  the plot was 0.7 m. A row section 2 m long was harvested for above-ground  biomass; this section included 47 plants, and its total dry weight was  1100 g. Six plants were used for partitioning; their total leaf area was  9000 cm^2, their dry leaf mass was 35 g, their dry stem mass was 55 g,  their dry root mass was 15 g, and their dry pod mass was 30 g. The leaf,  stem, and pod components of these plants form their total above-ground  biomass. Finally, a litter trap in the plot with area 0.2 m^2 was found to  contain 3.2 g of leaf litter and 1.5 g of stem litter. The plant material  was dried for 14 days before it was weighed. _Note_: This is not real data,  and GM4000 is not a real soybean variety, although the values here are  reasonable for a typical commercial soybean cultivar." width="50%"><p class="caption">
+Example of a completed crop harvest record sheet. This represents
+information from a single biomass harvest performed on 2022-08-23, where
+soybean (var. GM4000) was harvested from plot 3 at UIUC. The row spacing
+in the plot was 0.7 m. A row section 2 m long was harvested for
+above-ground biomass; this section included 47 plants, and its total dry
+weight was 1100 g. Six plants were used for partitioning; their total
+leaf area was 9000 cm^2, their dry leaf mass was 35 g, their dry stem
+mass was 55 g, their dry root mass was 15 g, and their dry pod mass was
+30 g. The leaf, stem, and pod components of these plants form their
+total above-ground biomass. Finally, a litter trap in the plot with area
+0.2 m^2 was found to contain 3.2 g of leaf litter and 1.5 g of stem
+litter. The plant material was dried for 14 days before it was weighed.
+<em>Note</em>: This is not real data, and GM4000 is not a real soybean
+variety, although the values here are reasonable for a typical
+commercial soybean cultivar.
+</p>
+</div>
+<p>In this case, the following command can be used to store the
+information from the sheet as an R data structure:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">hp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/harvest_point.html">harvest_point</a></span><span class="op">(</span></span>
+<span>  crop <span class="op">=</span> <span class="st">'soybean'</span>,</span>
+<span>  variety <span class="op">=</span> <span class="st">'GM4000'</span>,</span>
+<span>  location <span class="op">=</span> <span class="st">'UIUC'</span>,</span>
+<span>  plot <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  year <span class="op">=</span> <span class="fl">2022</span>,</span>
+<span>  doy <span class="op">=</span> <span class="fl">235</span>,</span>
+<span>  row_spacing <span class="op">=</span> <span class="fl">0.7</span>,</span>
+<span>  partitioning_leaf_area <span class="op">=</span> <span class="fl">9000</span>,</span>
+<span>  partitioning_component_weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>leaf <span class="op">=</span> <span class="fl">35</span>, stem <span class="op">=</span> <span class="fl">55</span>, root <span class="op">=</span> <span class="fl">15</span>, pod <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>,</span>
+<span>  agb_components <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'leaf'</span>, <span class="st">'stem'</span>, <span class="st">'pod'</span><span class="op">)</span>,</span>
+<span>  agb_row_length <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  agb_weight <span class="op">=</span> <span class="fl">1100</span>,</span>
+<span>  trap_area <span class="op">=</span> <span class="fl">0.2</span>,</span>
+<span>  trap_component_weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>leaf_litter <span class="op">=</span> <span class="fl">3.2</span>, stem_litter <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span>,</span>
+<span>  partitioning_nplants <span class="op">=</span> <span class="fl">6</span>,</span>
+<span>  agb_nplants <span class="op">=</span> <span class="fl">47</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>The output from this function is a <code>harvest_point</code> object
 that represents all the information from the sheet. From a technical
 point of view, a <code>harvest_point</code> object is just an R list
-with a particular set of named elements. More information is available
-via the built-in help system by typing <code><a href="../reference/harvest_point.html">?harvest_point</a></code> in
-the R terminal.</p>
+with a particular set of named elements. The information stored in it
+can be viewed with standard R commands like <code>print</code> or
+<code>str</code>. For example:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">hp</span><span class="op">)</span></span>
+<span><span class="co">#&gt; List of 18</span></span>
+<span><span class="co">#&gt;  $ crop                          : chr "soybean"</span></span>
+<span><span class="co">#&gt;  $ variety                       : chr "GM4000"</span></span>
+<span><span class="co">#&gt;  $ location                      : chr "UIUC"</span></span>
+<span><span class="co">#&gt;  $ plot                          : num 3</span></span>
+<span><span class="co">#&gt;  $ year                          : num 2022</span></span>
+<span><span class="co">#&gt;  $ doy                           : num 235</span></span>
+<span><span class="co">#&gt;  $ hour                          : num 12</span></span>
+<span><span class="co">#&gt;  $ row_spacing                   : num 0.7</span></span>
+<span><span class="co">#&gt;  $ partitioning_nplants          : num 6</span></span>
+<span><span class="co">#&gt;  $ partitioning_leaf_area        : num 9000</span></span>
+<span><span class="co">#&gt;  $ partitioning_component_weights:List of 4</span></span>
+<span><span class="co">#&gt;   ..$ leaf: num 35</span></span>
+<span><span class="co">#&gt;   ..$ stem: num 55</span></span>
+<span><span class="co">#&gt;   ..$ root: num 15</span></span>
+<span><span class="co">#&gt;   ..$ pod : num 30</span></span>
+<span><span class="co">#&gt;  $ agb_components                : chr [1:3] "leaf" "stem" "pod"</span></span>
+<span><span class="co">#&gt;  $ agb_nplants                   : num 47</span></span>
+<span><span class="co">#&gt;  $ agb_row_length                : num 2</span></span>
+<span><span class="co">#&gt;  $ agb_weight                    : num 1100</span></span>
+<span><span class="co">#&gt;  $ trap_area                     : num 0.2</span></span>
+<span><span class="co">#&gt;  $ trap_component_weights        :List of 2</span></span>
+<span><span class="co">#&gt;   ..$ leaf_litter: num 3.2</span></span>
+<span><span class="co">#&gt;   ..$ stem_litter: num 1.5</span></span>
+<span><span class="co">#&gt;  $ additional_arguments          : list()</span></span>
+<span><span class="co">#&gt;  - attr(*, "class")= chr [1:2] "harvest_point" "list"</span></span></code></pre></div>
+<p>More information is available via the built-in help system by typing
+<code><a href="../reference/harvest_point.html">?harvest_point</a></code> in the R terminal.</p>
 </div>
 <div class="section level3">
 <h3 id="processing-and-organizing-data">Processing and Organizing Data<a class="anchor" aria-label="anchor" href="#processing-and-organizing-data"></a>
@@ -290,22 +361,109 @@ values like biomass per unit area and leaf area index. This can be done
 automatically using the <code>process</code> function from
 <code>BioCroField</code>, which processes a single
 <code>harvest_point</code> object to convert its information into a more
-useful form. The output from <code>process</code> is a
-<code>harvest_point</code> object that has additional named elements
-that represent the newly calculated values. More information is
-available via the built-in help system by typing <code><a href="../reference/process.html">?process</a></code>
-in the R terminal.</p>
+useful form. The following command illustrates how to process the
+<code>harvest_point</code> defined above and view the processed
+values:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">hpp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/process.html">process</a></span><span class="op">(</span><span class="va">hp</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">hpp</span><span class="op">)</span></span>
+<span><span class="co">#&gt; List of 31</span></span>
+<span><span class="co">#&gt;  $ crop                          : chr "soybean"</span></span>
+<span><span class="co">#&gt;  $ variety                       : chr "GM4000"</span></span>
+<span><span class="co">#&gt;  $ location                      : chr "UIUC"</span></span>
+<span><span class="co">#&gt;  $ plot                          : num 3</span></span>
+<span><span class="co">#&gt;  $ year                          : num 2022</span></span>
+<span><span class="co">#&gt;  $ doy                           : num 235</span></span>
+<span><span class="co">#&gt;  $ hour                          : num 12</span></span>
+<span><span class="co">#&gt;  $ row_spacing                   : num 0.7</span></span>
+<span><span class="co">#&gt;  $ partitioning_nplants          : num 6</span></span>
+<span><span class="co">#&gt;  $ partitioning_leaf_area        : num 9000</span></span>
+<span><span class="co">#&gt;  $ partitioning_component_weights:List of 4</span></span>
+<span><span class="co">#&gt;   ..$ leaf: num 35</span></span>
+<span><span class="co">#&gt;   ..$ stem: num 55</span></span>
+<span><span class="co">#&gt;   ..$ root: num 15</span></span>
+<span><span class="co">#&gt;   ..$ pod : num 30</span></span>
+<span><span class="co">#&gt;  $ agb_components                : chr [1:3] "leaf" "stem" "pod"</span></span>
+<span><span class="co">#&gt;  $ agb_nplants                   : num 47</span></span>
+<span><span class="co">#&gt;  $ agb_row_length                : num 2</span></span>
+<span><span class="co">#&gt;  $ agb_weight                    : num 1100</span></span>
+<span><span class="co">#&gt;  $ trap_area                     : num 0.2</span></span>
+<span><span class="co">#&gt;  $ trap_component_weights        :List of 2</span></span>
+<span><span class="co">#&gt;   ..$ leaf_litter: num 3.2</span></span>
+<span><span class="co">#&gt;   ..$ stem_litter: num 1.5</span></span>
+<span><span class="co">#&gt;  $ additional_arguments          : list()</span></span>
+<span><span class="co">#&gt;  $ time                          : num 236</span></span>
+<span><span class="co">#&gt;  $ partitioning_agb_weight       : num 120</span></span>
+<span><span class="co">#&gt;  $ agb_per_plant_partitioning    : num 20</span></span>
+<span><span class="co">#&gt;  $ agb_per_plant_row             : num 23.4</span></span>
+<span><span class="co">#&gt;  $ population                    : num 135864</span></span>
+<span><span class="co">#&gt;  $ agb_per_area                  : num 7.86</span></span>
+<span><span class="co">#&gt;  $ relative_components           :List of 4</span></span>
+<span><span class="co">#&gt;   ..$ leaf: num 0.292</span></span>
+<span><span class="co">#&gt;   ..$ stem: num 0.458</span></span>
+<span><span class="co">#&gt;   ..$ root: num 0.125</span></span>
+<span><span class="co">#&gt;   ..$ pod : num 0.25</span></span>
+<span><span class="co">#&gt;  $ components_biocro             :List of 4</span></span>
+<span><span class="co">#&gt;   ..$ leaf: num 2.29</span></span>
+<span><span class="co">#&gt;   ..$ stem: num 3.6</span></span>
+<span><span class="co">#&gt;   ..$ root: num 0.982</span></span>
+<span><span class="co">#&gt;   ..$ pod : num 1.96</span></span>
+<span><span class="co">#&gt;  $ LMA                           : num 38.9</span></span>
+<span><span class="co">#&gt;  $ LAI                           : num 5.89</span></span>
+<span><span class="co">#&gt;  $ SLA                           : num 2.57</span></span>
+<span><span class="co">#&gt;  $ trap_components_biocro        :List of 2</span></span>
+<span><span class="co">#&gt;   ..$ leaf_litter: num 0.16</span></span>
+<span><span class="co">#&gt;   ..$ stem_litter: num 0.075</span></span>
+<span><span class="co">#&gt;  $ all_components_biocro         :List of 6</span></span>
+<span><span class="co">#&gt;   ..$ leaf       : num 2.29</span></span>
+<span><span class="co">#&gt;   ..$ stem       : num 3.6</span></span>
+<span><span class="co">#&gt;   ..$ root       : num 0.982</span></span>
+<span><span class="co">#&gt;   ..$ pod        : num 1.96</span></span>
+<span><span class="co">#&gt;   ..$ leaf_litter: num 0.16</span></span>
+<span><span class="co">#&gt;   ..$ stem_litter: num 0.075</span></span>
+<span><span class="co">#&gt;  - attr(*, "class")= chr [1:2] "harvest_point" "list"</span></span></code></pre></div>
+<p>The output from <code>process</code> is a <code>harvest_point</code>
+object that has additional named elements that represent the newly
+calculated values. More information is available via the built-in help
+system by typing <code><a href="../reference/process.html">?process</a></code> in the R terminal.</p>
 <p>Once the data from one or more harvest record sheets has been
 processed, it can be reorganized into a <code>data.frame</code>, which
 is often a convenient way to store and use the data. This can be done
 using the <code>biomass_table</code> function from
-<code>BioCroField</code>, which accepts multiple
+<code>BioCroField</code>, which accepts one or more
 <code>harvest_point</code> objects, extracts the most important
 information from each one, and stores the information in one row of a
-<code>data.frame</code>. With the data in this format, it can also be
-easily saved in a file using the <code>write.csv</code> function from
-base R. More information is available via the built-in help system by
-typing <code><a href="../reference/biomass_table.html">?biomass_table</a></code> in the R terminal.</p>
+<code>data.frame</code>. Continuing the example above, we can create a
+table with one row from the single <code>harvest_point</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">biomass</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/biomass_table.html">biomass_table</a></span><span class="op">(</span><span class="va">hpp</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">biomass</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 'data.frame':    1 obs. of  19 variables:</span></span>
+<span><span class="co">#&gt;  $ crop                      : chr "soybean"</span></span>
+<span><span class="co">#&gt;  $ variety                   : chr "GM4000"</span></span>
+<span><span class="co">#&gt;  $ location                  : chr "UIUC"</span></span>
+<span><span class="co">#&gt;  $ plot                      : num 3</span></span>
+<span><span class="co">#&gt;  $ year                      : num 2022</span></span>
+<span><span class="co">#&gt;  $ doy                       : num 235</span></span>
+<span><span class="co">#&gt;  $ hour                      : num 12</span></span>
+<span><span class="co">#&gt;  $ time                      : num 236</span></span>
+<span><span class="co">#&gt;  $ leaf                      : num 2.29</span></span>
+<span><span class="co">#&gt;  $ stem                      : num 3.6</span></span>
+<span><span class="co">#&gt;  $ root                      : num 0.982</span></span>
+<span><span class="co">#&gt;  $ pod                       : num 1.96</span></span>
+<span><span class="co">#&gt;  $ leaf_litter               : num 0.16</span></span>
+<span><span class="co">#&gt;  $ stem_litter               : num 0.075</span></span>
+<span><span class="co">#&gt;  $ LAI                       : num 5.89</span></span>
+<span><span class="co">#&gt;  $ SLA                       : num 2.57</span></span>
+<span><span class="co">#&gt;  $ agb_per_plant_row         : num 23.4</span></span>
+<span><span class="co">#&gt;  $ agb_per_plant_partitioning: num 20</span></span>
+<span><span class="co">#&gt;  $ population                : num 135864</span></span></code></pre></div>
+<p>With the data in this format, it can also be easily saved in a file
+using the <code>write.csv</code> function from base R. More information
+is available via the built-in help system by typing
+<code><a href="../reference/biomass_table.html">?biomass_table</a></code> in the R terminal.</p>
 </div>
 <div class="section level3">
 <h3 id="including-seed-mass">Including Seed Mass<a class="anchor" aria-label="anchor" href="#including-seed-mass"></a>
@@ -316,8 +474,9 @@ unit area in the field, even though this is not truly “harvest”
 information. These details can be included in a biomass data table (as
 created by <code>biomass_table</code>) using the
 <code>add_seed_biomass</code> function from <code>BioCroField</code>.
-More information is available via the built-in help system by typing
-<code><a href="../reference/add_seed_biomass.html">?add_seed_biomass</a></code> in the R terminal.</p>
+This operation is included in the <a href="#a-full-example">Full
+Example</a> below. More information is available via the built-in help
+system by typing <code><a href="../reference/add_seed_biomass.html">?add_seed_biomass</a></code> in the R terminal.</p>
 </div>
 </div>
 <div class="section level2">
@@ -325,16 +484,15 @@ More information is available via the built-in help system by typing
 </h2>
 <p>In this section, we will provide an example where biomass data from
 three separate harvests are combined into a table along with information
-about the initial seed mass. <em>Note</em>: this is not real data, and
-“GM4000” is not a real soybean variety, although the values here are
+about the initial seed mass. <em>Note</em>: This is not real data, and
+GM4000 is not a real soybean variety, although the values here are
 reasonable for a typical commercial soybean cultivar.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Specify some pieces of information that are the same for all harvests</span></span>
 <span><span class="va">crop</span> <span class="op">&lt;-</span> <span class="st">'soybean'</span></span>
 <span><span class="va">variety</span> <span class="op">&lt;-</span> <span class="st">'GM4000'</span></span>
 <span><span class="va">location</span> <span class="op">&lt;-</span> <span class="st">'UIUC'</span></span>
 <span><span class="va">year</span> <span class="op">&lt;-</span> <span class="fl">2022</span></span>
-<span><span class="va">hour</span> <span class="op">&lt;-</span> <span class="fl">12</span></span>
 <span><span class="va">agb_row_length</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
 <span><span class="va">row_spacing</span> <span class="op">&lt;-</span> <span class="fl">0.7</span></span>
 <span><span class="va">trap_area</span> <span class="op">&lt;-</span> <span class="fl">0.2</span></span>
@@ -349,7 +507,6 @@ reasonable for a typical commercial soybean cultivar.</p>
 <span>    plot <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>    year <span class="op">=</span> <span class="va">year</span>,</span>
 <span>    doy <span class="op">=</span> <span class="fl">185</span>,</span>
-<span>    hour <span class="op">=</span> <span class="va">hour</span>,</span>
 <span>    row_spacing <span class="op">=</span> <span class="va">row_spacing</span>,</span>
 <span>    partitioning_leaf_area <span class="op">=</span> <span class="fl">500</span>,</span>
 <span>    partitioning_component_weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>leaf <span class="op">=</span> <span class="fl">2.5</span>, stem <span class="op">=</span> <span class="fl">1.5</span>, root <span class="op">=</span> <span class="fl">1.4</span><span class="op">)</span>,</span>
@@ -368,7 +525,6 @@ reasonable for a typical commercial soybean cultivar.</p>
 <span>    plot <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>    year <span class="op">=</span> <span class="va">year</span>,</span>
 <span>    doy <span class="op">=</span> <span class="fl">235</span>,</span>
-<span>    hour <span class="op">=</span> <span class="va">hour</span>,</span>
 <span>    row_spacing <span class="op">=</span> <span class="va">row_spacing</span>,</span>
 <span>    partitioning_leaf_area <span class="op">=</span> <span class="fl">9000</span>,</span>
 <span>    partitioning_component_weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>leaf <span class="op">=</span> <span class="fl">35</span>, stem <span class="op">=</span> <span class="fl">55</span>, root <span class="op">=</span> <span class="fl">15</span>, pod <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>,</span>
@@ -387,7 +543,6 @@ reasonable for a typical commercial soybean cultivar.</p>
 <span>    plot <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>    year <span class="op">=</span> <span class="va">year</span>,</span>
 <span>    doy <span class="op">=</span> <span class="fl">275</span>,</span>
-<span>    hour <span class="op">=</span> <span class="va">hour</span>,</span>
 <span>    row_spacing <span class="op">=</span> <span class="va">row_spacing</span>,</span>
 <span>    partitioning_leaf_area <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>    partitioning_component_weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>leaf <span class="op">=</span> <span class="fl">0</span>, stem <span class="op">=</span> <span class="fl">40</span>, root <span class="op">=</span> <span class="fl">13</span>, pod <span class="op">=</span> <span class="fl">175</span>, seed <span class="op">=</span> <span class="fl">130</span><span class="op">)</span>,</span>
@@ -418,15 +573,14 @@ reasonable for a typical commercial soybean cultivar.</p>
 <span>  <span class="va">soybean_biomass</span>,</span>
 <span>  year <span class="op">=</span> <span class="va">year</span>,</span>
 <span>  doy <span class="op">=</span> <span class="fl">152</span>,</span>
-<span>  hour <span class="op">=</span> <span class="va">hour</span>,</span>
 <span>  seed_mass <span class="op">=</span> <span class="fl">0.17</span>,</span>
 <span>  planting_density <span class="op">=</span> <span class="fl">150000</span>,</span>
 <span>  zero_when_missing <span class="op">=</span> <span class="va">zero_when_missing</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Now we can take a look at the final data values:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">soybean_biomass</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 'data.frame':    4 obs. of  20 variables:</span></span>
+<span><span class="co">#&gt; 'data.frame':    4 obs. of  21 variables:</span></span>
 <span><span class="co">#&gt;  $ crop                      : chr  "soybean" "soybean" "soybean" "soybean"</span></span>
 <span><span class="co">#&gt;  $ variety                   : chr  "GM4000" "GM4000" "GM4000" "GM4000"</span></span>
 <span><span class="co">#&gt;  $ location                  : chr  "UIUC" "UIUC" "UIUC" "UIUC"</span></span>
@@ -435,9 +589,9 @@ reasonable for a typical commercial soybean cultivar.</p>
 <span><span class="co">#&gt;  $ doy                       : num  152 185 235 275</span></span>
 <span><span class="co">#&gt;  $ hour                      : num  12 12 12 12</span></span>
 <span><span class="co">#&gt;  $ time                      : num  152 186 236 276</span></span>
-<span><span class="co">#&gt;  $ leaf                      : num  0.0504 0.2232 2.2917 0</span></span>
-<span><span class="co">#&gt;  $ stem                      : num  0.0063 0.1339 3.6012 1.3289</span></span>
-<span><span class="co">#&gt;  $ root                      : num  0.0063 0.125 0.9821 0.4319</span></span>
+<span><span class="co">#&gt;  $ leaf                      : num  NA 0.223 2.292 0</span></span>
+<span><span class="co">#&gt;  $ stem                      : num  NA 0.134 3.601 1.329</span></span>
+<span><span class="co">#&gt;  $ root                      : num  NA 0.125 0.982 0.432</span></span>
 <span><span class="co">#&gt;  $ pod                       : num  0 0 1.96 5.81</span></span>
 <span><span class="co">#&gt;  $ leaf_litter               : num  0 0 0.16 2.25</span></span>
 <span><span class="co">#&gt;  $ stem_litter               : num  0 0 0.075 0.75</span></span>
@@ -446,9 +600,10 @@ reasonable for a typical commercial soybean cultivar.</p>
 <span><span class="co">#&gt;  $ SLA                       : num  NA 2 2.57 NA</span></span>
 <span><span class="co">#&gt;  $ agb_per_plant_row         : num  NA 1.09 23.4 19.61</span></span>
 <span><span class="co">#&gt;  $ agb_per_plant_partitioning: num  NA 0.667 20 35.833</span></span>
-<span><span class="co">#&gt;  $ population                : num  NA 132973 135864 147426</span></span></code></pre></div>
+<span><span class="co">#&gt;  $ population                : num  NA 132973 135864 147426</span></span>
+<span><span class="co">#&gt;  $ initial_seed              : num  0.063 NA NA NA</span></span></code></pre></div>
 <p>It is also easy to graph them:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/lattice/man/xyplot.html" class="external-link">xyplot</a></span><span class="op">(</span></span>
 <span>  <span class="va">leaf</span> <span class="op">+</span> <span class="va">stem</span> <span class="op">+</span> <span class="va">root</span> <span class="op">+</span> <span class="va">pod</span> <span class="op">+</span> <span class="va">leaf_litter</span> <span class="op">+</span> <span class="va">stem_litter</span> <span class="op">~</span> <span class="va">doy</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">soybean_biomass</span>,</span>
@@ -459,11 +614,11 @@ reasonable for a typical commercial soybean cultivar.</p>
 <span>  xlab <span class="op">=</span> <span class="st">'Day of year (2022)'</span>,</span>
 <span>  ylab <span class="op">=</span> <span class="st">'Biomass (Mg / ha)'</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="handling_biomass_measurements_files/figure-html/unnamed-chunk-4-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="handling_biomass_measurements_files/figure-html/unnamed-chunk-8-1.png" width="480" style="display: block; margin: auto;"></p>
 <p>Optionally, the final biomass table can be saved as a CSV file or as
 an R data file; one or both of these commands could be included in a
 processing script:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Save the data as an R data file</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/save.html" class="external-link">save</a></span><span class="op">(</span><span class="va">soybean_biomass</span>, file <span class="op">=</span> <span class="st">'soybean_biomass.RData'</span><span class="op">)</span></span>
 <span></span>
