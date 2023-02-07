@@ -74,6 +74,9 @@
     \item The value of \code{LAI} will be set to 0 since there cannot be any
           leaf area corresponding to seeds that were just sown.
 
+    \item The value of \code{population} will be set to the value of
+          \code{planting_density}.
+
     \item The initial seed biomass per unit ground area (in \code{Mg / ha}) will
           be stored in a new column called \code{initial_seed}. This value is
           calculated using
