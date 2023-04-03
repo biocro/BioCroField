@@ -32,11 +32,11 @@ process.harvest_point <- function(x) {
     # that we can handle incomplete information in the inputs.
 
     # The time (as specified in BioCro)
-    time <- x$doy + x$hour / 24.0
+    time <- x[['doy']] + x[['hour']] / 24.0
 
     # Above-ground biomass from the plants that were partitioned (in g)
-    partitioning_agb_weight <- if (length(x$agb_components) > 0) {
-        sum(as.numeric(x$partitioning_component_weights[x$agb_components]))
+    partitioning_agb_weight <- if (length(x[['agb_components']]) > 0) {
+        sum(as.numeric(x[['partitioning_component_weights']][x[['agb_components']]]))
     } else {
         NA
     }
@@ -44,22 +44,22 @@ process.harvest_point <- function(x) {
     # Compare above-ground biomass per plant among the plants used for
     # partitioning and the section of row used for above-ground biomass.
     agb_per_plant_partitioning <-
-        partitioning_agb_weight / x$partitioning_nplants
+        partitioning_agb_weight / x[['partitioning_nplants']]
 
-    agb_per_plant_row <- x$agb_weight / x$agb_nplants
+    agb_per_plant_row <- x[['agb_weight']] / x[['agb_nplants']]
 
     # Estimate the plant population (plants per acre) from the number of plants
     # collected for above-ground biomass measurements, using 1 acre = 4047 m^2
-    population <- x$agb_nplants / (x$agb_row_length * x$row_spacing) * 4047
+    population <- x[['agb_nplants']] / (x[['agb_row_length']] * x[['row_spacing']]) * 4047
 
     # Calculate the above-ground biomass per unit area (in Mg / ha), using
     # 1 g / m^2 = 1e-2 Mg / ha
-    agb_per_area <- x$agb_weight / (x$agb_row_length * x$row_spacing) * 1e-2
+    agb_per_area <- x[['agb_weight']] / (x[['agb_row_length']] * x[['row_spacing']]) * 1e-2
 
     # Relative component weights from plants that were partitioned, normalized
     # by the above-ground biomass from those plants
     relative_components <- lapply(
-        x$partitioning_component_weights,
+        x[['partitioning_component_weights']],
         function(pcw) {pcw / partitioning_agb_weight}
     ) # dimensionless from m / (m agb)
 
@@ -72,10 +72,10 @@ process.harvest_point <- function(x) {
     # Leaf mass per leaf area (in g / m^2). We should only calculate this if
     # there is a partitioned leaf mass and a partitioned leaf area; even in that
     # case, if the leaf area is not positive, we still should not calculate LMA.
-    LMA <- if(!is.null(x$partitioning_component_weights$leaf) && !is.na(x$partitioning_leaf_area)) {
-        if (x$partitioning_leaf_area > 0) {
-                x$partitioning_component_weights$leaf /
-                    x$partitioning_leaf_area * 1e4 # g / m^2
+    LMA <- if(!is.null(x[['partitioning_component_weights']][['leaf']]) && !is.na(x[['partitioning_leaf_area']])) {
+        if (x[['partitioning_leaf_area']] > 0) {
+                x[['partitioning_component_weights']][['leaf']] /
+                    x[['partitioning_leaf_area']] * 1e4 # g / m^2
         } else {
             NA
         }
@@ -87,9 +87,9 @@ process.harvest_point <- function(x) {
     # (g / m^2 ground) / (g / m^2 leaf). We should only calculate this if there
     # is a leaf mass per ground area and a partitioned leaf area; in that case,
     # LAI should be set to zero when the leaf area is zero.
-    LAI <- if(!is.null(components_biocro$leaf) && !is.na(x$partitioning_leaf_area)) {
-        if (x$partitioning_leaf_area > 0) {
-            components_biocro$leaf / LMA * 1e2
+    LAI <- if(!is.null(components_biocro[['leaf']]) && !is.na(x[['partitioning_leaf_area']])) {
+        if (x[['partitioning_leaf_area']] > 0) {
+            components_biocro[['leaf']] / LMA * 1e2
         } else {
             0.0
         }
@@ -102,8 +102,8 @@ process.harvest_point <- function(x) {
 
     # Biomass from litter trap in units typically used in BioCro
     trap_components_biocro <- lapply(
-        x$trap_component_weights,
-        function(tcw) {tcw / x$trap_area * 1e-2}
+        x[['trap_component_weights']],
+        function(tcw) {tcw / x[['trap_area']] * 1e-2}
     ) # Mg / ha
 
     # Combine all components

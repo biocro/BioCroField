@@ -30,14 +30,14 @@ biomass_table.harvest_point <- function(..., zero_when_missing = character()) {
     # Get the names of all the plant components that we have measurements for
     all_components <- unique(unlist(lapply(
         x,
-        function(hpp) {names(hpp$all_components_biocro)}
+        function(hpp) {names(hpp[['all_components_biocro']])}
     )))
 
     # Get the names of all the additional arguments that were supplied when the
     # harvest_point objects were created
     additional_arguments <- unique(unlist(lapply(
         x,
-        function(hpp) {names(hpp$additional_arguments)}
+        function(hpp) {names(hpp[['additional_arguments']])}
     )))
 
     # Specify all the column names for the data table
@@ -72,13 +72,13 @@ biomass_table.harvest_point <- function(..., zero_when_missing = character()) {
             }
         }
 
-        for (comp in names(hpp$all_components_biocro)) {
-            biomass[i, comp] <- hpp$all_components_biocro[[comp]]
+        for (comp in names(hpp[['all_components_biocro']])) {
+            biomass[i, comp] <- hpp[['all_components_biocro']][[comp]]
         }
 
         for (arg in additional_arguments) {
-            if (arg %in% names(hpp$additional_arguments)) {
-                biomass[i, arg] <- hpp$additional_arguments[[arg]]
+            if (arg %in% names(hpp[['additional_arguments']])) {
+                biomass[i, arg] <- hpp[['additional_arguments']][[arg]]
             }
         }
     }
