@@ -16,6 +16,18 @@ Subsequent commits will then include a new "Unreleased" section in preparation
 for the next release.
 -->
 
+# BioCroField VERSION 0.1.1
+
+- A bug related to partial name matching for partitioning components was
+  detected and fixed. In short, if a value of `leaf` mass was not supplied but
+  a value of `leaf_litter` _was_ supplied, the leaf litter mass would be used by
+  `process` when calculating LMA and other related properties, leading to
+  errors. Now, the internal code does not use partial name matching, and the
+  user is able to supply a different name for the leaf tissue component if it
+  does not have the standard name of `leaf`.
+- PRs related to creating this version:
+  - https://github.com/biocro/BioCroField/pull/2
+
 # BioCroField VERSION 0.1.0
 
 - This is the first version of BioCroField. At this point, the package is in a
