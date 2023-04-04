@@ -12,3 +12,19 @@ test_that("`leaf_litter` is not a partial match for `leaf`", {
         ))$LMA)
     )
 })
+
+test_that("alternate leaf names can be provided", {
+    expect_equal(
+        process(
+            harvest_point(
+                partitioning_component_weights = list(main_leaf = 1),
+                partitioning_leaf_area = 2
+            ),
+            leaf_name = 'main_leaf'
+        )$LMA,
+        process(harvest_point(
+            partitioning_component_weights = list(leaf = 1),
+            partitioning_leaf_area = 2
+        ))$LMA
+    )
+})

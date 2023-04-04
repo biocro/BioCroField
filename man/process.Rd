@@ -11,13 +11,21 @@
 }
 
 \usage{
-  process(x)
+  process(x, \dots)
 
-  \method{process}{harvest_point}(x)
+  \method{process}{harvest_point}(x, leaf_name = 'leaf', \dots)
 }
 
 \arguments{
   \item{x}{A \code{\link{harvest_point}} object.}
+
+  \item{leaf_name}{
+    A string specifying the name of the leaf tissue to use when calculating the
+    leaf area index. Typically, the leaf mass is called \code{'leaf'}, but it
+    may sometimes have a similar name such as \code{'main_leaf'}.
+  }
+
+  \item{\dots}{Additional arguments (currently unused).}
 }
 
 \details{
@@ -160,6 +168,17 @@ hp <- harvest_point(
 hpp <- process(hp)
 
 str(hpp)
+
+# Example: Creating and processing a harvest point object that has `main_leaf`
+# rather than `leaf`.
+hp2 <- harvest_point(
+  partitioning_component_weights = list(main_leaf = 1),
+  partitioning_leaf_area = 2
+)
+
+hpp2 <- process(hp2)
+
+print(hpp2$LMA)
 }
 
 \concept{harvest_point}

@@ -1,4 +1,4 @@
-process <- function(x) {
+process <- function(x, ...) {
     UseMethod('process', x)
 }
 
@@ -26,7 +26,7 @@ process <- function(x) {
 # - 1 g / m^2 * (1 Mg / 1e6 g) * (1e4 m^2 / 1 ha) = 1e-2 Mg / ha
 # - 1 m^2 / g * (1e6 g / 1 Mg) * (1 ha / 1e4 m^2) = 1e2 ha / Mg
 # - 1 g / cm^2 * (100 cm / m)^2 = 1e4 g / m^2
-process.harvest_point <- function(x) {
+process.harvest_point <- function(x, leaf_name = 'leaf', ...) {
     # In this function, we won't do any type checking; we can assume that has
     # been addressed by `harvest_point`. Instead, the main goal is to make sure
     # that we can handle incomplete information in the inputs.
@@ -72,9 +72,9 @@ process.harvest_point <- function(x) {
     # Leaf mass per leaf area (in g / m^2). We should only calculate this if
     # there is a partitioned leaf mass and a partitioned leaf area; even in that
     # case, if the leaf area is not positive, we still should not calculate LMA.
-    LMA <- if(!is.null(x[['partitioning_component_weights']][['leaf']]) && !is.na(x[['partitioning_leaf_area']])) {
+    LMA <- if(!is.null(x[['partitioning_component_weights']][[leaf_name]]) && !is.na(x[['partitioning_leaf_area']])) {
         if (x[['partitioning_leaf_area']] > 0) {
-                x[['partitioning_component_weights']][['leaf']] /
+                x[['partitioning_component_weights']][[leaf_name]] /
                     x[['partitioning_leaf_area']] * 1e4 # g / m^2
         } else {
             NA
@@ -87,9 +87,9 @@ process.harvest_point <- function(x) {
     # (g / m^2 ground) / (g / m^2 leaf). We should only calculate this if there
     # is a leaf mass per ground area and a partitioned leaf area; in that case,
     # LAI should be set to zero when the leaf area is zero.
-    LAI <- if(!is.null(components_biocro[['leaf']]) && !is.na(x[['partitioning_leaf_area']])) {
+    LAI <- if(!is.null(components_biocro[[leaf_name]]) && !is.na(x[['partitioning_leaf_area']])) {
         if (x[['partitioning_leaf_area']] > 0) {
-            components_biocro[['leaf']] / LMA * 1e2
+            components_biocro[[leaf_name]] / LMA * 1e2
         } else {
             0.0
         }
