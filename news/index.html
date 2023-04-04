@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">BioCroField</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,11 +51,19 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.1" id="biocrofield-version-011">BioCroField VERSION 0.1.1<a class="anchor" aria-label="anchor" href="#biocrofield-version-011"></a></h2>
+<ul><li>A bug related to partial name matching for partitioning components was detected and fixed. In short, if a value of <code>leaf</code> mass was not supplied but a value of <code>leaf_litter</code> <em>was</em> supplied, the leaf litter mass would be used by <code>process</code> when calculating LMA and other related properties, leading to errors. Now, the internal code does not use partial name matching, and the user is able to supply a different name for the leaf tissue component if it does not have the standard name of <code>leaf</code>.</li>
+<li>PRs related to creating this version:
+<ul><li><a href="https://github.com/biocro/BioCroField/pull/2" class="external-link uri">https://github.com/biocro/BioCroField/pull/2</a></li>
+</ul></li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="biocrofield-version-010">BioCroField VERSION 0.1.0<a class="anchor" aria-label="anchor" href="#biocrofield-version-010"></a></h2>
 <ul><li><p>This is the first version of BioCroField. At this point, the package is in a state of rapid development, and not all changes will be described here.</p></li>
 <li><p>We are reserving version <code>1.0.0</code> for a more stable and complete future release; until then, major changes should only increase the minor version number.</p></li>
 </ul></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
