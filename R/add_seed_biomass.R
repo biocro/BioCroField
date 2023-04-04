@@ -158,15 +158,16 @@ add_seed_biomass <- function(
 
     # Reset the crop name, variety, and location, which we can safely assume to
     # be the same across the entire data frame
-    initial_biomass$crop <- biomass_df$crop[1]
-    initial_biomass$variety <- biomass_df$variety[1]
-    initial_biomass$location <- biomass_df$location[1]
+    initial_biomass[['crop']] <- biomass_df[1, 'crop']
+    initial_biomass[['variety']] <- biomass_df[1, 'variety']
+    initial_biomass[['location']] <- biomass_df[1, 'location']
 
     # Specify the time
-    initial_biomass$year <- year
-    initial_biomass$doy <- doy
-    initial_biomass$hour <- hour
-    initial_biomass$time <- initial_biomass$doy + initial_biomass$hour / 24.0
+    initial_biomass[['year']] <- year
+    initial_biomass[['doy']] <- doy
+    initial_biomass[['hour']] <- hour
+    initial_biomass[['time']] <-
+        initial_biomass[['doy']] + initial_biomass[['hour']] / 24.0
 
     # Reset certain columns to zero; there is no leaf area when the plant is a
     # seed, so also make sure to set LAI to zero
@@ -175,11 +176,11 @@ add_seed_biomass <- function(
     }
 
     # Set the population, which was specified when calling this function
-    initial_biomass$population <- planting_density
+    initial_biomass[['population']] <- planting_density
 
     # Get the total initial biomass and store it in the new row
     total_initial_biomass <- seed_mass * planting_density * 2.47e-6
-    initial_biomass$initial_seed <- total_initial_biomass
+    initial_biomass[['initial_seed']] <- total_initial_biomass
 
     # Set some column values as fractions of the initial seed mass
     for (comp in names(component_fractions)) {

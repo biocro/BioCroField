@@ -1,5 +1,5 @@
 Package: BioCroField
-Version: 0.1.0
+Version: 0.1.1
 Title: Tools for BioCro Field Data
 Description: A collection of tools for processing field data related to BioCro
     crop growth simulations.
