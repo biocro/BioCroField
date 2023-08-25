@@ -148,6 +148,7 @@ test_that("Additional arguments must have names", {
             year = NA,
             doy = NA,
             hour = 12,
+            target_population = NA,
             row_spacing = NA,
             partitioning_nplants = NA,
             partitioning_leaf_area = NA,
