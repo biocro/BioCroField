@@ -45,8 +45,13 @@ biomass_table.harvest_point <- function(..., zero_when_missing = character()) {
         c('crop', 'variety', 'location', 'plot', 'year', 'doy', 'hour', 'time')
 
     final_columns <- c(
-        'LAI', 'SLA',
-        'agb_per_plant_row', 'agb_per_plant_partitioning', 'population'
+        'SLA',
+        'LAI_from_LMA',
+        'LAI_from_target_population',
+        'LAI_from_measured_population',
+        'agb_per_plant_row',
+        'agb_per_plant_partitioning',
+        'population'
     )
 
     cnames <-

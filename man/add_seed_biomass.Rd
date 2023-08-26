@@ -71,8 +71,10 @@
           from the inputs; the value of \code{time} will be calculated as in
           \code{\link{process}}.
 
-    \item The value of \code{LAI} will be set to 0 since there cannot be any
-          leaf area corresponding to seeds that were just sown.
+    \item The value of all LAI estimates (\code{LAI_from_LMA},
+          \code{LAI_from_target_population}, and
+          \code{LAI_from_measured_population}) will be set to 0 since there
+          cannot be any leaf area corresponding to seeds that were just sown.
 
     \item The value of \code{population} will be set to the value of
           \code{planting_density}.

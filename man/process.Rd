@@ -100,12 +100,38 @@
           Here, the factor \code{1e-4} converts from \code{g / cm^2} to
           \code{g / m^2} using \code{1 g / cm^2 = 1e-4 g / m^2}.
 
-    \item \code{LAI}: The leaf area per unit ground area, which is referred to
-          as the leaf area index (LAI; dimensionless from \code{m^2 / m^2}), can
-          be calculated from the leaf mass per unit area and the LMA using
-          \code{LAI = components_biocro$leaf / LMA * 1e2}.
+    \item \code{LAI_from_LMA}: The leaf area per unit ground area, which is
+          referred to as the leaf area index (LAI; dimensionless from
+          \code{m^2 / m^2}), can be calculated from the leaf mass per unit area
+          and the LMA using \code{LAI = components_biocro$leaf / LMA * 1e2}.
           Here, the factor \code{1e2} converts the leaf mass per unit area from
           \code{Mg / ha} to \code{g / m^2} using \code{1 Mg / ha = 100 g / m^2}.
+          This estimate of LAI can be compared to the estimates based on target
+          or measured population, which are stored as
+          \code{LAI_from_target_population} and
+          \code{LAI_from_measured_population}, respectively.
+
+    \item \code{leaf_area_per_plant}: The leaf area per plant in
+          \code{cm^2 / plant} can be calculated from the partitioning leaf area
+          and the number of plants that were partitioned.
+
+    \item \code{LAI_from_target_population}: The LAI can be estimated from the
+          target population and the leaf area per plant using
+          \code{LAI = target_population * leaf_area_per_plant * 1e-4 / 4047}.
+          Here, the factor \code{1e-4} converts leaf area from \code{cm^2} to
+          \code{m^2} and the factor \code{1 / 4047} converts population from
+          \code{plants / acre} to \code{plants / m^2}. This estimate of LAI can
+          be compared to the estimates based on LMA or measured population,
+          which are stored as \code{LAI_from_LMA} and
+          \code{LAI_from_measured_population}, respectively.
+
+    \item \code{LAI_from_measured_population}: The LAI can be estimated from the
+          measured population and the leaf area per plant using
+          \code{LAI = population * leaf_area_per_plant * 1e-4}. Here, the
+          factor \code{1e-4} converts leaf area from \code{cm^2} to \code{m^2}.
+          This estimate of LAI can be compared to the estimates based on LMA or
+          target population, which are stored as \code{LAI_from_LMA} and
+          \code{LAI_from_target_population}, respectively.
 
     \item \code{SLA}: The leaf mass per unit leaf area, which is referred to as
           the specific leaf area (SLA; in units of \code{ha / Mg}), can be
@@ -150,6 +176,7 @@ hp <- harvest_point(
   year = 2023,
   doy = 186,
   hour = 12,
+  target_population = 140000,
   row_spacing = 0.7,
   partitioning_leaf_area = 500,
   partitioning_component_weights = list(leaf = 2.5, stem = 1.5, root = 1.4, leaf_litter = 0.2),
@@ -176,9 +203,8 @@ hp2 <- harvest_point(
   partitioning_leaf_area = 2
 )
 
-hpp2 <- process(hp2)
-
-print(hpp2$LMA)
+print(process(hp2)$LMA)              # returns NA because no leaf weight was found
+print(process(hp2, 'main_leaf')$LMA) # returns the correct value
 }
 
 \concept{harvest_point}

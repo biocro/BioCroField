@@ -2,26 +2,6 @@ process <- function(x, ...) {
     UseMethod('process', x)
 }
 
-# Get the relative weights and LMA values. Here we make the following
-# calculations:
-# - agb_weight is the total weight of the partitioning component weights that
-#   are designated as being part of the aboveground biomass, in g
-# - relative_components is the weight of each partitioning component relative to
-#   the partitioning aboveground biomass (dimensionless)
-# - components_per_row are the weight of each component in g per meter of row,
-#   determined by multipling the measured agb per meter by the relative
-#   component fractions.
-# - components_per_area is the weight of each component in g per square meter of
-#   field, determined by dividing the weight per row by the row spacing in m.
-# - components_biocro is the weight per area converted to biocro units (Mg / ha)
-# - LMA is the leaf mass per area in g / m^2
-# - LAI is the leaf area index (m^2 leaf / m^2 ground)
-# - SLA is the specific leaf area in ha / Mg
-# - agb_per_plant_row is the average aboveground mass per plant along the
-#   section of row
-# - agb_per_plant_partitioning is the average aboveground mass per plant among
-#   the plants selected for partitioning
-#
 # Notes:
 # - 1 g / m^2 * (1 Mg / 1e6 g) * (1e4 m^2 / 1 ha) = 1e-2 Mg / ha
 # - 1 m^2 / g * (1e6 g / 1 Mg) * (1 ha / 1e4 m^2) = 1e2 ha / Mg
@@ -86,8 +66,8 @@ process.harvest_point <- function(x, leaf_name = 'leaf', ...) {
     # Leaf area index. Units are dimensionless from
     # (g / m^2 ground) / (g / m^2 leaf). We should only calculate this if there
     # is a leaf mass per ground area and a partitioned leaf area; in that case,
-    # LAI should be set to zero when the leaf area is zero.
-    LAI <- if(!is.null(components_biocro[[leaf_name]]) && !is.na(x[['partitioning_leaf_area']])) {
+    # LAI_from_LMA should be set to zero when the leaf area is zero.
+    LAI_from_LMA <- if(!is.null(components_biocro[[leaf_name]]) && !is.na(x[['partitioning_leaf_area']])) {
         if (x[['partitioning_leaf_area']] > 0) {
             components_biocro[[leaf_name]] / LMA * 1e2
         } else {
@@ -96,6 +76,19 @@ process.harvest_point <- function(x, leaf_name = 'leaf', ...) {
     } else {
         NA
     }
+
+    # Leaf area per plant. Units are cm^2 / plant.
+    leaf_area_per_plant <- x[['partitioning_leaf_area']] / x[['partitioning_nplants']]
+
+    # Leaf area index estimated from target population. Units are dimensionless
+    # from (plants / acre ground) * (cm^2 leaf / plant) * (1 m^2 / 1e4 cm^2) * (1 acre / 4047 m^2)
+    LAI_from_target_population <-
+        x[['target_population']] * leaf_area_per_plant * 1e-4 / 4047
+
+    # Leaf area index estimated from measured population. Units are
+    # dimensionless as for leaf area index estimated from measured population.
+    LAI_from_measured_population <-
+        population * leaf_area_per_plant * 1e-4 / 4047
 
     # Specific leaf area in the units typically used in BioCro
     SLA <- 1 / LMA * 1e2 # ha / Mg
@@ -129,7 +122,10 @@ process.harvest_point <- function(x, leaf_name = 'leaf', ...) {
         relative_components = relative_components,
         components_biocro = components_biocro,
         LMA = LMA,
-        LAI = LAI,
+        LAI_from_LMA = LAI_from_LMA,
+        LAI_from_target_population = LAI_from_target_population,
+        LAI_from_measured_population = LAI_from_measured_population,
+        leaf_area_per_plant = leaf_area_per_plant,
         SLA = SLA,
         trap_components_biocro = trap_components_biocro,
         all_components_biocro = all_components_biocro
