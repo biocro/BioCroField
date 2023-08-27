@@ -157,6 +157,23 @@
           \code{leaf_litter} in \code{all_components_biocro} will be the sum of
           the two separate leaf litter biomass values.
   }
+
+  A note about LAI estimates: LAI estimated using LMA is the most accurate of
+  the three methods, and is commonly used when estimating LAI from destructive
+  leaf area measurements (Bréda 2003). When mass values are unavailable, it may
+  not be possible to use this method; in that case, the estimates based on
+  population can be used instead. When enough information is available to make
+  all three estimates, they can be compared to each other as a consistency
+  check or to estimate upper and lower bounds on the LAI.
+
+  References:
+  \itemize{
+    \item Bréda, N. J. J. "Ground-based measurements of leaf area index: a
+          review of methods, instruments and current controversies." Journal of
+          Experimental Botany 54, 2403–2417 (2003)
+          [\doi{https://doi.org/10.1093/jxb/erg263}].
+  }
+
 }
 
 \value{
