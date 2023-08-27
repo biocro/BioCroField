@@ -12,6 +12,7 @@ harvest_point <- function(
     year = NA,
     doy = NA,
     hour = 12,
+    target_population = NA,
     row_spacing = NA,
     partitioning_nplants = NA,
     partitioning_leaf_area = NA,
@@ -69,6 +70,7 @@ harvest_point <- function(
             year = year,
             doy = doy,
             hour = hour,
+            target_population = target_population,
             row_spacing = row_spacing,
             partitioning_nplants = partitioning_nplants,
             partitioning_leaf_area = partitioning_leaf_area,
@@ -119,6 +121,7 @@ harvest_point <- function(
         year = year,
         doy = doy,
         hour = hour,
+        target_population = target_population,
         row_spacing = row_spacing,
         partitioning_nplants = partitioning_nplants,
         partitioning_leaf_area = partitioning_leaf_area,
@@ -183,15 +186,15 @@ harvest_point <- function(
 
     # Do not allow a leaf with zero area but nonzero mass
     if (!is.na(partitioning_leaf_area) && partitioning_leaf_area == 0 &&
-        !is.null(partitioning_component_weights$leaf) &&
-            partitioning_component_weights$leaf > 0) {
+        !is.null(partitioning_component_weights[['leaf']]) &&
+            partitioning_component_weights[['leaf']] > 0) {
         stop("It is not possible for a leaf with zero area to have a nonzero mass")
     }
 
     # Do not allow a leaf with zero mass but nonzero area
     if (!is.na(partitioning_leaf_area) && partitioning_leaf_area > 0 &&
-        !is.null(partitioning_component_weights$leaf) &&
-            partitioning_component_weights$leaf == 0) {
+        !is.null(partitioning_component_weights[['leaf']]) &&
+            partitioning_component_weights[['leaf']] == 0) {
         stop("It is not possible for a leaf with zero mass to have a nonzero area")
     }
 
@@ -204,6 +207,7 @@ harvest_point <- function(
         year = year,
         doy = doy,
         hour = hour,
+        target_population = target_population,
         row_spacing = row_spacing,
         partitioning_nplants = partitioning_nplants,
         partitioning_leaf_area = partitioning_leaf_area,

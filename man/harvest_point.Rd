@@ -20,6 +20,7 @@
     year = NA,
     doy = NA,
     hour = 12,
+    target_population = NA,
     row_spacing = NA,
     partitioning_nplants = NA,
     partitioning_leaf_area = NA,
@@ -48,6 +49,13 @@
   \item{doy}{The day of year when the plot was harvested, such as \code{180}.}
 
   \item{hour}{The hour of the day when the plot was harvested.}
+
+  \item{target_population}{
+    The intended number of plants per unit ground area in \code{plants / acre};
+    typically this is the seed density, which may be different than the actual
+    plant population due to seeds that fail to emerge (reduces actual
+    population) or accidental double-planting (increases actual population).
+  }
 
   \item{row_spacing}{The spacing between rows in the plot (in \code{m}).}
 
@@ -120,6 +128,7 @@ hp <- harvest_point(
   plot = 1,
   year = 2023,
   doy = 186,
+  target_population = 140000,
   row_spacing = 0.7,
   partitioning_leaf_area = 500,
   partitioning_component_weights = list(leaf = 2.5, stem = 1.5, root = 1.4, leaf_litter = 0.2),

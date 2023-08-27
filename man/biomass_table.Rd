@@ -49,9 +49,13 @@
 
     \item \code{time}
 
-    \item \code{LAI}
-
     \item \code{SLA}
+
+    \item \code{LAI_from_LMA}
+
+    \item \code{LAI_from_target_population}
+
+    \item \code{LAI_from_measured_population}
 
     \item \code{agb_per_plant_row}
 
@@ -88,6 +92,7 @@ hp <- harvest_point(
   year = 2023,
   doy = 186,
   hour = 12,
+  target_population = 140000,
   row_spacing = 0.7,
   partitioning_leaf_area = 500,
   partitioning_component_weights = list(leaf = 2.5, stem = 1.5, root = 1.4, leaf_litter = 0.2),
