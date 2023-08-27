@@ -16,6 +16,15 @@ Subsequent commits will then include a new "Unreleased" section in preparation
 for the next release.
 -->
 
+# Unreleased
+
+- Two new methods for estimating LAI were added to `process`:
+  `LAI_from_target_population` and `LAI_from_measured_population`. The original
+  LAI estimate was renamed from `LAI` to `LAI_from_LMA` to better indicate the
+  different estimates.
+- PRs related to creating this version:
+  - https://github.com/biocro/BioCroField/pull/3
+
 # BioCroField VERSION 0.1.1
 
 - A bug related to partial name matching for partitioning components was
@@ -32,7 +41,6 @@ for the next release.
 
 - This is the first version of BioCroField. At this point, the package is in a
   state of rapid development, and not all changes will be described here.
-
 - We are reserving version `1.0.0` for a more stable and complete future
   release; until then, major changes should only increase the minor version
   number.
