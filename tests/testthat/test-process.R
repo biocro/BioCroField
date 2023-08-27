@@ -180,21 +180,21 @@ test_that("LAI_from_LMA is calculated only when possible", {
     )
 })
 
-test_that("LAI_from_target_population is calculated only when possible", {
-    expect_na(hpp$LAI_from_target_population)
+test_that("LAI_from_planting_density is calculated only when possible", {
+    expect_na(hpp$LAI_from_planting_density)
 
-    expect_na(process(harvest_point(partitioning_leaf_area = 1))$LAI_from_target_population)
+    expect_na(process(harvest_point(partitioning_leaf_area = 1))$LAI_from_planting_density)
 
-    expect_na(process(harvest_point(partitioning_nplants = 2))$LAI_from_target_population)
+    expect_na(process(harvest_point(partitioning_nplants = 2))$LAI_from_planting_density)
 
-    expect_na(process(harvest_point(target_population = 10))$LAI_from_target_population)
+    expect_na(process(harvest_point(planting_density = 10))$LAI_from_planting_density)
 
     expect_equal(
         process(harvest_point(
             partitioning_leaf_area = 1,
             partitioning_nplants = 2,
-            target_population = 10
-        ))$LAI_from_target_population,
+            planting_density = 10
+        ))$LAI_from_planting_density,
         1.23548307e-07
     )
 })

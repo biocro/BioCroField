@@ -19,7 +19,7 @@ for the next release.
 # Unreleased
 
 - Two new methods for estimating LAI were added to `process`:
-  `LAI_from_target_population` and `LAI_from_measured_population`. The original
+  `LAI_from_planting_density` and `LAI_from_measured_population`. The original
   LAI estimate was renamed from `LAI` to `LAI_from_LMA` to better indicate the
   different estimates.
 - PRs related to creating this version:

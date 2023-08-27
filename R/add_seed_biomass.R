@@ -166,7 +166,7 @@ add_seed_biomass <- function(
     should_be_zero <- c(
         zero_when_missing,
         'LAI_from_LMA',
-        'LAI_from_target_population',
+        'LAI_from_planting_density',
         'LAI_from_measured_population'
     )
 

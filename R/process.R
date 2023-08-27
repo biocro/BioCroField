@@ -82,8 +82,8 @@ process.harvest_point <- function(x, leaf_name = 'leaf', ...) {
 
     # Leaf area index estimated from target population. Units are dimensionless
     # from (plants / acre ground) * (cm^2 leaf / plant) * (1 m^2 / 1e4 cm^2) * (1 acre / 4047 m^2)
-    LAI_from_target_population <-
-        x[['target_population']] * leaf_area_per_plant * 1e-4 / 4047
+    LAI_from_planting_density <-
+        x[['planting_density']] * leaf_area_per_plant * 1e-4 / 4047
 
     # Leaf area index estimated from measured population. Units are
     # dimensionless as for leaf area index estimated from measured population.
@@ -123,7 +123,7 @@ process.harvest_point <- function(x, leaf_name = 'leaf', ...) {
         components_biocro = components_biocro,
         LMA = LMA,
         LAI_from_LMA = LAI_from_LMA,
-        LAI_from_target_population = LAI_from_target_population,
+        LAI_from_planting_density = LAI_from_planting_density,
         LAI_from_measured_population = LAI_from_measured_population,
         leaf_area_per_plant = leaf_area_per_plant,
         SLA = SLA,
