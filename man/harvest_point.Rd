@@ -22,6 +22,7 @@
     hour = 12,
     planting_density = NA,
     row_spacing = NA,
+    plant_spacing = NA,
     partitioning_nplants = NA,
     partitioning_leaf_area = NA,
     partitioning_component_weights = list(),
@@ -58,6 +59,8 @@
   }
 
   \item{row_spacing}{The spacing between rows in the plot (in \code{m}).}
+
+  \item{plant_spacing}{The spacing between plants along a row (in \code{m}).}
 
   \item{partitioning_nplants}{The number of plants chosen for partitioning.}
 
@@ -112,6 +115,20 @@
   measured. Typically, a \code{harvest_point} object is passed to
   \code{\link{process}} to convert the raw measurements into more useful
   quantities like the mass per unit area and leaf area index.
+
+  \strong{Note about planting density}: seed and/or plant densities can be
+  specified in various ways. When planting by hand, it is convenient to specify
+  the row spacing and the spacing between plants along each row. When using a
+  precision planter, it is more typical to specify the row spacing and the plant
+  population. In either case, the row spacing, plant spacing, and plant
+  population are related to each other according to
+  \code{planting_density * row_spacing * plant_spacing = 4047}; this equation
+  assumes that the row and plant spacings are expressed in \code{m} and the
+  density is expressed in \code{plants per acre}. If a used specified all three
+  of these inputs (\code{planting_density}, \code{row_spacing}, and
+  \code{plant_spacing}), the \code{harvest_point} function will check to make
+  sure the values are consistent with each other. If any two of the inputs are
+  provided, the value of the third will automatically be calculated.
 }
 
 \value{
@@ -119,7 +136,7 @@
 }
 
 \examples{
-# Example: Creating a harvest_point object that includes (optional) comments
+# Example 1: Creating a harvest_point object that includes (optional) comments
 # about the stem and the leaf litter.
 hp <- harvest_point(
   crop = 'soybean',
@@ -145,6 +162,10 @@ hp <- harvest_point(
 )
 
 str(hp)
+
+# Example 2: Determining the planting density (in plants per acre) from the row
+# and plant spacings (in m)
+harvest_point(row_spacing = 0.75, plant_spacing = 0.2)$planting_density
 }
 
 \concept{harvest_point}
