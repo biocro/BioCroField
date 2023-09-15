@@ -12,7 +12,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">BioCroField</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -92,10 +92,10 @@
   new elements in the <code>harvest_point</code> object.</p>
 <p>The detailed calculations are as follows:</p><ul><li><p><code>time</code>: In BioCro, the time is specified as a fractional day of
           the year calculated by <code>time = doy + hour / 24.0</code>.</p></li>
-<li><p><code>population</code>: The number of plants per unit ground area (in
-          <code>plants / acre</code> can be estimated from the row spacing and the
+<li><p><code>measured_population</code>: The number of plants per unit ground area
+          (in <code>plants / acre</code> can be estimated from the row spacing and the
           number of plants harvested for above-ground biomass using
-          <code>population = agb_nplants / (agb_row_length * row_spacing) * 4047</code>.
+          <code>measured_population = agb_nplants / (agb_row_length * row_spacing) * 4047</code>.
           Here, the factor <code>4047</code> converts the area basis from <code>m^2</code>
           to <code>acre</code> using <code>1 acre = 4047 m^2</code>.</p></li>
 <li><p><code>agb_per_area</code>: The amount of above-ground biomass per unit
@@ -143,12 +143,36 @@
           <code>LMA = partitioning_component_weights$leaf / partitioning_leaf_area * 1e4</code>.
           Here, the factor <code>1e-4</code> converts from <code>g / cm^2</code> to
           <code>g / m^2</code> using <code>1 g / cm^2 = 1e-4 g / m^2</code>.</p></li>
-<li><p><code>LAI</code>: The leaf area per unit ground area, which is referred to
-          as the leaf area index (LAI; dimensionless from <code>m^2 / m^2</code>), can
-          be calculated from the leaf mass per unit area and the LMA using
-          <code>LAI = components_biocro$leaf / LMA * 1e2</code>.
+<li><p><code>LAI_from_LMA</code>: The leaf area per unit ground area, which is
+          referred to as the leaf area index (LAI; dimensionless from
+          <code>m^2 / m^2</code>), can be calculated from the leaf mass per unit area
+          and the LMA using <code>LAI = components_biocro$leaf / LMA * 1e2</code>.
           Here, the factor <code>1e2</code> converts the leaf mass per unit area from
-          <code>Mg / ha</code> to <code>g / m^2</code> using <code>1 Mg / ha = 100 g / m^2</code>.</p></li>
+          <code>Mg / ha</code> to <code>g / m^2</code> using <code>1 Mg / ha = 100 g / m^2</code>.
+          This estimate of LAI can be compared to the estimates based on
+          planting density or measured population, which are stored as
+          <code>LAI_from_planting_density</code> and
+          <code>LAI_from_measured_population</code>, respectively.</p></li>
+<li><p><code>leaf_area_per_plant</code>: The leaf area per plant in
+          <code>cm^2 / plant</code> can be calculated from the partitioning leaf area
+          and the number of plants that were partitioned.</p></li>
+<li><p><code>LAI_from_planting_density</code>: The LAI can be estimated from the
+          planting density and the leaf area per plant using
+          <code>LAI = planting_density * leaf_area_per_plant * 1e-4 / 4047</code>.
+          Here, the factor <code>1e-4</code> converts leaf area from <code>cm^2</code> to
+          <code>m^2</code> and the factor <code>1 / 4047</code> converts population from
+          <code>plants / acre</code> to <code>plants / m^2</code>. This estimate of LAI can
+          be compared to the estimates based on LMA or measured population,
+          which are stored as <code>LAI_from_LMA</code> and
+          <code>LAI_from_measured_population</code>, respectively.</p></li>
+<li><p><code>LAI_from_measured_population</code>: The LAI can be estimated from the
+          measured population and the leaf area per plant using
+          <code>LAI = measured_population * leaf_area_per_plant * 1e-4</code>. Here,
+          the factor <code>1e-4</code> converts leaf area from <code>cm^2</code> to
+          <code>m^2</code>. This estimate of LAI can be compared to the estimates
+          based on LMA or planting density, which are stored as
+          <code>LAI_from_LMA</code> and <code>LAI_from_planting_density</code>,
+          respectively.</p></li>
 <li><p><code>SLA</code>: The leaf mass per unit leaf area, which is referred to as
           the specific leaf area (SLA; in units of <code>ha / Mg</code>), can be
           calculated from LMA using <code>SLA = 1 / LMA * 1e2</code> where the factor
@@ -170,6 +194,18 @@
           leaves that have fallen off the plant; in this case, the value of
           <code>leaf_litter</code> in <code>all_components_biocro</code> will be the sum of
           the two separate leaf litter biomass values.</p></li>
+</ul><p>A note about LAI estimates: LAI estimated using LMA is the most accurate of
+  the three methods, and is commonly used when estimating LAI from destructive
+  leaf area measurements (Bréda 2003). When mass values are unavailable, it may
+  not be possible to use this method; in that case, the estimates based on
+  population can be used instead. When enough information is available to make
+  all three estimates, they can be compared to each other as a consistency
+  check or to estimate upper and lower bounds on the LAI.</p>
+<p>References:</p><ul><li><p>Bréda, N. J. J. "Ground-based measurements of leaf area index: a
+          review of methods, instruments and current controversies." Journal of
+          Experimental Botany 54, 2403–2417 (2003)
+          [<a href="https://doi.org/10.1093/jxb/erg263" class="external-link">doi:10.1093/jxb/erg263</a>
+].</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -194,6 +230,7 @@
 <span class="r-in"><span>  year <span class="op">=</span> <span class="fl">2023</span>,</span></span>
 <span class="r-in"><span>  doy <span class="op">=</span> <span class="fl">186</span>,</span></span>
 <span class="r-in"><span>  hour <span class="op">=</span> <span class="fl">12</span>,</span></span>
+<span class="r-in"><span>  planting_density <span class="op">=</span> <span class="fl">140000</span>,</span></span>
 <span class="r-in"><span>  row_spacing <span class="op">=</span> <span class="fl">0.7</span>,</span></span>
 <span class="r-in"><span>  partitioning_leaf_area <span class="op">=</span> <span class="fl">500</span>,</span></span>
 <span class="r-in"><span>  partitioning_component_weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>leaf <span class="op">=</span> <span class="fl">2.5</span>, stem <span class="op">=</span> <span class="fl">1.5</span>, root <span class="op">=</span> <span class="fl">1.4</span>, leaf_litter <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span>,</span></span>
@@ -212,7 +249,7 @@
 <span class="r-in"><span><span class="va">hpp</span> <span class="op">&lt;-</span> <span class="fu">process</span><span class="op">(</span><span class="va">hp</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">hpp</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> List of 31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> List of 36</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ crop                          : chr "soybean"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ variety                       : chr "ld11"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ location                      : chr "energy farm"</span>
@@ -220,7 +257,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ year                          : num 2023</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ doy                           : num 186</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ hour                          : num 12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ planting_density              : num 140000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ row_spacing                   : num 0.7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ plant_spacing                 : num 0.0413</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ partitioning_nplants          : num 6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ partitioning_leaf_area        : num 500</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ partitioning_component_weights:List of 4</span>
@@ -244,7 +283,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ partitioning_agb_weight       : num 4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ agb_per_plant_partitioning    : num 0.667</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ agb_per_plant_row             : num 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ population                    : num 144536</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ measured_population           : num 144536</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ agb_per_area                  : num 0.357</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ relative_components           :List of 4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ leaf       : num 0.625</span>
@@ -257,7 +296,10 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ root       : num 0.125</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ leaf_litter: num 0.0179</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ LMA                           : num 50</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ LAI                           : num 0.446</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ LAI_from_LMA                  : num 0.446</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ LAI_from_planting_density     : num 0.288</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ LAI_from_measured_population  : num 0.298</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ leaf_area_per_plant           : num 83.3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ SLA                           : num 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ trap_components_biocro        :List of 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ leaf_litter: num 0.0216</span>
@@ -277,10 +319,10 @@
 <span class="r-in"><span>  partitioning_leaf_area <span class="op">=</span> <span class="fl">2</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">hpp2</span> <span class="op">&lt;-</span> <span class="fu">process</span><span class="op">(</span><span class="va">hp2</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">hpp2</span><span class="op">$</span><span class="va">LMA</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">process</span><span class="op">(</span><span class="va">hp2</span><span class="op">)</span><span class="op">$</span><span class="va">LMA</span><span class="op">)</span>              <span class="co"># returns NA because no leaf weight was found</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">process</span><span class="op">(</span><span class="va">hp2</span>, <span class="st">'main_leaf'</span><span class="op">)</span><span class="op">$</span><span class="va">LMA</span><span class="op">)</span> <span class="co"># returns the correct value</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5000</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

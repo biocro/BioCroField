@@ -12,7 +12,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">BioCroField</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -92,11 +92,16 @@
 <li><p><code>doy</code></p></li>
 <li><p><code>hour</code></p></li>
 <li><p><code>time</code></p></li>
-<li><p><code>LAI</code></p></li>
 <li><p><code>SLA</code></p></li>
+<li><p><code>LAI_from_LMA</code></p></li>
+<li><p><code>LAI_from_planting_density</code></p></li>
+<li><p><code>LAI_from_measured_population</code></p></li>
 <li><p><code>agb_per_plant_row</code></p></li>
 <li><p><code>agb_per_plant_partitioning</code></p></li>
-<li><p><code>population</code></p></li>
+<li><p><code>measured_population</code></p></li>
+<li><p><code>row_spacing</code></p></li>
+<li><p><code>plant_spacing</code></p></li>
+<li><p><code>planting_density</code></p></li>
 <li><p>Any elements contained in <code>components_biocro</code> (see
           <code><a href="process.html">process</a></code>)</p></li>
 <li><p>Any additional arguments (such as comments) that were passed to
@@ -128,6 +133,7 @@
 <span class="r-in"><span>  year <span class="op">=</span> <span class="fl">2023</span>,</span></span>
 <span class="r-in"><span>  doy <span class="op">=</span> <span class="fl">186</span>,</span></span>
 <span class="r-in"><span>  hour <span class="op">=</span> <span class="fl">12</span>,</span></span>
+<span class="r-in"><span>  planting_density <span class="op">=</span> <span class="fl">140000</span>,</span></span>
 <span class="r-in"><span>  row_spacing <span class="op">=</span> <span class="fl">0.7</span>,</span></span>
 <span class="r-in"><span>  partitioning_leaf_area <span class="op">=</span> <span class="fl">500</span>,</span></span>
 <span class="r-in"><span>  partitioning_component_weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>leaf <span class="op">=</span> <span class="fl">2.5</span>, stem <span class="op">=</span> <span class="fl">1.5</span>, root <span class="op">=</span> <span class="fl">1.4</span>, leaf_litter <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span>,</span></span>
@@ -149,28 +155,33 @@
 <span class="r-in"><span><span class="va">biomass</span> <span class="op">&lt;-</span> <span class="fu">biomass_table</span><span class="op">(</span><span class="va">hpp</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">biomass</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 'data.frame':	1 obs. of  21 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ crop                      : chr "soybean"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ variety                   : chr "ld11"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ location                  : chr "energy farm"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ plot                      : num 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ year                      : num 2023</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ doy                       : num 186</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ hour                      : num 12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ time                      : num 186</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ leaf                      : num 0.223</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ stem                      : num 0.134</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ root                      : num 0.125</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ leaf_litter               : num 0.0395</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ stem_litter               : num 0.027</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ LAI                       : num 0.446</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ SLA                       : num 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ agb_per_plant_row         : num 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ agb_per_plant_partitioning: num 0.667</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ population                : num 144536</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ stem_comment              : chr "The stem weight includes petioles"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ stem_litter_comment       : chr "The stem litter is entirely petioles"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ leaf_litter_comment       : chr "Senesced leaves were present on the plants and in the trap"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 'data.frame':	1 obs. of  26 variables:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ crop                        : chr "soybean"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ variety                     : chr "ld11"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ location                    : chr "energy farm"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ plot                        : num 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ year                        : num 2023</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ doy                         : num 186</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ hour                        : num 12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ time                        : num 186</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ leaf                        : num 0.223</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ stem                        : num 0.134</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ root                        : num 0.125</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ leaf_litter                 : num 0.0395</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ stem_litter                 : num 0.027</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ SLA                         : num 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ LAI_from_LMA                : num 0.446</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ LAI_from_planting_density   : num 0.288</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ LAI_from_measured_population: num 0.298</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ agb_per_plant_row           : num 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ agb_per_plant_partitioning  : num 0.667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ measured_population         : num 144536</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ row_spacing                 : num 0.7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ plant_spacing               : num 0.0413</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ planting_density            : num 140000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ stem_comment                : chr "The stem weight includes petioles"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ stem_litter_comment         : chr "The stem litter is entirely petioles"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ leaf_litter_comment         : chr "Senesced leaves were present on the plants and in the trap"</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">BioCroField</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -132,7 +132,7 @@ be loaded first using commands such as the following:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load required packages</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/BioCro/BioCroField" class="external-link">BioCroField</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://lattice.r-forge.r-project.org/" class="external-link">lattice</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lattice.r-forge.r-project.org/" class="external-link">lattice</a></span><span class="op">)</span></span></code></pre></div>
 <p>If the <code>lattice</code> package is not installed on your R setup,
 you can install it by typing
 <code>install.packages('lattice')</code>.</p>
@@ -159,9 +159,10 @@ between plants. On the other hand, there is often a fairly wide range of
 plant <em>population</em> (the number of plants per unit area) that can
 result in identical or similar yield; for example, maize in Illinois
 sown between April 5 and May 5 can reach 97% or higher of the maximum
-yield for populations between 24,000 and 36,000 plants per acre <span class="citation">Nafziger (<a href="#ref-nafziger_corn_1994" role="doc-biblioref">1994</a>)</span>. Thus, in most circumstances, the
-yield (on a per area basis) better reflects the true productivity of a
-crop without the complicating influence of competition.</p>
+yield for populations between 24,000 and 36,000 plants per acre <span class="citation">(<a href="#ref-nafziger_corn_1994" role="doc-biblioref">Nafziger 1994</a>)</span>. Thus, in most
+circumstances, the yield (on a per area basis) better reflects the true
+productivity of a crop without the complicating influence of
+competition.</p>
 <p>In the context of crop growth modeling, we are typically interested
 in predicting the yield (as a mass per unit area) of a particular crop
 variety in a particular location. To do this, however, it is generally
@@ -190,10 +191,10 @@ experimental measurements for all these crop components, ideally at
 multiple times throughout a growing season. In addition to these masses,
 it is critical to measure the <em>leaf area index</em> (LAI), defined as
 the leaf area per unit ground area, which also plays a key role in
-simulating photosynthesis at the canopy level. If the model is able to
-reproduce these mass and leaf area measurements, we can have more faith
-that it will be able to make accurate yield predictions in other
-situations.</p>
+simulating photosynthesis at the canopy level <span class="citation">(<a href="#ref-breda_groundbased_2003" role="doc-biblioref">Bréda
+2003</a>)</span>. If the model is able to reproduce these mass and leaf
+area measurements, we can have more faith that it will be able to make
+accurate yield predictions in other situations.</p>
 </div>
 <div class="section level2">
 <h2 id="making-measurements">Making Measurements<a class="anchor" aria-label="anchor" href="#making-measurements"></a>
@@ -275,22 +276,23 @@ making it simple and straighforward to transfer values from the sheet to
 a computer. For example, a completed crop harvest record sheet might
 look like the following image:</p>
 <div class="figure" style="text-align: center">
-<img src="images/example_harvest_sheet.jpg" alt="Example of a completed crop harvest record sheet. This represents  information from a single biomass harvest performed on 2022-08-23, where  soybean (var. GM4000) was harvested from plot 3 at UIUC. The row spacing in  the plot was 0.7 m. A row section 2 m long was harvested for above-ground  biomass; this section included 47 plants, and its total dry weight was  1100 g. Six plants were used for partitioning; their total leaf area was  9000 cm^2, their dry leaf mass was 35 g, their dry stem mass was 55 g,  their dry root mass was 15 g, and their dry pod mass was 30 g. The leaf,  stem, and pod components of these plants form their total above-ground  biomass. Finally, a litter trap in the plot with area 0.2 m^2 was found to  contain 3.2 g of leaf litter and 1.5 g of stem litter. The plant material  was dried for 14 days before it was weighed. _Note_: This is not real data,  and GM4000 is not a real soybean variety, although the values here are  reasonable for a typical commercial soybean cultivar." width="50%"><p class="caption">
+<img src="images/example_harvest_sheet.jpg" alt="Example of a completed crop harvest record sheet. This represents  information from a single biomass harvest performed on 2022-08-23, where  soybean (var. GM4000) was harvested from plot 3 at UIUC. The row spacing in  the plot was 0.7 m, and there were 150000 plants per acre. A row section 2  m long was harvested for above-ground biomass; this section included 47  plants, and its total dry weight was 1100 g. Six plants were used for  partitioning; their total leaf area was 9000 cm^2, their dry leaf mass was  35 g, their dry stem mass was 55 g, their dry root mass was 15 g, and their  dry pod mass was 30 g. The leaf, stem, and pod components of these plants  form their total above-ground biomass. Finally, a litter trap in the plot  with area 0.2 m^2 was found to contain 3.2 g of leaf litter and 1.5 g of  stem litter. The plant material was dried for 14 days before it was  weighed. _Note_: This is not real data, and GM4000 is not a real soybean  variety, although the values here are reasonable for a typical commercial  soybean cultivar." width="50%"><p class="caption">
 Example of a completed crop harvest record sheet. This represents
 information from a single biomass harvest performed on 2022-08-23, where
 soybean (var. GM4000) was harvested from plot 3 at UIUC. The row spacing
-in the plot was 0.7 m. A row section 2 m long was harvested for
-above-ground biomass; this section included 47 plants, and its total dry
-weight was 1100 g. Six plants were used for partitioning; their total
-leaf area was 9000 cm^2, their dry leaf mass was 35 g, their dry stem
-mass was 55 g, their dry root mass was 15 g, and their dry pod mass was
-30 g. The leaf, stem, and pod components of these plants form their
-total above-ground biomass. Finally, a litter trap in the plot with area
-0.2 m^2 was found to contain 3.2 g of leaf litter and 1.5 g of stem
-litter. The plant material was dried for 14 days before it was weighed.
-<em>Note</em>: This is not real data, and GM4000 is not a real soybean
-variety, although the values here are reasonable for a typical
-commercial soybean cultivar.
+in the plot was 0.7 m, and there were 150000 plants per acre. A row
+section 2 m long was harvested for above-ground biomass; this section
+included 47 plants, and its total dry weight was 1100 g. Six plants were
+used for partitioning; their total leaf area was 9000 cm^2, their dry
+leaf mass was 35 g, their dry stem mass was 55 g, their dry root mass
+was 15 g, and their dry pod mass was 30 g. The leaf, stem, and pod
+components of these plants form their total above-ground biomass.
+Finally, a litter trap in the plot with area 0.2 m^2 was found to
+contain 3.2 g of leaf litter and 1.5 g of stem litter. The plant
+material was dried for 14 days before it was weighed. <em>Note</em>:
+This is not real data, and GM4000 is not a real soybean variety,
+although the values here are reasonable for a typical commercial soybean
+cultivar.
 </p>
 </div>
 <p>In this case, the following command can be used to store the
@@ -303,6 +305,7 @@ information from the sheet as an R data structure:</p>
 <span>  plot <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  year <span class="op">=</span> <span class="fl">2022</span>,</span>
 <span>  doy <span class="op">=</span> <span class="fl">235</span>,</span>
+<span>  planting_density <span class="op">=</span> <span class="fl">150000</span>,</span>
 <span>  row_spacing <span class="op">=</span> <span class="fl">0.7</span>,</span>
 <span>  partitioning_leaf_area <span class="op">=</span> <span class="fl">9000</span>,</span>
 <span>  partitioning_component_weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>leaf <span class="op">=</span> <span class="fl">35</span>, stem <span class="op">=</span> <span class="fl">55</span>, root <span class="op">=</span> <span class="fl">15</span>, pod <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>,</span>
@@ -322,7 +325,7 @@ can be viewed with standard R commands like <code>print</code> or
 <code>str</code>. For example:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">hp</span><span class="op">)</span></span>
-<span><span class="co">#&gt; List of 18</span></span>
+<span><span class="co">#&gt; List of 20</span></span>
 <span><span class="co">#&gt;  $ crop                          : chr "soybean"</span></span>
 <span><span class="co">#&gt;  $ variety                       : chr "GM4000"</span></span>
 <span><span class="co">#&gt;  $ location                      : chr "UIUC"</span></span>
@@ -330,7 +333,9 @@ can be viewed with standard R commands like <code>print</code> or
 <span><span class="co">#&gt;  $ year                          : num 2022</span></span>
 <span><span class="co">#&gt;  $ doy                           : num 235</span></span>
 <span><span class="co">#&gt;  $ hour                          : num 12</span></span>
+<span><span class="co">#&gt;  $ planting_density              : num 150000</span></span>
 <span><span class="co">#&gt;  $ row_spacing                   : num 0.7</span></span>
+<span><span class="co">#&gt;  $ plant_spacing                 : num 0.0385</span></span>
 <span><span class="co">#&gt;  $ partitioning_nplants          : num 6</span></span>
 <span><span class="co">#&gt;  $ partitioning_leaf_area        : num 9000</span></span>
 <span><span class="co">#&gt;  $ partitioning_component_weights:List of 4</span></span>
@@ -368,7 +373,7 @@ values:</p>
 <code class="sourceCode R"><span><span class="va">hpp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/process.html">process</a></span><span class="op">(</span><span class="va">hp</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">hpp</span><span class="op">)</span></span>
-<span><span class="co">#&gt; List of 31</span></span>
+<span><span class="co">#&gt; List of 36</span></span>
 <span><span class="co">#&gt;  $ crop                          : chr "soybean"</span></span>
 <span><span class="co">#&gt;  $ variety                       : chr "GM4000"</span></span>
 <span><span class="co">#&gt;  $ location                      : chr "UIUC"</span></span>
@@ -376,7 +381,9 @@ values:</p>
 <span><span class="co">#&gt;  $ year                          : num 2022</span></span>
 <span><span class="co">#&gt;  $ doy                           : num 235</span></span>
 <span><span class="co">#&gt;  $ hour                          : num 12</span></span>
+<span><span class="co">#&gt;  $ planting_density              : num 150000</span></span>
 <span><span class="co">#&gt;  $ row_spacing                   : num 0.7</span></span>
+<span><span class="co">#&gt;  $ plant_spacing                 : num 0.0385</span></span>
 <span><span class="co">#&gt;  $ partitioning_nplants          : num 6</span></span>
 <span><span class="co">#&gt;  $ partitioning_leaf_area        : num 9000</span></span>
 <span><span class="co">#&gt;  $ partitioning_component_weights:List of 4</span></span>
@@ -397,7 +404,7 @@ values:</p>
 <span><span class="co">#&gt;  $ partitioning_agb_weight       : num 120</span></span>
 <span><span class="co">#&gt;  $ agb_per_plant_partitioning    : num 20</span></span>
 <span><span class="co">#&gt;  $ agb_per_plant_row             : num 23.4</span></span>
-<span><span class="co">#&gt;  $ population                    : num 135864</span></span>
+<span><span class="co">#&gt;  $ measured_population           : num 135864</span></span>
 <span><span class="co">#&gt;  $ agb_per_area                  : num 7.86</span></span>
 <span><span class="co">#&gt;  $ relative_components           :List of 4</span></span>
 <span><span class="co">#&gt;   ..$ leaf: num 0.292</span></span>
@@ -410,7 +417,10 @@ values:</p>
 <span><span class="co">#&gt;   ..$ root: num 0.982</span></span>
 <span><span class="co">#&gt;   ..$ pod : num 1.96</span></span>
 <span><span class="co">#&gt;  $ LMA                           : num 38.9</span></span>
-<span><span class="co">#&gt;  $ LAI                           : num 5.89</span></span>
+<span><span class="co">#&gt;  $ LAI_from_LMA                  : num 5.89</span></span>
+<span><span class="co">#&gt;  $ LAI_from_planting_density     : num 5.56</span></span>
+<span><span class="co">#&gt;  $ LAI_from_measured_population  : num 5.04</span></span>
+<span><span class="co">#&gt;  $ leaf_area_per_plant           : num 1500</span></span>
 <span><span class="co">#&gt;  $ SLA                           : num 2.57</span></span>
 <span><span class="co">#&gt;  $ trap_components_biocro        :List of 2</span></span>
 <span><span class="co">#&gt;   ..$ leaf_litter: num 0.16</span></span>
@@ -440,26 +450,31 @@ table with one row from the single <code>harvest_point</code>:</p>
 <code class="sourceCode R"><span><span class="va">biomass</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/biomass_table.html">biomass_table</a></span><span class="op">(</span><span class="va">hpp</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">biomass</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 'data.frame':    1 obs. of  19 variables:</span></span>
-<span><span class="co">#&gt;  $ crop                      : chr "soybean"</span></span>
-<span><span class="co">#&gt;  $ variety                   : chr "GM4000"</span></span>
-<span><span class="co">#&gt;  $ location                  : chr "UIUC"</span></span>
-<span><span class="co">#&gt;  $ plot                      : num 3</span></span>
-<span><span class="co">#&gt;  $ year                      : num 2022</span></span>
-<span><span class="co">#&gt;  $ doy                       : num 235</span></span>
-<span><span class="co">#&gt;  $ hour                      : num 12</span></span>
-<span><span class="co">#&gt;  $ time                      : num 236</span></span>
-<span><span class="co">#&gt;  $ leaf                      : num 2.29</span></span>
-<span><span class="co">#&gt;  $ stem                      : num 3.6</span></span>
-<span><span class="co">#&gt;  $ root                      : num 0.982</span></span>
-<span><span class="co">#&gt;  $ pod                       : num 1.96</span></span>
-<span><span class="co">#&gt;  $ leaf_litter               : num 0.16</span></span>
-<span><span class="co">#&gt;  $ stem_litter               : num 0.075</span></span>
-<span><span class="co">#&gt;  $ LAI                       : num 5.89</span></span>
-<span><span class="co">#&gt;  $ SLA                       : num 2.57</span></span>
-<span><span class="co">#&gt;  $ agb_per_plant_row         : num 23.4</span></span>
-<span><span class="co">#&gt;  $ agb_per_plant_partitioning: num 20</span></span>
-<span><span class="co">#&gt;  $ population                : num 135864</span></span></code></pre></div>
+<span><span class="co">#&gt; 'data.frame':    1 obs. of  24 variables:</span></span>
+<span><span class="co">#&gt;  $ crop                        : chr "soybean"</span></span>
+<span><span class="co">#&gt;  $ variety                     : chr "GM4000"</span></span>
+<span><span class="co">#&gt;  $ location                    : chr "UIUC"</span></span>
+<span><span class="co">#&gt;  $ plot                        : num 3</span></span>
+<span><span class="co">#&gt;  $ year                        : num 2022</span></span>
+<span><span class="co">#&gt;  $ doy                         : num 235</span></span>
+<span><span class="co">#&gt;  $ hour                        : num 12</span></span>
+<span><span class="co">#&gt;  $ time                        : num 236</span></span>
+<span><span class="co">#&gt;  $ leaf                        : num 2.29</span></span>
+<span><span class="co">#&gt;  $ stem                        : num 3.6</span></span>
+<span><span class="co">#&gt;  $ root                        : num 0.982</span></span>
+<span><span class="co">#&gt;  $ pod                         : num 1.96</span></span>
+<span><span class="co">#&gt;  $ leaf_litter                 : num 0.16</span></span>
+<span><span class="co">#&gt;  $ stem_litter                 : num 0.075</span></span>
+<span><span class="co">#&gt;  $ SLA                         : num 2.57</span></span>
+<span><span class="co">#&gt;  $ LAI_from_LMA                : num 5.89</span></span>
+<span><span class="co">#&gt;  $ LAI_from_planting_density   : num 5.56</span></span>
+<span><span class="co">#&gt;  $ LAI_from_measured_population: num 5.04</span></span>
+<span><span class="co">#&gt;  $ agb_per_plant_row           : num 23.4</span></span>
+<span><span class="co">#&gt;  $ agb_per_plant_partitioning  : num 20</span></span>
+<span><span class="co">#&gt;  $ measured_population         : num 135864</span></span>
+<span><span class="co">#&gt;  $ row_spacing                 : num 0.7</span></span>
+<span><span class="co">#&gt;  $ plant_spacing               : num 0.0385</span></span>
+<span><span class="co">#&gt;  $ planting_density            : num 150000</span></span></code></pre></div>
 <p>With the data in this format, it can also be easily saved in a file
 using the <code>write.csv</code> function from base R. More information
 is available via the built-in help system by typing
@@ -494,6 +509,7 @@ reasonable for a typical commercial soybean cultivar.</p>
 <span><span class="va">location</span> <span class="op">&lt;-</span> <span class="st">'UIUC'</span></span>
 <span><span class="va">year</span> <span class="op">&lt;-</span> <span class="fl">2022</span></span>
 <span><span class="va">agb_row_length</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
+<span><span class="va">planting_density</span> <span class="op">&lt;-</span> <span class="fl">150000</span></span>
 <span><span class="va">row_spacing</span> <span class="op">&lt;-</span> <span class="fl">0.7</span></span>
 <span><span class="va">trap_area</span> <span class="op">&lt;-</span> <span class="fl">0.2</span></span>
 <span><span class="va">partitioning_nplants</span> <span class="op">&lt;-</span> <span class="fl">6</span></span>
@@ -507,6 +523,7 @@ reasonable for a typical commercial soybean cultivar.</p>
 <span>    plot <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>    year <span class="op">=</span> <span class="va">year</span>,</span>
 <span>    doy <span class="op">=</span> <span class="fl">185</span>,</span>
+<span>    planting_density <span class="op">=</span> <span class="va">planting_density</span>,</span>
 <span>    row_spacing <span class="op">=</span> <span class="va">row_spacing</span>,</span>
 <span>    partitioning_leaf_area <span class="op">=</span> <span class="fl">500</span>,</span>
 <span>    partitioning_component_weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>leaf <span class="op">=</span> <span class="fl">2.5</span>, stem <span class="op">=</span> <span class="fl">1.5</span>, root <span class="op">=</span> <span class="fl">1.4</span><span class="op">)</span>,</span>
@@ -525,6 +542,7 @@ reasonable for a typical commercial soybean cultivar.</p>
 <span>    plot <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>    year <span class="op">=</span> <span class="va">year</span>,</span>
 <span>    doy <span class="op">=</span> <span class="fl">235</span>,</span>
+<span>    planting_density <span class="op">=</span> <span class="va">planting_density</span>,</span>
 <span>    row_spacing <span class="op">=</span> <span class="va">row_spacing</span>,</span>
 <span>    partitioning_leaf_area <span class="op">=</span> <span class="fl">9000</span>,</span>
 <span>    partitioning_component_weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>leaf <span class="op">=</span> <span class="fl">35</span>, stem <span class="op">=</span> <span class="fl">55</span>, root <span class="op">=</span> <span class="fl">15</span>, pod <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>,</span>
@@ -543,6 +561,7 @@ reasonable for a typical commercial soybean cultivar.</p>
 <span>    plot <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>    year <span class="op">=</span> <span class="va">year</span>,</span>
 <span>    doy <span class="op">=</span> <span class="fl">275</span>,</span>
+<span>    planting_density <span class="op">=</span> <span class="va">planting_density</span>,</span>
 <span>    row_spacing <span class="op">=</span> <span class="va">row_spacing</span>,</span>
 <span>    partitioning_leaf_area <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>    partitioning_component_weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>leaf <span class="op">=</span> <span class="fl">0</span>, stem <span class="op">=</span> <span class="fl">40</span>, root <span class="op">=</span> <span class="fl">13</span>, pod <span class="op">=</span> <span class="fl">175</span>, seed <span class="op">=</span> <span class="fl">130</span><span class="op">)</span>,</span>
@@ -574,34 +593,39 @@ reasonable for a typical commercial soybean cultivar.</p>
 <span>  year <span class="op">=</span> <span class="va">year</span>,</span>
 <span>  doy <span class="op">=</span> <span class="fl">152</span>,</span>
 <span>  seed_mass <span class="op">=</span> <span class="fl">0.17</span>,</span>
-<span>  planting_density <span class="op">=</span> <span class="fl">150000</span>,</span>
-<span>  zero_when_missing <span class="op">=</span> <span class="va">zero_when_missing</span></span>
+<span>  zero_when_missing <span class="op">=</span> <span class="va">zero_when_missing</span>,</span>
+<span>  component_fractions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>leaf <span class="op">=</span> <span class="fl">0.8</span>, stem <span class="op">=</span> <span class="fl">0.1</span>, root <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Now we can take a look at the final data values:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">soybean_biomass</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 'data.frame':    4 obs. of  21 variables:</span></span>
-<span><span class="co">#&gt;  $ crop                      : chr  "soybean" "soybean" "soybean" "soybean"</span></span>
-<span><span class="co">#&gt;  $ variety                   : chr  "GM4000" "GM4000" "GM4000" "GM4000"</span></span>
-<span><span class="co">#&gt;  $ location                  : chr  "UIUC" "UIUC" "UIUC" "UIUC"</span></span>
-<span><span class="co">#&gt;  $ plot                      : num  NA 2 3 1</span></span>
-<span><span class="co">#&gt;  $ year                      : num  2022 2022 2022 2022</span></span>
-<span><span class="co">#&gt;  $ doy                       : num  152 185 235 275</span></span>
-<span><span class="co">#&gt;  $ hour                      : num  12 12 12 12</span></span>
-<span><span class="co">#&gt;  $ time                      : num  152 186 236 276</span></span>
-<span><span class="co">#&gt;  $ leaf                      : num  NA 0.223 2.292 0</span></span>
-<span><span class="co">#&gt;  $ stem                      : num  NA 0.134 3.601 1.329</span></span>
-<span><span class="co">#&gt;  $ root                      : num  NA 0.125 0.982 0.432</span></span>
-<span><span class="co">#&gt;  $ pod                       : num  0 0 1.96 5.81</span></span>
-<span><span class="co">#&gt;  $ leaf_litter               : num  0 0 0.16 2.25</span></span>
-<span><span class="co">#&gt;  $ stem_litter               : num  0 0 0.075 0.75</span></span>
-<span><span class="co">#&gt;  $ seed                      : num  NA NA NA 4.32</span></span>
-<span><span class="co">#&gt;  $ LAI                       : num  0 0.446 5.893 0</span></span>
-<span><span class="co">#&gt;  $ SLA                       : num  NA 2 2.57 NA</span></span>
-<span><span class="co">#&gt;  $ agb_per_plant_row         : num  NA 1.09 23.4 19.61</span></span>
-<span><span class="co">#&gt;  $ agb_per_plant_partitioning: num  NA 0.667 20 35.833</span></span>
-<span><span class="co">#&gt;  $ population                : num  150000 132973 135864 147426</span></span>
-<span><span class="co">#&gt;  $ initial_seed              : num  0.063 NA NA NA</span></span></code></pre></div>
+<span><span class="co">#&gt; 'data.frame':    4 obs. of  26 variables:</span></span>
+<span><span class="co">#&gt;  $ crop                        : chr  "soybean" "soybean" "soybean" "soybean"</span></span>
+<span><span class="co">#&gt;  $ variety                     : chr  "GM4000" "GM4000" "GM4000" "GM4000"</span></span>
+<span><span class="co">#&gt;  $ location                    : chr  "UIUC" "UIUC" "UIUC" "UIUC"</span></span>
+<span><span class="co">#&gt;  $ plot                        : num  NA 2 3 1</span></span>
+<span><span class="co">#&gt;  $ year                        : num  2022 2022 2022 2022</span></span>
+<span><span class="co">#&gt;  $ doy                         : num  152 185 235 275</span></span>
+<span><span class="co">#&gt;  $ hour                        : num  12 12 12 12</span></span>
+<span><span class="co">#&gt;  $ time                        : num  152 186 236 276</span></span>
+<span><span class="co">#&gt;  $ leaf                        : num  0.0504 0.2232 2.2917 0</span></span>
+<span><span class="co">#&gt;  $ stem                        : num  0.0063 0.1339 3.6012 1.3289</span></span>
+<span><span class="co">#&gt;  $ root                        : num  0.0063 0.125 0.9821 0.4319</span></span>
+<span><span class="co">#&gt;  $ pod                         : num  0 0 1.96 5.81</span></span>
+<span><span class="co">#&gt;  $ leaf_litter                 : num  0 0 0.16 2.25</span></span>
+<span><span class="co">#&gt;  $ stem_litter                 : num  0 0 0.075 0.75</span></span>
+<span><span class="co">#&gt;  $ seed                        : num  NA NA NA 4.32</span></span>
+<span><span class="co">#&gt;  $ SLA                         : num  NA 2 2.57 NA</span></span>
+<span><span class="co">#&gt;  $ LAI_from_LMA                : num  0 0.446 5.893 0</span></span>
+<span><span class="co">#&gt;  $ LAI_from_planting_density   : num  0 0.309 5.56 0</span></span>
+<span><span class="co">#&gt;  $ LAI_from_measured_population: num  0 0.274 5.036 0</span></span>
+<span><span class="co">#&gt;  $ agb_per_plant_row           : num  NA 1.09 23.4 19.61</span></span>
+<span><span class="co">#&gt;  $ agb_per_plant_partitioning  : num  NA 0.667 20 35.833</span></span>
+<span><span class="co">#&gt;  $ measured_population         : num  NA 132973 135864 147426</span></span>
+<span><span class="co">#&gt;  $ row_spacing                 : num  0.7 0.7 0.7 0.7</span></span>
+<span><span class="co">#&gt;  $ plant_spacing               : num  0.0385 0.0385 0.0385 0.0385</span></span>
+<span><span class="co">#&gt;  $ planting_density            : num  150000 150000 150000 150000</span></span>
+<span><span class="co">#&gt;  $ initial_seed                : num  0.063 NA NA NA</span></span></code></pre></div>
 <p>It is also easy to graph them:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/lattice/man/xyplot.html" class="external-link">xyplot</a></span><span class="op">(</span></span>
@@ -629,6 +653,12 @@ processing script:</p>
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-breda_groundbased_2003" class="csl-entry">
+Bréda, Nathalie J. J. 2003. <span>“Ground-Based Measurements of Leaf
+Area Index: A Review of Methods, Instruments and Current
+Controversies.”</span> <em>Journal of Experimental Botany</em> 54 (392):
+2403–17. <a href="https://doi.org/10.1093/jxb/erg263" class="external-link">https://doi.org/10.1093/jxb/erg263</a>.
+</div>
 <div id="ref-nafziger_corn_1994" class="csl-entry">
 Nafziger, Emerson D. 1994. <span>“Corn <span>Planting</span>
 <span>Date</span> and <span>Plant</span>
