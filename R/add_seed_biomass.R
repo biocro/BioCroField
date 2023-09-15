@@ -175,7 +175,7 @@ add_seed_biomass <- function(
     }
 
     # Set the population, which was specified when calling this function
-    initial_biomass[['population']] <- planting_density
+    initial_biomass[['measured_population']] <- planting_density
 
     # Get the total initial biomass and store it in the new row
     total_initial_biomass <- seed_mass * planting_density * 2.47e-6

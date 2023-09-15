@@ -51,7 +51,7 @@ biomass_table.harvest_point <- function(..., zero_when_missing = character()) {
         'LAI_from_measured_population',
         'agb_per_plant_row',
         'agb_per_plant_partitioning',
-        'population'
+        'measured_population'
     )
 
     cnames <-

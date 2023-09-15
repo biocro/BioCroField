@@ -48,16 +48,17 @@ test_that("agb_per_plant_row is calculated only when possible", {
 })
 
 test_that("population is calculated only when possible", {
-    expect_na(hpp$population)
+    expect_na(hpp$measured_population)
 
-    expect_na(process(harvest_point(agb_nplants = 1))$population)
+    expect_na(process(harvest_point(agb_nplants = 1))$measured_population)
 
-    expect_na(process(harvest_point(agb_row_length = 1))$population)
+    expect_na(process(harvest_point(agb_row_length = 1))$measured_population)
 
-    expect_na(process(harvest_point(row_spacing = 1))$population)
+    expect_na(process(harvest_point(row_spacing = 1))$measured_population)
 
     expect_equal(
-        process(harvest_point(agb_nplants = 10, agb_row_length = 2, row_spacing = 0.5))$population,
+        process(harvest_point(
+            agb_nplants = 10, agb_row_length = 2, row_spacing = 0.5))$measured_population,
         40470
     )
 })
