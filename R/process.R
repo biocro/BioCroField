@@ -30,7 +30,7 @@ process.harvest_point <- function(x, leaf_name = 'leaf', ...) {
 
     # Estimate the plant population (plants per acre) from the number of plants
     # collected for above-ground biomass measurements, using 1 acre = 4047 m^2
-    population <- x[['agb_nplants']] / (x[['agb_row_length']] * x[['row_spacing']]) * 4047
+    measured_population <- x[['agb_nplants']] / (x[['agb_row_length']] * x[['row_spacing']]) * 4047
 
     # Calculate the above-ground biomass per unit area (in Mg / ha), using
     # 1 g / m^2 = 1e-2 Mg / ha
@@ -80,15 +80,15 @@ process.harvest_point <- function(x, leaf_name = 'leaf', ...) {
     # Leaf area per plant. Units are cm^2 / plant.
     leaf_area_per_plant <- x[['partitioning_leaf_area']] / x[['partitioning_nplants']]
 
-    # Leaf area index estimated from target population. Units are dimensionless
+    # Leaf area index estimated from planting density. Units are dimensionless
     # from (plants / acre ground) * (cm^2 leaf / plant) * (1 m^2 / 1e4 cm^2) * (1 acre / 4047 m^2)
-    LAI_from_target_population <-
-        x[['target_population']] * leaf_area_per_plant * 1e-4 / 4047
+    LAI_from_planting_density <-
+        x[['planting_density']] * leaf_area_per_plant * 1e-4 / 4047
 
     # Leaf area index estimated from measured population. Units are
     # dimensionless as for leaf area index estimated from measured population.
     LAI_from_measured_population <-
-        population * leaf_area_per_plant * 1e-4 / 4047
+        measured_population * leaf_area_per_plant * 1e-4 / 4047
 
     # Specific leaf area in the units typically used in BioCro
     SLA <- 1 / LMA * 1e2 # ha / Mg
@@ -117,13 +117,13 @@ process.harvest_point <- function(x, leaf_name = 'leaf', ...) {
         partitioning_agb_weight = partitioning_agb_weight,
         agb_per_plant_partitioning = agb_per_plant_partitioning,
         agb_per_plant_row = agb_per_plant_row,
-        population = population,
+        measured_population = measured_population,
         agb_per_area = agb_per_area,
         relative_components = relative_components,
         components_biocro = components_biocro,
         LMA = LMA,
         LAI_from_LMA = LAI_from_LMA,
-        LAI_from_target_population = LAI_from_target_population,
+        LAI_from_planting_density = LAI_from_planting_density,
         LAI_from_measured_population = LAI_from_measured_population,
         leaf_area_per_plant = leaf_area_per_plant,
         SLA = SLA,

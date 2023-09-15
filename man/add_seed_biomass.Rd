@@ -16,7 +16,6 @@
     doy = NA,
     hour = 12,
     seed_mass = NA,
-    planting_density = NA,
     zero_when_missing = character(),
     component_fractions = list(),
     \dots
@@ -38,8 +37,6 @@
     The average mass per seed (in \code{g}), typically determined by weighing a
     known number of seeds (such as one hundred seeds).
   }
-
-  \item{planting_density}{The number of seeds sown per acre.}
 
   \item{zero_when_missing}{
     A character vector indicating any biomass columns whose values should be set
@@ -64,7 +61,8 @@
 \details{
   The new row in the data table will be constructed as follows:
   \itemize{
-    \item The values of the \code{crop}, \code{variety}, and \code{location}
+    \item The values of the \code{crop}, \code{variety}, \code{location},
+          \code{planting_density}, \code{row_spacing}, and \code{plant_spacing}
           will be copied from the first row of \code{biomass_df}.
 
     \item The values of \code{year}, \code{doy}, and \code{hour} will be taken
@@ -72,12 +70,9 @@
           \code{\link{process}}.
 
     \item The value of all LAI estimates (\code{LAI_from_LMA},
-          \code{LAI_from_target_population}, and
+          \code{LAI_from_planting_density}, and
           \code{LAI_from_measured_population}) will be set to 0 since there
           cannot be any leaf area corresponding to seeds that were just sown.
-
-    \item The value of \code{population} will be set to the value of
-          \code{planting_density}.
 
     \item The initial seed biomass per unit ground area (in \code{Mg / ha}) will
           be stored in a new column called \code{initial_seed}. This value is
@@ -107,6 +102,7 @@ hp <- harvest_point(
   year = 2023,
   doy = 186,
   hour = 12,
+  planting_density = 125000,
   row_spacing = 0.7,
   partitioning_leaf_area = 500,
   partitioning_component_weights = list(leaf = 2.5, stem = 1.5, root = 1.4, leaf_litter = 0.2),
@@ -132,7 +128,6 @@ biomass <- add_seed_biomass(
   doy = 152,
   hour = 12,
   seed_mass = 0.17,
-  planting_density = 125000,
   component_fractions = list(leaf = 0.8, stem = 0.1, root = 0.1),
   seed_comment = 'Sown with precision planter'
 )

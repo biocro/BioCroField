@@ -19,11 +19,20 @@ for the next release.
 # Unreleased
 
 - Two new methods for estimating LAI were added to `process`:
-  `LAI_from_target_population` and `LAI_from_measured_population`. The original
+  `LAI_from_planting_density` and `LAI_from_measured_population`. The original
   LAI estimate was renamed from `LAI` to `LAI_from_LMA` to better indicate the
   different estimates.
+- Allow the user to (optionally) specify plant spacing in additiong to row
+  spacing and plant population when creating a `harvest_point` object. If all
+  three are specified, a consistency check will be performed. If only two are
+  specified, the value of the third will be calculated.
+- `add_seed_biomass` now takes planting density from the input data frame.
+- Renamed two other variables to make their meaning more clear:
+  - `target_population` was renamed to `planting_density`
+  - `population` was renamed to `measured_population`
 - PRs related to creating this version:
   - https://github.com/biocro/BioCroField/pull/3
+  - https://github.com/biocro/BioCroField/pull/4
 
 # BioCroField VERSION 0.1.1
 
