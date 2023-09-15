@@ -16,7 +16,7 @@ Subsequent commits will then include a new "Unreleased" section in preparation
 for the next release.
 -->
 
-# Unreleased
+# BioCroField VERSION 0.2.0
 
 - Two new methods for estimating LAI were added to `process`:
   `LAI_from_planting_density` and `LAI_from_measured_population`. The original
@@ -33,6 +33,7 @@ for the next release.
 - PRs related to creating this version:
   - https://github.com/biocro/BioCroField/pull/3
   - https://github.com/biocro/BioCroField/pull/4
+  - https://github.com/biocro/BioCroField/pull/5
 
 # BioCroField VERSION 0.1.1
 
