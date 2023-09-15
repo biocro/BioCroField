@@ -133,6 +133,41 @@ test_that("Leaf area can be zero if and only if leaf mass is also zero", {
     )
 })
 
+test_that("Planting density, row spacing, and plant spacing must be consistent", {
+    # Exact agreement
+    expect_no_error(
+        harvest_point(row_spacing = 0.75, plant_spacing = 0.2, planting_density = 26980)
+    )
+
+    # Approximate agreement (due to rounding the density)
+    expect_no_error(
+        harvest_point(row_spacing = 0.75, plant_spacing = 0.2, planting_density = 26900)
+    )
+
+    # Poor agreement (wildly incorrect density)
+    expect_error(
+        harvest_point(row_spacing = 0.75, plant_spacing = 0.2, planting_density = 10000),
+        "The supplied values of planting_density, row_spacing, and plant_spacing are not consistent with each other"
+    )
+})
+
+test_that("Missing density parameters are automatically calculated", {
+    expect_equal(
+        harvest_point(row_spacing = 0.75, plant_spacing = 0.2)$planting_density,
+        26980
+    )
+    
+    expect_equal(
+        harvest_point(row_spacing = 0.75, planting_density = 26980)$plant_spacing,
+        0.2
+    )
+    
+    expect_equal(
+        harvest_point(plant_spacing = 0.2, planting_density = 26980)$row_spacing,
+        0.75
+    )
+})
+
 test_that("Additional arguments must be included as `additional_arguments`", {
     hp <- harvest_point(construct = 'blah')
     expect_false(is.null(hp$additional_arguments$construct))
@@ -148,7 +183,9 @@ test_that("Additional arguments must have names", {
             year = NA,
             doy = NA,
             hour = 12,
+            planting_density = NA,
             row_spacing = NA,
+            plant_spacing = NA,
             partitioning_nplants = NA,
             partitioning_leaf_area = NA,
             partitioning_component_weights = list(),

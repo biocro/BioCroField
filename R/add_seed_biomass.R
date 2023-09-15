@@ -1,18 +1,9 @@
-# Add the initial values to the data frame:
-#   The LD11 seeds were found to weigh 0.NNN g per seed on average, and were
-#   planted at a density of PPP seeds per acre. So the initial total biomass
-#   was 0.NNN g / seed * PPP seeds / acre = XXX g / acre =
-#   XXX g / acre * (1 Mg / 1e6 g) * (2.47 acre / 1 ha) = YYY Mg / ha.
-#   We will make the standard Soybean-BioCro assumption about how this is
-#   distributed across leaf, stem, and root.
-
 add_seed_biomass <- function(
     biomass_df,
     year = NA,
     doy = NA,
     hour = 12,
     seed_mass = NA,
-    planting_density = NA,
     zero_when_missing = character(),
     component_fractions = list(),
     ...
@@ -58,8 +49,7 @@ add_seed_biomass <- function(
             year = year,
             doy = doy,
             hour = hour,
-            seed_mass = seed_mass,
-            planting_density = planting_density
+            seed_mass = seed_mass
         ),
         additional_arguments
     )
@@ -95,8 +85,7 @@ add_seed_biomass <- function(
         year = year,
         doy = doy,
         hour = hour,
-        seed_mass = seed_mass,
-        planting_density = planting_density
+        seed_mass = seed_mass
     )
 
     nna_bad <- sapply(should_be_nna, function(x) {
@@ -156,11 +145,13 @@ add_seed_biomass <- function(
     initial_biomass <- biomass_df[1, ]
     initial_biomass[1, ] <- NA
 
-    # Reset the crop name, variety, and location, which we can safely assume to
-    # be the same across the entire data frame
+    # Reset values which we assume to be the same across the entire data frame
     initial_biomass[['crop']] <- biomass_df[1, 'crop']
     initial_biomass[['variety']] <- biomass_df[1, 'variety']
     initial_biomass[['location']] <- biomass_df[1, 'location']
+    initial_biomass[['planting_density']] <- biomass_df[1, 'planting_density']
+    initial_biomass[['row_spacing']] <- biomass_df[1, 'row_spacing']
+    initial_biomass[['plant_spacing']] <- biomass_df[1, 'plant_spacing']
 
     # Specify the time
     initial_biomass[['year']] <- year
@@ -170,15 +161,23 @@ add_seed_biomass <- function(
         initial_biomass[['doy']] + initial_biomass[['hour']] / 24.0
 
     # Reset certain columns to zero; there is no leaf area when the plant is a
-    # seed, so also make sure to set LAI to zero
-    for (comp in c(zero_when_missing, 'LAI')) {
+    # seed, so also make sure to set all LAI estimates to zero
+    should_be_zero <- c(
+        zero_when_missing,
+        'LAI_from_LMA',
+        'LAI_from_planting_density',
+        'LAI_from_measured_population'
+    )
+
+    for (comp in should_be_zero) {
         initial_biomass[[comp]] <- 0.0
     }
 
-    # Set the population, which was specified when calling this function
-    initial_biomass[['population']] <- planting_density
-
-    # Get the total initial biomass and store it in the new row
+    # Get the total initial biomass and store it in the new row. Here, the
+    # product seed_mass * planting_density is in units of g / acre, which we
+    # convert to Mg / hectare using
+    # 1 g / acre * (1 Mg / 1e6 g) * (2.47 acre / hectare) = 2.47e-6 Mg / hectare
+    planting_density <- initial_biomass[1, 'planting_density']
     total_initial_biomass <- seed_mass * planting_density * 2.47e-6
     initial_biomass[['initial_seed']] <- total_initial_biomass
 

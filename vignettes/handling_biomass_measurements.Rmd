@@ -99,7 +99,7 @@ of competition between plants. On the other hand, there is often a fairly wide
 range of plant _population_ (the number of plants per unit area) that can result
 in identical or similar yield; for example, maize in Illinois sown between April
 5 and May 5 can reach 97% or higher of the maximum yield for populations between
-24,000 and 36,000 plants per acre @nafziger_corn_1994. Thus, in most
+24,000 and 36,000 plants per acre [@nafziger_corn_1994]. Thus, in most
 circumstances, the yield (on a per area basis) better reflects the true
 productivity of a crop without the complicating influence of competition.
 
@@ -130,10 +130,10 @@ Therefore, to validate a crop model, it is important to have experimental
 measurements for all these crop components, ideally at multiple times throughout
 a growing season. In addition to these masses, it is critical to measure the
 _leaf area index_ (LAI), defined as the leaf area per unit ground area, which
-also plays a key role in simulating photosynthesis at the canopy level. If the
-model is able to reproduce these mass and leaf area measurements, we can have
-more faith that it will be able to make accurate yield predictions in other
-situations.
+also plays a key role in simulating photosynthesis at the canopy level
+[@breda_groundbased_2003]. If the model is able to reproduce these mass and leaf
+area measurements, we can have more faith that it will be able to make accurate
+yield predictions in other situations.
 
 # Making Measurements
 
@@ -217,17 +217,18 @@ might look like the following image:
 #| fig.cap = "Example of a completed crop harvest record sheet. This represents
 #|   information from a single biomass harvest performed on 2022-08-23, where
 #|   soybean (var. GM4000) was harvested from plot 3 at UIUC. The row spacing in
-#|   the plot was 0.7 m. A row section 2 m long was harvested for above-ground
-#|   biomass; this section included 47 plants, and its total dry weight was
-#|   1100 g. Six plants were used for partitioning; their total leaf area was
-#|   9000 cm^2, their dry leaf mass was 35 g, their dry stem mass was 55 g,
-#|   their dry root mass was 15 g, and their dry pod mass was 30 g. The leaf,
-#|   stem, and pod components of these plants form their total above-ground
-#|   biomass. Finally, a litter trap in the plot with area 0.2 m^2 was found to
-#|   contain 3.2 g of leaf litter and 1.5 g of stem litter. The plant material
-#|   was dried for 14 days before it was weighed. _Note_: This is not real data,
-#|   and GM4000 is not a real soybean variety, although the values here are
-#|   reasonable for a typical commercial soybean cultivar."
+#|   the plot was 0.7 m, and there were 150000 plants per acre. A row section 2
+#|   m long was harvested for above-ground biomass; this section included 47
+#|   plants, and its total dry weight was 1100 g. Six plants were used for
+#|   partitioning; their total leaf area was 9000 cm^2, their dry leaf mass was
+#|   35 g, their dry stem mass was 55 g, their dry root mass was 15 g, and their
+#|   dry pod mass was 30 g. The leaf, stem, and pod components of these plants
+#|   form their total above-ground biomass. Finally, a litter trap in the plot
+#|   with area 0.2 m^2 was found to contain 3.2 g of leaf litter and 1.5 g of
+#|   stem litter. The plant material was dried for 14 days before it was
+#|   weighed. _Note_: This is not real data, and GM4000 is not a real soybean
+#|   variety, although the values here are reasonable for a typical commercial
+#|   soybean cultivar."
 
 knitr::include_graphics('images/example_harvest_sheet.jpg')
 ```
@@ -242,6 +243,7 @@ hp <- harvest_point(
   plot = 3,
   year = 2022,
   doy = 235,
+  planting_density = 150000,
   row_spacing = 0.7,
   partitioning_leaf_area = 9000,
   partitioning_component_weights = list(leaf = 35, stem = 55, root = 15, pod = 30),
@@ -332,6 +334,7 @@ variety <- 'GM4000'
 location <- 'UIUC'
 year <- 2022
 agb_row_length <- 2
+planting_density <- 150000
 row_spacing <- 0.7
 trap_area <- 0.2
 partitioning_nplants <- 6
@@ -345,6 +348,7 @@ biomass_measurements <- list(
     plot = 2,
     year = year,
     doy = 185,
+    planting_density = planting_density,
     row_spacing = row_spacing,
     partitioning_leaf_area = 500,
     partitioning_component_weights = list(leaf = 2.5, stem = 1.5, root = 1.4),
@@ -363,6 +367,7 @@ biomass_measurements <- list(
     plot = 3,
     year = year,
     doy = 235,
+    planting_density = planting_density,
     row_spacing = row_spacing,
     partitioning_leaf_area = 9000,
     partitioning_component_weights = list(leaf = 35, stem = 55, root = 15, pod = 30),
@@ -381,6 +386,7 @@ biomass_measurements <- list(
     plot = 1,
     year = year,
     doy = 275,
+    planting_density = planting_density,
     row_spacing = row_spacing,
     partitioning_leaf_area = 0,
     partitioning_component_weights = list(leaf = 0, stem = 40, root = 13, pod = 175, seed = 130),
@@ -412,8 +418,8 @@ soybean_biomass <- add_seed_biomass(
   year = year,
   doy = 152,
   seed_mass = 0.17,
-  planting_density = 150000,
-  zero_when_missing = zero_when_missing
+  zero_when_missing = zero_when_missing,
+  component_fractions = list(leaf = 0.8, stem = 0.1, root = 0.1)
 )
 ```
 

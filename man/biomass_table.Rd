@@ -49,15 +49,25 @@
 
     \item \code{time}
 
-    \item \code{LAI}
-
     \item \code{SLA}
+
+    \item \code{LAI_from_LMA}
+
+    \item \code{LAI_from_planting_density}
+
+    \item \code{LAI_from_measured_population}
 
     \item \code{agb_per_plant_row}
 
     \item \code{agb_per_plant_partitioning}
 
-    \item \code{population}
+    \item \code{measured_population}
+
+    \item \code{row_spacing}
+
+    \item \code{plant_spacing}
+
+    \item \code{planting_density}
 
     \item Any elements contained in \code{components_biocro} (see
           \code{\link{process}})
@@ -88,6 +98,7 @@ hp <- harvest_point(
   year = 2023,
   doy = 186,
   hour = 12,
+  planting_density = 140000,
   row_spacing = 0.7,
   partitioning_leaf_area = 500,
   partitioning_component_weights = list(leaf = 2.5, stem = 1.5, root = 1.4, leaf_litter = 0.2),

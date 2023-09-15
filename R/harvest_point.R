@@ -12,7 +12,9 @@ harvest_point <- function(
     year = NA,
     doy = NA,
     hour = 12,
+    planting_density = NA,
     row_spacing = NA,
+    plant_spacing = NA,
     partitioning_nplants = NA,
     partitioning_leaf_area = NA,
     partitioning_component_weights = list(),
@@ -69,7 +71,9 @@ harvest_point <- function(
             year = year,
             doy = doy,
             hour = hour,
+            planting_density = planting_density,
             row_spacing = row_spacing,
+            plant_spacing = plant_spacing,
             partitioning_nplants = partitioning_nplants,
             partitioning_leaf_area = partitioning_leaf_area,
             agb_nplants = agb_nplants,
@@ -119,7 +123,9 @@ harvest_point <- function(
         year = year,
         doy = doy,
         hour = hour,
+        planting_density = planting_density,
         row_spacing = row_spacing,
+        plant_spacing = plant_spacing,
         partitioning_nplants = partitioning_nplants,
         partitioning_leaf_area = partitioning_leaf_area,
         agb_nplants = agb_nplants,
@@ -195,6 +201,34 @@ harvest_point <- function(
         stop("It is not possible for a leaf with zero mass to have a nonzero area")
     }
 
+    # If the user specified values of planting_density, row_spacing, and
+    # plant_spacing, check to make sure they are consistent with each other (to
+    # within 2 percent). Here we use 1 acre = 4047 m^2 in these calculations.
+    if (!any(is.na(c(planting_density, row_spacing, plant_spacing)))) {
+        if (abs(1 - planting_density * row_spacing * plant_spacing / 4047) > 0.02) {
+            stop('The supplied values of planting_density, row_spacing, and plant_spacing are not consistent with each other.')
+        }
+    }
+
+    # Calculate missing plant density parameters if possible. Here we use
+    # 1 acre = 4047 m^2 in these calculations.
+    if (!is.na(planting_density) && !is.na(row_spacing)) {
+        # Here we know the planting density (in plants per acre) and the row
+        # spacing (in m), so we can calculate the spacing between plants along
+        # the rows (in m).
+        plant_spacing <- 4047 / (planting_density * row_spacing)
+    } else if (!is.na(row_spacing) && !is.na(plant_spacing)) {
+        # Here we know the row spacing (in m) and the spacing between plants
+        # along the rows (in m), so we can calculate the planting density (in
+        # plants per acre).
+        planting_density <- 4047 / (row_spacing * plant_spacing)
+    } else if (!is.na(planting_density) && !is.na(plant_spacing)) {
+        # Here we know the planting density (in plants per acre) and the spacing
+        # between plants along the rows (in m), so we can calculate the row
+        # spacing (in m).
+        row_spacing <- 4047 / (planting_density * plant_spacing)
+    }
+
     # Assemble all the information into a list of named elements
     hp <- list(
         crop = crop,
@@ -204,7 +238,9 @@ harvest_point <- function(
         year = year,
         doy = doy,
         hour = hour,
+        planting_density = planting_density,
         row_spacing = row_spacing,
+        plant_spacing = plant_spacing,
         partitioning_nplants = partitioning_nplants,
         partitioning_leaf_area = partitioning_leaf_area,
         partitioning_component_weights = partitioning_component_weights,

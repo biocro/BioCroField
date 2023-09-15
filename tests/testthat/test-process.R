@@ -8,6 +8,7 @@ test_that("process.harvest_point produces harvest_point objects", {
     expect_s3_class(process(harvest_point()), 'harvest_point')
 })
 
+# Make a null harvest point to use in subsequent tests
 hpp <- process(harvest_point())
 
 test_that("time is calculated only when possible", {
@@ -47,16 +48,17 @@ test_that("agb_per_plant_row is calculated only when possible", {
 })
 
 test_that("population is calculated only when possible", {
-    expect_na(hpp$population)
+    expect_na(hpp$measured_population)
 
-    expect_na(process(harvest_point(agb_nplants = 1))$population)
+    expect_na(process(harvest_point(agb_nplants = 1))$measured_population)
 
-    expect_na(process(harvest_point(agb_row_length = 1))$population)
+    expect_na(process(harvest_point(agb_row_length = 1))$measured_population)
 
-    expect_na(process(harvest_point(row_spacing = 1))$population)
+    expect_na(process(harvest_point(row_spacing = 1))$measured_population)
 
     expect_equal(
-        process(harvest_point(agb_nplants = 10, agb_row_length = 2, row_spacing = 0.5))$population,
+        process(harvest_point(
+            agb_nplants = 10, agb_row_length = 2, row_spacing = 0.5))$measured_population,
         40470
     )
 })
@@ -132,15 +134,15 @@ test_that("LMA is calculated only when possible", {
     )
 })
 
-test_that("LAI is calculated only when possible", {
-    expect_na(hpp$LAI)
+test_that("LAI_from_LMA is calculated only when possible", {
+    expect_na(hpp$LAI_from_LMA)
 
     expect_na(
         process(harvest_point(
             agb_components = c('leaf', 'stem'),
             partitioning_leaf_area = 500,
             partitioning_component_weights = list(leaf = 2, stem = 2, root = 0.5)
-        ))$LAI
+        ))$LAI_from_LMA
     )
 
     expect_na(
@@ -148,7 +150,7 @@ test_that("LAI is calculated only when possible", {
             agb_weight = 10, agb_row_length = 2, row_spacing = 0.5,
             partitioning_leaf_area = 500,
             partitioning_component_weights = list(leaf = 2, stem = 2, root = 0.5)
-        ))$LAI
+        ))$LAI_from_LMA
     )
 
     expect_na(
@@ -156,7 +158,7 @@ test_that("LAI is calculated only when possible", {
             agb_weight = 10, agb_row_length = 2, row_spacing = 0.5,
             agb_components = c('leaf', 'stem'),
             partitioning_component_weights = list(leaf = 2, stem = 2, root = 0.5)
-        ))$LAI
+        ))$LAI_from_LMA
     )
 
     # A leaf with zero mass and zero area should have zero LAI
@@ -164,7 +166,7 @@ test_that("LAI is calculated only when possible", {
         process(harvest_point(
             partitioning_leaf_area = 0,
             partitioning_component_weights = list(leaf = 0, stem = 2, root = 0.5)
-        ))$LAI,
+        ))$LAI_from_LMA,
         0.0
     )
 
@@ -174,8 +176,52 @@ test_that("LAI is calculated only when possible", {
             agb_components = c('leaf', 'stem'),
             partitioning_leaf_area = 500,
             partitioning_component_weights = list(leaf = 2, stem = 2, root = 0.5)
-        ))$LAI,
+        ))$LAI_from_LMA,
         0.125
+    )
+})
+
+test_that("LAI_from_planting_density is calculated only when possible", {
+    expect_na(hpp$LAI_from_planting_density)
+
+    expect_na(process(harvest_point(partitioning_leaf_area = 1))$LAI_from_planting_density)
+
+    expect_na(process(harvest_point(partitioning_nplants = 2))$LAI_from_planting_density)
+
+    expect_na(process(harvest_point(planting_density = 10))$LAI_from_planting_density)
+
+    expect_equal(
+        process(harvest_point(
+            partitioning_leaf_area = 1,
+            partitioning_nplants = 2,
+            planting_density = 10
+        ))$LAI_from_planting_density,
+        1.23548307e-07
+    )
+})
+
+test_that("LAI_from_measured_population is calculated only when possible", {
+    expect_na(hpp$LAI_from_measured_population)
+
+    expect_na(process(harvest_point(partitioning_leaf_area = 1))$LAI_from_measured_population)
+
+    expect_na(process(harvest_point(partitioning_nplants = 2))$LAI_from_measured_population)
+
+    expect_na(process(harvest_point(agb_nplants = 5))$LAI_from_measured_population)
+
+    expect_na(process(harvest_point(agb_row_length = 2))$LAI_from_measured_population)
+
+    expect_na(process(harvest_point(row_spacing = 0.5))$LAI_from_measured_population)
+
+    expect_equal(
+        process(harvest_point(
+            partitioning_leaf_area = 1,
+            partitioning_nplants = 2,
+            agb_nplants = 5,
+            agb_row_length = 2,
+            row_spacing = 0.5
+        ))$LAI_from_measured_population,
+        0.00025
     )
 })
 
