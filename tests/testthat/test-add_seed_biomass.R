@@ -27,3 +27,26 @@ test_that("Seed fractions must add to 1", {
         "The component_fractions must add to 1"
     )
 })
+
+test_that("Seed biomass is properly added to tables", {
+    biomass_df <- add_seed_biomass(
+        biomass_table(process(harvest_point(planting_density = 100000))),
+        component_fractions = list(seed = 0.9, fluff = 0.1),
+        seed_mass = 10
+    )
+
+    expect_equal(
+        biomass_df[1, 'seed'],
+        2.223
+    )
+
+    expect_equal(
+        biomass_df[1, 'fluff'],
+        0.247
+    )
+
+    expect_equal(
+        biomass_df[1, 'initial_seed'],
+        2.47
+    )
+})
