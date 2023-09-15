@@ -61,7 +61,13 @@
 
     \item \code{agb_per_plant_partitioning}
 
-    \item \code{population}
+    \item \code{measured_population}
+
+    \item \code{row_spacing}
+
+    \item \code{plant_spacing}
+
+    \item \code{planting_density}
 
     \item Any elements contained in \code{components_biocro} (see
           \code{\link{process}})
