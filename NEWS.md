@@ -16,6 +16,10 @@ Subsequent commits will then include a new "Unreleased" section in preparation
 for the next release.
 -->
 
+# BioCroField VERSION 0.3.0
+
+- LMA is now included in the output from `biomass_table`.
+
 # BioCroField VERSION 0.2.0
 
 - Two new methods for estimating LAI were added to `process`:

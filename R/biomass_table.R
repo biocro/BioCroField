@@ -46,6 +46,7 @@ biomass_table.harvest_point <- function(..., zero_when_missing = character()) {
 
     final_columns <- c(
         'SLA',
+        'LMA',
         'LAI_from_LMA',
         'LAI_from_planting_density',
         'LAI_from_measured_population',
