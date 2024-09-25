@@ -24,13 +24,17 @@ knitr::opts_chunk$set(
 
 # Overview
 
-The `BioCroField` package includes several features related to processing raw
-data from biomass harvests, with the ultimate goal of producing values that are
-useful in the context of crop growth modeling. In particular, the package
-includes the following:
+The `BioCroField` package includes several features related to measuring and
+processing raw data from biomass harvests, with the ultimate goal of producing
+values that are useful in the context of crop growth modeling. In particular,
+the package includes the following:
 
 - A crop harvest record sheet that can be used in the field to record relevant
   data.
+
+- A document describing a general protocol for weighing dry tissue.
+
+- Several crop-specific guides to harvesting and weighing tissue.
 
 - An R function that accepts all the information from a crop harvest record
   sheet and stores it in a convenient data structure.
@@ -53,17 +57,18 @@ plant material, a complete description of the data can be created as follows:
 
 Now the final biomass values will be available in a simple CSV format, and the
 exact steps taken to analyze the data will be clear to anyone who looks at this
-directory in the future, including yourself! Even though some details are not
-immediately apparent from the script, the documentation for the functions from
-`BioCroField` will describe how the calculations were made.
+directory in the future, including yourself! Even though some details might not
+be immediately apparent from the script, the documentation for the functions
+from `BioCroField` will describe how the calculations were made.
 
 The rest of this document explains the types of biomass measurements that are
 important in the context of crop growth modeling (in the [Biomass and Leaf Area]
-section), the general steps required to make these measurements (in the
-[Making Measurements] section), and how `BioCroField` can be used to process the
-resulting measurements (in the [Using BioCroField] section). The final section
-([A Full Example]) shows a realistic example of how the functions from
-`BioCroField` can be used to process a full biomass data set from a field
+section), the general steps required to collect tissue in the field (in the
+[Harvesting Material] section), the general steps required to weigh the tissue
+(in the [Weighing Tissue] section), and how `BioCroField` can be used to process
+the resulting data (in the [Processing Data with BioCroField] section). The
+final section ([A Full Example]) shows a realistic example of how the functions
+from `BioCroField` can be used to process a full biomass data set from a field
 season.
 
 Throughout the document, we will provide several examples of R commands. These
@@ -135,7 +140,7 @@ also plays a key role in simulating photosynthesis at the canopy level
 area measurements, we can have more faith that it will be able to make accurate
 yield predictions in other situations.
 
-# Making Measurements
+# Harvesting Material
 
 To make measurements of these important quantities, it is necessary to sow
 multiple plots and harvest plants from a single randomly-chosen plot several
@@ -180,29 +185,70 @@ structure of a crop. For instance, two meters of freshly cut sorghum plants
 often weighs more than two meters of freshly cut maize plants, but the maize is
 often heavier after drying because sorghum retains more water in its stems.
 
-# Using BioCroField
-
 ## Crop Harvest Record Sheets
 
 The `BioCroField` R package includes a carefully designed crop harvest record
 sheet that includes clearly-labeled blank areas for recording all of the harvest
 information described above. Each sheet represents the harvest of one plot at
-one time. Using these sheets in the field will help you stay organized, and make
-sure your data is organized in a way that will facilitate later analysis. The
-record sheet can be accessed from R by using the `access_sheet` function from
+one time. Using these sheets in the field will help you stay organized, and will
+make sure your data is organized in a way that will facilitate later analysis.
+The record sheet can be accessed from R using the `access_sheet` function from
 `BioCroField` as follows:
 
-```{r access_sheet, eval = FALSE}
+```{r access_record_sheet, eval = FALSE}
 access_sheet('harvest')
 ```
 
 The sheet is also available via the `BioCroField`
-[GitHub website](https://github.com/biocro/BioCroField/blob/main/inst/data_record_sheets/harvest.pdf).
+[GitHub website](https://github.com/biocro/BioCroField/blob/main/inst/sheets/).
 
 When using this sheet, it is recommended to electronically fill out any fields
 whose values are known beforehand (such as location, year, row spacing, name,
 and contact) and then print out the necessary number of paper copies you will
 need throughout a field season.
+
+## Crop-Specific Guide Sheets
+
+The details of harvesting are somewhat different for each particular crop. The
+`BioCroField` R package includes crop-specific guide sheets for several key
+crops with advice about harvesting them. These guides can be accessed from R
+using the `access_sheet` function from `BioCroField` as follows:
+
+```{r access_guide_sheet, eval = FALSE}
+access_sheet('cowpea_guide')
+access_sheet('grain_sorghum_guide')
+access_sheet('maize_guide')
+access_sheet('soybean_guide')
+```
+
+They are also available via the `BioCroField`
+[GitHub website](https://github.com/biocro/BioCroField/blob/main/inst/sheets/).
+
+When using these sheets, it is recommended to print out one copy of each
+relevant crop guide so you can keep it on hand for reference while harvesting.
+
+# Weighing Tissue
+
+Once the harvested tissue has been dried, it must be weighed. This is a fairly
+straightforward process, but care must be taken to ensure that the weights are
+reliable, and that all necessary tissue types have been weighed. The
+`BioCroField` R package includes a document describing a general protocol for
+doing this. It can be accessed from R using the `access_sheet` function from
+`BioCroField` as follows:
+
+```{r access_protocol, eval = FALSE}
+access_sheet('weighing_tissue')
+```
+
+The details of weighing are somewhat different for each particular crop. The
+sheets discussed in the [Crop-Specific Guide Sheets] section include advice and
+instructions for weighing tissue from several key crops.
+
+When using these sheets, it is recommended to print out one copy of the weighing
+protocol and one copy of each relevant crop guide so you can keep them on hand
+for reference while weighing.
+
+# Processing Data with BioCroField
 
 ## Digitizing Data
 

@@ -21,6 +21,8 @@ for the next release.
 - LMA is now included in the output from `biomass_table`.
 - New crop-specific guides to harvesting and weighing are now available, along
   with a convenience function for creating such guides (`generate_crop_guide`).
+- The new sheets are now mentioned in the main vignette
+  (`handling_biomass_measurements`).
 
 # BioCroField VERSION 0.2.0
 
