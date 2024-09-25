@@ -25,17 +25,37 @@
   The selected record sheet will be automatically opened by an appropriate
   application when \code{open_sheet} is set to \code{TRUE}.
 
-  The following options are available for \code{sheet_name}:
+  Several sheets are available:
+
+  \strong{Log Sheets:}
+
+  Log sheets are available as PDFs (\code{sheet_type = 'pdf'}) or Microsoft Word
+  documents (\code{sheet_type = 'word'}).
+
   \itemize{
     \item \code{'harvest'}: A data record sheet for recording information from a
           crop harvest.
   }
 
-  The following opetions are avaialable for \code{sheet_type}:
+  \strong{Protocol Sheets:}
+
+  Protocol sheets are available as PDFs (\code{sheet_type = 'pdf'}) or Microsoft
+  Word documents (\code{sheet_type = 'word'}).
+
   \itemize{
-    \item \code{'word'}: Will locatate and/or open the Microsoft Word version of
-          the sheet.
-    \item \code{'pdf'}: Will locate and/or open the PDF version of the sheet.
+    \item \code{'weighing_tissue'}: A general protocol for weighing dry tissue.
+  }
+
+  \strong{Crop-Specific Guide Sheets:}
+
+  Crop-specific guide sheets are only available as PDFs
+  (\code{sheet_type = 'pdf'}).
+
+  \itemize{
+    \item \code{'cowpea_guide'}
+    \item \code{'grain_sorghum_guide'}
+    \item \code{'maize_guide'}
+    \item \code{'soybean_guide'}
   }
 }
 
@@ -44,12 +64,17 @@
 }
 
 \examples{
-# Get the full path to the MS Word version of the harvest data sheet
-access_sheet('harvest', sheet_type = 'word', open_sheet = FALSE)
+# Get the full paths to all available sheets
+access_sheet('harvest', open_sheet = FALSE)
+access_sheet('weighing_tissue', open_sheet = FALSE)
+access_sheet('cowpea_guide', open_sheet = FALSE)
+access_sheet('grain_sorghum_guide', open_sheet = FALSE)
+access_sheet('maize_guide', open_sheet = FALSE)
+access_sheet('soybean_guide', open_sheet = FALSE)
 
-# Open the PDF version of the harvest data sheet
+# Open the MS Word version of the harvest data sheet
 \dontrun{
 
-access_sheet('harvest')
+access_sheet('harvest', sheet_type = 'word')
 }
 }
