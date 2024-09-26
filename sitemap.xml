@@ -1,48 +1,20 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://biocro.github.io/BioCroField/404.html</loc>
-  </url>
-  <url>
-    <loc>https://biocro.github.io/BioCroField/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://biocro.github.io/BioCroField/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://biocro.github.io/BioCroField/articles/handling_biomass_measurements.html</loc>
-  </url>
-  <url>
-    <loc>https://biocro.github.io/BioCroField/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://biocro.github.io/BioCroField/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://biocro.github.io/BioCroField/index.html</loc>
-  </url>
-  <url>
-    <loc>https://biocro.github.io/BioCroField/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://biocro.github.io/BioCroField/reference/access_sheet.html</loc>
-  </url>
-  <url>
-    <loc>https://biocro.github.io/BioCroField/reference/add_seed_biomass.html</loc>
-  </url>
-  <url>
-    <loc>https://biocro.github.io/BioCroField/reference/biomass_table.html</loc>
-  </url>
-  <url>
-    <loc>https://biocro.github.io/BioCroField/reference/harvest_point.html</loc>
-  </url>
-  <url>
-    <loc>https://biocro.github.io/BioCroField/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://biocro.github.io/BioCroField/reference/is.harvest_point.html</loc>
-  </url>
-  <url>
-    <loc>https://biocro.github.io/BioCroField/reference/process.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://biocro.github.io/BioCroField/404.html</loc></url>
+<url><loc>https://biocro.github.io/BioCroField/LICENSE-text.html</loc></url>
+<url><loc>https://biocro.github.io/BioCroField/LICENSE.html</loc></url>
+<url><loc>https://biocro.github.io/BioCroField/articles/handling_biomass_measurements.html</loc></url>
+<url><loc>https://biocro.github.io/BioCroField/articles/index.html</loc></url>
+<url><loc>https://biocro.github.io/BioCroField/articles/web_only/images_from_the_field.html</loc></url>
+<url><loc>https://biocro.github.io/BioCroField/authors.html</loc></url>
+<url><loc>https://biocro.github.io/BioCroField/index.html</loc></url>
+<url><loc>https://biocro.github.io/BioCroField/news/index.html</loc></url>
+<url><loc>https://biocro.github.io/BioCroField/reference/access_sheet.html</loc></url>
+<url><loc>https://biocro.github.io/BioCroField/reference/add_seed_biomass.html</loc></url>
+<url><loc>https://biocro.github.io/BioCroField/reference/biomass_table.html</loc></url>
+<url><loc>https://biocro.github.io/BioCroField/reference/generate_crop_guide.html</loc></url>
+<url><loc>https://biocro.github.io/BioCroField/reference/harvest_point.html</loc></url>
+<url><loc>https://biocro.github.io/BioCroField/reference/index.html</loc></url>
+<url><loc>https://biocro.github.io/BioCroField/reference/is.harvest_point.html</loc></url>
+<url><loc>https://biocro.github.io/BioCroField/reference/process.html</loc></url>
 </urlset>
+
