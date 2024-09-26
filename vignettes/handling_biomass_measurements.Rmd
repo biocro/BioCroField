@@ -185,6 +185,10 @@ structure of a crop. For instance, two meters of freshly cut sorghum plants
 often weighs more than two meters of freshly cut maize plants, but the maize is
 often heavier after drying because sorghum retains more water in its stems.
 
+Pictures illustrating key parts of the harvest process can be found in the
+[Images from the Field](web_only/images_from_the_field.html) vignette (only
+available online).
+
 ## Crop Harvest Record Sheets
 
 The `BioCroField` R package includes a carefully designed crop harvest record
@@ -247,6 +251,10 @@ instructions for weighing tissue from several key crops.
 When using these sheets, it is recommended to print out one copy of the weighing
 protocol and one copy of each relevant crop guide so you can keep them on hand
 for reference while weighing.
+
+Pictures illustrating key parts of the weighing process can be found in the
+[Images from the Field](web_only/images_from_the_field.html) vignette (only
+available online).
 
 # Processing Data with BioCroField
 

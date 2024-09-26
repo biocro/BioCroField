@@ -22,5 +22,8 @@
 ^\.github$
 # Related to pkgdown
 
+^vignettes/web_only$
+# These vignettes are only for pkgdown.
+
 ^developer_documentation$
 # Developer documentation directories.

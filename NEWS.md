@@ -23,6 +23,8 @@ for the next release.
   with a convenience function for creating such guides (`generate_crop_guide`).
 - The new sheets are now mentioned in the main vignette
   (`handling_biomass_measurements`).
+- A new vignette has been added (`images_from_the_field`) that illustrates
+  parts of the harvesting and weighing process using pictures from the field.
 
 # BioCroField VERSION 0.2.0
 
