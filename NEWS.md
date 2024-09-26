@@ -16,6 +16,16 @@ Subsequent commits will then include a new "Unreleased" section in preparation
 for the next release.
 -->
 
+# BioCroField VERSION 0.3.0
+
+- LMA is now included in the output from `biomass_table`.
+- New crop-specific guides to harvesting and weighing are now available, along
+  with a convenience function for creating such guides (`generate_crop_guide`).
+- The new sheets are now mentioned in the main vignette
+  (`handling_biomass_measurements`).
+- A new vignette has been added (`images_from_the_field`) that illustrates
+  parts of the harvesting and weighing process using pictures from the field.
+
 # BioCroField VERSION 0.2.0
 
 - Two new methods for estimating LAI were added to `process`:
