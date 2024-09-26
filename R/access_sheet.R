@@ -10,7 +10,7 @@ access_sheet <- function(sheet_name, sheet_type = 'pdf', open_sheet = TRUE) {
     fname <- paste0(sheet_name, extension)
 
     fpath <- system.file(
-        file.path('data_record_sheets', fname),
+        file.path('sheets', fname),
         package = 'BioCroField',
         mustWork = TRUE
     )

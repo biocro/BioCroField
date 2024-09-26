@@ -17,3 +17,6 @@ export(add_seed_biomass)
 
 # Convenience function for opening data record sheets
 export(access_sheet)
+
+# Function for creating a crop-specific guide
+export(generate_crop_guide)

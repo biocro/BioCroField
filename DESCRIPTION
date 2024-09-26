@@ -1,5 +1,5 @@
 Package: BioCroField
-Version: 0.2.0
+Version: 0.3.0
 Title: Tools for BioCro Field Data
 Description: A collection of tools for processing field data related to BioCro
     crop growth simulations.
@@ -12,9 +12,11 @@ Authors@R: c(
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Depends: R (>= 4.0.0)
+Imports:
+    rmarkdown
 Suggests:
     knitr,
-    rmarkdown,
     testthat (>= 3.0.0),
     lattice
 VignetteBuilder: knitr

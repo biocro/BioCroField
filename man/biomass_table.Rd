@@ -51,6 +51,8 @@
 
     \item \code{SLA}
 
+    \item \code{LMA}
+
     \item \code{LAI_from_LMA}
 
     \item \code{LAI_from_planting_density}
