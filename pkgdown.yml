@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   handling_biomass_measurements: handling_biomass_measurements.html
   web_only/images_from_the_field: web_only/images_from_the_field.html
-last_built: 2024-09-26T04:28Z
+last_built: 2024-09-26T15:47Z
 urls:
   reference: https://biocro.github.io/BioCroField/reference
   article: https://biocro.github.io/BioCroField/articles
