@@ -82,9 +82,7 @@
   \code{\link{access_sheet}} for details about accessing the pre-built guides.
 
   Ideally, a crop guide should fit on one page so it can be printed and kept on
-  hand for reference when harvesting or weighing. When \code{build} is
-  \code{TRUE}, a warning will be sent if the resulting PDF is longer than one
-  page.
+  hand for reference when harvesting or weighing.
 
   Building the guide sheets requires LaTeX. If you do not have a system-wide
   LaTeX installation, you may need to use the \code{TinyTex} package. To do

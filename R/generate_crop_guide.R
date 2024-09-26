@@ -156,11 +156,6 @@ generate_crop_guide <- function(
         rmd_fname <- gsub(' ', '_', rmd_fname)
         writeLines(guide_markdown_text, rmd_fname)
         rmarkdown::render(rmd_fname, output_dir = output_dir, clean = clean)
-        pdf_fname <- gsub('Rmd', 'pdf', rmd_fname)
-        info <- pdftools::pdf_info(file.path(output_dir, pdf_fname))
-        if (info$pages != 1) {
-            warning('PDF guide for ', crop_name, ' has more than one page.')
-        }
         if (clean) {file.remove(rmd_fname)}
     }
 

@@ -14,8 +14,7 @@ Encoding: UTF-8
 LazyData: true
 Depends: R (>= 4.0.0)
 Imports:
-    rmarkdown,
-    pdftools
+    rmarkdown
 Suggests:
     knitr,
     testthat (>= 3.0.0),
