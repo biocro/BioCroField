@@ -16,6 +16,11 @@ Subsequent commits will then include a new "Unreleased" section in preparation
 for the next release.
 -->
 
+# UNRELEASED
+
+- It is now possible to specify extra columns to be returned in the output from
+  `biomass_table`.
+
 # BioCroField VERSION 0.3.0
 
 - LMA is now included in the output from `biomass_table`.
