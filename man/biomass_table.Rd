@@ -15,6 +15,7 @@
     \dots,
     zero_when_missing = character(),
     other_columns = c(
+        'leaf_area_per_plant',
         'LAI_from_planting_density',
         'LAI_from_measured_population',
         'agb_per_area',
@@ -28,6 +29,7 @@
     \dots,
     zero_when_missing = character(),
     other_columns = c(
+        'leaf_area_per_plant',
         'LAI_from_planting_density',
         'LAI_from_measured_population',
         'agb_per_area',
