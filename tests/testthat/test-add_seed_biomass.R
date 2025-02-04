@@ -50,3 +50,19 @@ test_that("Seed biomass is properly added to tables", {
         2.47
     )
 })
+
+test_that("Time is calculated the same was as in `process`", {
+    doy = 12
+    hour = 3
+
+    biomass_df <- add_seed_biomass(
+        biomass_table(process(harvest_point(doy = doy, hour = hour))),
+        doy = doy,
+        hour = hour
+    )
+
+    expect_equal(
+        biomass_df$time[1],
+        biomass_df$time[2]
+    )
+})
