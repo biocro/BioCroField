@@ -20,6 +20,8 @@ for the next release.
 
 - It is now possible to specify extra columns to be returned in the output from
   `biomass_table`.
+- Values of `time` are now calculated using `BioCro::add_time_to_weather_data`
+  to ensure they are always consistent with BioCro's time definition.
 
 # BioCroField VERSION 0.3.0
 
