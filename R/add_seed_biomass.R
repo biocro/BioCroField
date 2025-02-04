@@ -157,8 +157,10 @@ add_seed_biomass <- function(
     initial_biomass[['year']] <- year
     initial_biomass[['doy']] <- doy
     initial_biomass[['hour']] <- hour
-    initial_biomass[['time']] <-
-        initial_biomass[['doy']] + initial_biomass[['hour']] / 24.0
+
+    time_list <- list(doy = doy, hour = hour)
+    time_list <- BioCro::add_time_to_weather_data(time_list)
+    initial_biomass[['time']] <- time_list[['time']]
 
     # Reset certain columns to zero; there is no leaf area when the plant is a
     # seed, so also make sure to set all LAI estimates to zero

@@ -204,7 +204,7 @@ access_sheet('harvest')
 ```
 
 The sheet is also available via the `BioCroField`
-[GitHub website](https://github.com/biocro/BioCroField/blob/main/inst/sheets/).
+[GitHub website](https://github.com/biocro/BioCroField/tree/main/inst/sheets/).
 
 When using this sheet, it is recommended to electronically fill out any fields
 whose values are known beforehand (such as location, year, row spacing, name,
@@ -226,7 +226,7 @@ access_sheet('soybean_guide')
 ```
 
 They are also available via the `BioCroField`
-[GitHub website](https://github.com/biocro/BioCroField/blob/main/inst/sheets/).
+[GitHub website](https://github.com/biocro/BioCroField/tree/main/inst/sheets/).
 
 When using these sheets, it is recommended to print out one copy of each
 relevant crop guide so you can keep it on hand for reference while harvesting.

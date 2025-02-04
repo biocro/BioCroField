@@ -16,7 +16,7 @@ test_that("time is calculated only when possible", {
 
     expect_equal(
         process(harvest_point(doy = 1, hour = 12))$time,
-        1.5
+        BioCro::add_time_to_weather_data(list(doy = 1, hour = 12))$time
     )
 })
 
