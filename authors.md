@@ -10,7 +10,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/BioCro/BioCroField/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/BioCro/BioCroField/blob/v0.4.0/DESCRIPTION)
 
 Lochocki E (2026). *BioCroField: Tools for BioCro Field Data*. R package
 version 0.4.0, <https://github.com/BioCro/BioCroField>.
