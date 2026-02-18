@@ -156,12 +156,12 @@ test_that("Missing density parameters are automatically calculated", {
         harvest_point(row_spacing = 0.75, plant_spacing = 0.2)$planting_density,
         26980
     )
-    
+
     expect_equal(
         harvest_point(row_spacing = 0.75, planting_density = 26980)$plant_spacing,
         0.2
     )
-    
+
     expect_equal(
         harvest_point(plant_spacing = 0.2, planting_density = 26980)$row_spacing,
         0.75
@@ -216,5 +216,11 @@ test_that("Additional arguments must have length 1 and be numeric, character, or
     expect_error(
         harvest_point(construct = list()),
         "The following inputs should have length 1, but do not: construct"
+    )
+})
+
+test_that("Partitioned leaf mass can be NA when leaf area is numeric", {
+    expect_no_error(
+        harvest_point(partitioning_component_weights = list(leaf = NA), partitioning_leaf_area = 1)
     )
 })
