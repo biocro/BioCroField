@@ -22,6 +22,8 @@ for the next release.
   `biomass_table`.
 - Values of `time` are now calculated using `BioCro::add_time_to_weather_data`
   to ensure they are always consistent with BioCro's time definition.
+- Values of partitioned leaf mass can be set to `NA` when creating a
+  `harvest_point`, which is treated as if the leaf mass had not been provided.
 
 # BioCroField VERSION 0.3.0
 

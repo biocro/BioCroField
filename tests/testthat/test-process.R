@@ -122,6 +122,8 @@ test_that("LMA is calculated only when possible", {
     expect_na(hpp$LMA)
 
     expect_na(process(harvest_point(partitioning_leaf_area = 1))$LMA)
+    
+    expect_na(process(harvest_point(partitioning_component_weights = list(leaf = NA), partitioning_leaf_area = 1))$LMA)
 
     expect_na(process(harvest_point(partitioning_component_weights = list(leaf = 1)))$LMA)
 
