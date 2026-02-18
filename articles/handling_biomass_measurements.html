@@ -8,8 +8,8 @@
 <title>Handling Biomass Measurements • BioCroField</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Handling Biomass Measurements">
 </head>
 <body>
@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">BioCroField</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,7 +60,7 @@
       <h1>Handling Biomass Measurements</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/BioCro/BioCroField/blob/v0.3.0/vignettes/handling_biomass_measurements.Rmd" class="external-link"><code>vignettes/handling_biomass_measurements.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/BioCro/BioCroField/blob/main/vignettes/handling_biomass_measurements.Rmd" class="external-link"><code>vignettes/handling_biomass_measurements.Rmd</code></a></small>
       <div class="d-none name"><code>handling_biomass_measurements.Rmd</code></div>
     </div>
 
@@ -250,7 +250,7 @@ can be accessed from R using the <code>access_sheet</code> function from
 <code>BioCroField</code> as follows:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/access_sheet.html">access_sheet</a></span><span class="op">(</span><span class="st">'harvest'</span><span class="op">)</span></span></code></pre></div>
-<p>The sheet is also available via the <code>BioCroField</code> <a href="https://github.com/biocro/BioCroField/blob/main/inst/sheets/" class="external-link">GitHub
+<p>The sheet is also available via the <code>BioCroField</code> <a href="https://github.com/biocro/BioCroField/tree/main/inst/sheets/" class="external-link">GitHub
 website</a>.</p>
 <p>When using this sheet, it is recommended to electronically fill out
 any fields whose values are known beforehand (such as location, year,
@@ -270,7 +270,7 @@ function from <code>BioCroField</code> as follows:</p>
 <span><span class="fu"><a href="../reference/access_sheet.html">access_sheet</a></span><span class="op">(</span><span class="st">'grain_sorghum_guide'</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/access_sheet.html">access_sheet</a></span><span class="op">(</span><span class="st">'maize_guide'</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/access_sheet.html">access_sheet</a></span><span class="op">(</span><span class="st">'soybean_guide'</span><span class="op">)</span></span></code></pre></div>
-<p>They are also available via the <code>BioCroField</code> <a href="https://github.com/biocro/BioCroField/blob/main/inst/sheets/" class="external-link">GitHub
+<p>They are also available via the <code>BioCroField</code> <a href="https://github.com/biocro/BioCroField/tree/main/inst/sheets/" class="external-link">GitHub
 website</a>.</p>
 <p>When using these sheets, it is recommended to print out one copy of
 each relevant crop guide so you can keep it on hand for reference while
@@ -314,7 +314,7 @@ making it simple and straighforward to transfer values from the sheet to
 a computer. For example, a completed crop harvest record sheet might
 look like the following image:</p>
 <div class="figure" style="text-align: center">
-<img src="images%2Fexample_harvest_sheet.jpg" alt="Example of a completed crop harvest record sheet. This represents
+<img src="images/example_harvest_sheet.jpg" class="r-plt" alt="Example of a completed crop harvest record sheet. This represents
   information from a single biomass harvest performed on 2022-08-23, where
   soybean (var. GM4000) was harvested from plot 3 at UIUC. The row spacing in
   the plot was 0.7 m, and there were 150000 plants per acre. A row section 2
@@ -452,7 +452,7 @@ values:</p>
 <span><span class="co">#&gt;   ..$ leaf_litter: num 3.2</span></span>
 <span><span class="co">#&gt;   ..$ stem_litter: num 1.5</span></span>
 <span><span class="co">#&gt;  $ additional_arguments          : list()</span></span>
-<span><span class="co">#&gt;  $ time                          : num 236</span></span>
+<span><span class="co">#&gt;  $ time                          : num 5628</span></span>
 <span><span class="co">#&gt;  $ partitioning_agb_weight       : num 120</span></span>
 <span><span class="co">#&gt;  $ agb_per_plant_partitioning    : num 20</span></span>
 <span><span class="co">#&gt;  $ agb_per_plant_row             : num 23.4</span></span>
@@ -502,7 +502,7 @@ table with one row from the single <code>harvest_point</code>:</p>
 <code class="sourceCode R"><span><span class="va">biomass</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/biomass_table.html">biomass_table</a></span><span class="op">(</span><span class="va">hpp</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">biomass</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 'data.frame':    1 obs. of  25 variables:</span></span>
+<span><span class="co">#&gt; 'data.frame':    1 obs. of  27 variables:</span></span>
 <span><span class="co">#&gt;  $ crop                        : chr "soybean"</span></span>
 <span><span class="co">#&gt;  $ variety                     : chr "GM4000"</span></span>
 <span><span class="co">#&gt;  $ location                    : chr "UIUC"</span></span>
@@ -510,7 +510,7 @@ table with one row from the single <code>harvest_point</code>:</p>
 <span><span class="co">#&gt;  $ year                        : num 2022</span></span>
 <span><span class="co">#&gt;  $ doy                         : num 235</span></span>
 <span><span class="co">#&gt;  $ hour                        : num 12</span></span>
-<span><span class="co">#&gt;  $ time                        : num 236</span></span>
+<span><span class="co">#&gt;  $ time                        : num 5628</span></span>
 <span><span class="co">#&gt;  $ leaf                        : num 2.29</span></span>
 <span><span class="co">#&gt;  $ stem                        : num 3.6</span></span>
 <span><span class="co">#&gt;  $ root                        : num 0.982</span></span>
@@ -520,14 +520,16 @@ table with one row from the single <code>harvest_point</code>:</p>
 <span><span class="co">#&gt;  $ SLA                         : num 2.57</span></span>
 <span><span class="co">#&gt;  $ LMA                         : num 38.9</span></span>
 <span><span class="co">#&gt;  $ LAI_from_LMA                : num 5.89</span></span>
-<span><span class="co">#&gt;  $ LAI_from_planting_density   : num 5.56</span></span>
-<span><span class="co">#&gt;  $ LAI_from_measured_population: num 5.04</span></span>
-<span><span class="co">#&gt;  $ agb_per_plant_row           : num 23.4</span></span>
-<span><span class="co">#&gt;  $ agb_per_plant_partitioning  : num 20</span></span>
-<span><span class="co">#&gt;  $ measured_population         : num 135864</span></span>
 <span><span class="co">#&gt;  $ row_spacing                 : num 0.7</span></span>
 <span><span class="co">#&gt;  $ plant_spacing               : num 0.0385</span></span>
-<span><span class="co">#&gt;  $ planting_density            : num 150000</span></span></code></pre></div>
+<span><span class="co">#&gt;  $ planting_density            : num 150000</span></span>
+<span><span class="co">#&gt;  $ leaf_area_per_plant         : num 1500</span></span>
+<span><span class="co">#&gt;  $ LAI_from_planting_density   : num 5.56</span></span>
+<span><span class="co">#&gt;  $ LAI_from_measured_population: num 5.04</span></span>
+<span><span class="co">#&gt;  $ agb_per_area                : num 7.86</span></span>
+<span><span class="co">#&gt;  $ agb_per_plant_row           : num 23.4</span></span>
+<span><span class="co">#&gt;  $ agb_per_plant_partitioning  : num 20</span></span>
+<span><span class="co">#&gt;  $ measured_population         : num 135864</span></span></code></pre></div>
 <p>With the data in this format, it can also be easily saved in a file
 using the <code>write.csv</code> function from base R. More information
 is available via the built-in help system by typing
@@ -652,7 +654,7 @@ reasonable for a typical commercial soybean cultivar.</p>
 <p>Now we can take a look at the final data values:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">soybean_biomass</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 'data.frame':    4 obs. of  27 variables:</span></span>
+<span><span class="co">#&gt; 'data.frame':    4 obs. of  29 variables:</span></span>
 <span><span class="co">#&gt;  $ crop                        : chr  "soybean" "soybean" "soybean" "soybean"</span></span>
 <span><span class="co">#&gt;  $ variety                     : chr  "GM4000" "GM4000" "GM4000" "GM4000"</span></span>
 <span><span class="co">#&gt;  $ location                    : chr  "UIUC" "UIUC" "UIUC" "UIUC"</span></span>
@@ -660,7 +662,7 @@ reasonable for a typical commercial soybean cultivar.</p>
 <span><span class="co">#&gt;  $ year                        : num  2022 2022 2022 2022</span></span>
 <span><span class="co">#&gt;  $ doy                         : num  152 185 235 275</span></span>
 <span><span class="co">#&gt;  $ hour                        : num  12 12 12 12</span></span>
-<span><span class="co">#&gt;  $ time                        : num  152 186 236 276</span></span>
+<span><span class="co">#&gt;  $ time                        : num  3636 4428 5628 6588</span></span>
 <span><span class="co">#&gt;  $ leaf                        : num  0.0504 0.2232 2.2917 0</span></span>
 <span><span class="co">#&gt;  $ stem                        : num  0.0063 0.1339 3.6012 1.3289</span></span>
 <span><span class="co">#&gt;  $ root                        : num  0.0063 0.125 0.9821 0.4319</span></span>
@@ -671,14 +673,16 @@ reasonable for a typical commercial soybean cultivar.</p>
 <span><span class="co">#&gt;  $ SLA                         : num  NA 2 2.57 NA</span></span>
 <span><span class="co">#&gt;  $ LMA                         : num  NA 50 38.9 NA</span></span>
 <span><span class="co">#&gt;  $ LAI_from_LMA                : num  0 0.446 5.893 0</span></span>
-<span><span class="co">#&gt;  $ LAI_from_planting_density   : num  0 0.309 5.56 0</span></span>
-<span><span class="co">#&gt;  $ LAI_from_measured_population: num  0 0.274 5.036 0</span></span>
-<span><span class="co">#&gt;  $ agb_per_plant_row           : num  NA 1.09 23.4 19.61</span></span>
-<span><span class="co">#&gt;  $ agb_per_plant_partitioning  : num  NA 0.667 20 35.833</span></span>
-<span><span class="co">#&gt;  $ measured_population         : num  NA 132973 135864 147426</span></span>
 <span><span class="co">#&gt;  $ row_spacing                 : num  0.7 0.7 0.7 0.7</span></span>
 <span><span class="co">#&gt;  $ plant_spacing               : num  0.0385 0.0385 0.0385 0.0385</span></span>
 <span><span class="co">#&gt;  $ planting_density            : num  150000 150000 150000 150000</span></span>
+<span><span class="co">#&gt;  $ leaf_area_per_plant         : num  NA 83.3 1500 0</span></span>
+<span><span class="co">#&gt;  $ LAI_from_planting_density   : num  0 0.309 5.56 0</span></span>
+<span><span class="co">#&gt;  $ LAI_from_measured_population: num  0 0.274 5.036 0</span></span>
+<span><span class="co">#&gt;  $ agb_per_area                : num  NA 0.357 7.857 7.143</span></span>
+<span><span class="co">#&gt;  $ agb_per_plant_row           : num  NA 1.09 23.4 19.61</span></span>
+<span><span class="co">#&gt;  $ agb_per_plant_partitioning  : num  NA 0.667 20 35.833</span></span>
+<span><span class="co">#&gt;  $ measured_population         : num  NA 132973 135864 147426</span></span>
 <span><span class="co">#&gt;  $ initial_seed                : num  0.063 NA NA NA</span></span></code></pre></div>
 <p>It is also easy to graph them:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
@@ -692,7 +696,7 @@ reasonable for a typical commercial soybean cultivar.</p>
 <span>  xlab <span class="op">=</span> <span class="st">'Day of year (2022)'</span>,</span>
 <span>  ylab <span class="op">=</span> <span class="st">'Biomass (Mg / ha)'</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="handling_biomass_measurements_files/figure-html/unnamed-chunk-8-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="handling_biomass_measurements_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" alt="" width="480" style="display: block; margin: auto;"></p>
 <p>Optionally, the final biomass table can be saved as a CSV file or as
 an R data file; one or both of these commands could be included in a
 processing script:</p>
@@ -732,7 +736,7 @@ Agriculture</em> 7 (1): 59–62. <a href="https://doi.org/10.2134/jpa1994.0059" 
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

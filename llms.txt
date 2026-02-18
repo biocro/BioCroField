@@ -1,0 +1,58 @@
+## BioCroField
+
+**BioCroField** is a collection of tools for processing field data
+related to BioCro crop growth simulations.
+
+This package is a work in progress. As development proceeds, functions
+are subject to modification or removal without notice.
+
+### Installing the R Package
+
+The easiest way to install `BioCroField` is to type the following from
+within an R terminal:
+
+    remotes::install_github('BioCro/BioCroField')
+
+Note that this method requires the `remotes` package, which can be
+installed from within R by typing `install.packages('remotes')`.
+
+### Learning to Use BioCroField
+
+The best way to learn about using `BioCroField` is to visit the
+[BioCroField website](https://biocro.github.io/BioCroField/) The website
+includes documentation for all the functions and data sets included in
+the package, as well as articles that describe its general features and
+several important use cases.
+
+### License
+
+The `BioCroField` R package and its documentation are licensed under the
+MIT license.
+
+# Package index
+
+## All functions
+
+- [`access_sheet()`](https://biocro.github.io/BioCroField/reference/access_sheet.md)
+  : Access a built-in data record sheet
+- [`add_seed_biomass()`](https://biocro.github.io/BioCroField/reference/add_seed_biomass.md)
+  : Initial biomass from seed information
+- [`biomass_table()`](https://biocro.github.io/BioCroField/reference/biomass_table.md)
+  : Reorganize harvest point data into a table
+- [`generate_crop_guide()`](https://biocro.github.io/BioCroField/reference/generate_crop_guide.md)
+  : Create a crop-specific guide to harvesting and weighing tissue
+- [`harvest_point()`](https://biocro.github.io/BioCroField/reference/harvest_point.md)
+  : Biomass data from one harvest
+- [`is.harvest_point()`](https://biocro.github.io/BioCroField/reference/is.harvest_point.md)
+  : Is an object an harvest_point?
+- [`process()`](https://biocro.github.io/BioCroField/reference/process.md)
+  : Process raw biomass data from one harvest
+
+# Articles
+
+### All vignettes
+
+- [Handling Biomass
+  Measurements](https://biocro.github.io/BioCroField/articles/handling_biomass_measurements.md):
+- [Images from the
+  Field](https://biocro.github.io/BioCroField/articles/web_only/images_from_the_field.md):
