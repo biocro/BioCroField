@@ -38,8 +38,8 @@
 
   The detailed calculations are as follows:
   \itemize{
-    \item \code{time}: In BioCro, the time is specified as a fractional day of
-          the year calculated by \code{time = doy + hour / 24.0}.
+    \item \code{time}: The time as determined from the \code{doy} and
+          \code{hour} using \code{\link[BioCro]{add_time_to_weather_data}}.
 
     \item \code{measured_population}: The number of plants per unit ground area
           (in \code{plants / acre} can be estimated from the row spacing and the

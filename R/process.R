@@ -12,7 +12,9 @@ process.harvest_point <- function(x, leaf_name = 'leaf', ...) {
     # that we can handle incomplete information in the inputs.
 
     # The time (as specified in BioCro)
-    time <- x[['doy']] + x[['hour']] / 24.0
+    time_list <- list(doy = x[['doy']], hour = x[['hour']])
+    time_list <- BioCro::add_time_to_weather_data(time_list)
+    time <- time_list[['time']]
 
     # Above-ground biomass from the plants that were partitioned (in g)
     partitioning_agb_weight <- if (length(x[['agb_components']]) > 0) {

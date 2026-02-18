@@ -11,9 +11,33 @@
 }
 
 \usage{
-  biomass_table(\dots, zero_when_missing = character())
+  biomass_table(
+    \dots,
+    zero_when_missing = character(),
+    other_columns = c(
+        'leaf_area_per_plant',
+        'LAI_from_planting_density',
+        'LAI_from_measured_population',
+        'agb_per_area',
+        'agb_per_plant_row',
+        'agb_per_plant_partitioning',
+        'measured_population'
+    )
+  )
 
-  \method{biomass_table}{harvest_point}(\dots, zero_when_missing = character())
+  \method{biomass_table}{harvest_point}(
+    \dots,
+    zero_when_missing = character(),
+    other_columns = c(
+        'leaf_area_per_plant',
+        'LAI_from_planting_density',
+        'LAI_from_measured_population',
+        'agb_per_area',
+        'agb_per_plant_row',
+        'agb_per_plant_partitioning',
+        'measured_population'
+    )
+  )
 }
 
 \arguments{
@@ -25,6 +49,11 @@
     data points for soybeans may not include a value for \code{pod}; by default,
     \code{pod} would be set to \code{NA} for these points, but it would make
     more sense to set it to 0.
+  }
+
+  \item{other_columns}{
+    The names of variables to include as columns in addition to the default
+    columns (see below).
   }
 }
 
@@ -55,16 +84,6 @@
 
     \item \code{LAI_from_LMA}
 
-    \item \code{LAI_from_planting_density}
-
-    \item \code{LAI_from_measured_population}
-
-    \item \code{agb_per_plant_row}
-
-    \item \code{agb_per_plant_partitioning}
-
-    \item \code{measured_population}
-
     \item \code{row_spacing}
 
     \item \code{plant_spacing}
@@ -76,6 +95,9 @@
 
     \item Any additional arguments (such as comments) that were passed to
           \code{\link{harvest_point}} when creating the data points
+
+    \item Any additional variables specified in the \code{other_columns} input
+          argument
   }
 
   See \code{\link{harvest_point}} and \code{\link{process}} for more information

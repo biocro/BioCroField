@@ -88,7 +88,7 @@
   LaTeX installation, you may need to use the \code{TinyTex} package. To do
   this, make sure the package is installed and then run
   \code{tinytex::install_tinytex()}. \code{TinyTex} can be installed from CRAN
-  by typing code{install.packages('TinyTex')}.
+  by typing \code{install.packages('TinyTex')}.
 }
 
 \value{

@@ -1,4 +1,17 @@
-biomass_table <- function(..., zero_when_missing = character()) {
+biomass_table <- function(
+    ...,
+    zero_when_missing = character(),
+    other_columns = c(
+        'leaf_area_per_plant',
+        'LAI_from_planting_density',
+        'LAI_from_measured_population',
+        'agb_per_area',
+        'agb_per_plant_row',
+        'agb_per_plant_partitioning',
+        'measured_population'
+    )
+)
+{
     x <- list(...)
 
     types <- lapply(x, class)
@@ -9,12 +22,26 @@ biomass_table <- function(..., zero_when_missing = character()) {
     UseMethod('biomass_table', x[[1]])
 }
 
-biomass_table.harvest_point <- function(..., zero_when_missing = character()) {
+biomass_table.harvest_point <- function(
+    ...,
+    zero_when_missing = character(),
+    other_columns = c(
+        'leaf_area_per_plant',
+        'LAI_from_planting_density',
+        'LAI_from_measured_population',
+        'agb_per_area',
+        'agb_per_plant_row',
+        'agb_per_plant_partitioning',
+        'measured_population'
+    )
+)
+{
     x <- list(...) # a list of harvest_point objects
 
     # Make sure certain inputs are character
     should_be_c <- list(
-        zero_when_missing = zero_when_missing
+        zero_when_missing = zero_when_missing,
+        other_columns = other_columns
     )
 
     c_bad <- sapply(should_be_c, function(x) {!is.character(x)})
@@ -48,18 +75,13 @@ biomass_table.harvest_point <- function(..., zero_when_missing = character()) {
         'SLA',
         'LMA',
         'LAI_from_LMA',
-        'LAI_from_planting_density',
-        'LAI_from_measured_population',
-        'agb_per_plant_row',
-        'agb_per_plant_partitioning',
-        'measured_population',
         'row_spacing',
         'plant_spacing',
         'planting_density'
     )
 
     cnames <-
-        c(initial_columns, all_components, final_columns, additional_arguments)
+        c(initial_columns, all_components, final_columns, other_columns, additional_arguments)
 
     # Form a data frame
     biomass <- stats::setNames(
@@ -75,7 +97,7 @@ biomass_table.harvest_point <- function(..., zero_when_missing = character()) {
     for (i in seq_along(x)) {
         hpp <- x[[i]]
 
-        for (name in c(initial_columns, final_columns)) {
+        for (name in c(initial_columns, final_columns, other_columns)) {
             if (name %in% names(hpp)) {
                 biomass[i, name] <- hpp[[name]]
             }

@@ -190,6 +190,7 @@ harvest_point <- function(
     # Do not allow a leaf with zero area but nonzero mass
     if (!is.na(partitioning_leaf_area) && partitioning_leaf_area == 0 &&
         !is.null(partitioning_component_weights[['leaf']]) &&
+        !is.na(partitioning_component_weights[['leaf']]) &&
             partitioning_component_weights[['leaf']] > 0) {
         stop("It is not possible for a leaf with zero area to have a nonzero mass")
     }
@@ -197,6 +198,7 @@ harvest_point <- function(
     # Do not allow a leaf with zero mass but nonzero area
     if (!is.na(partitioning_leaf_area) && partitioning_leaf_area > 0 &&
         !is.null(partitioning_component_weights[['leaf']]) &&
+        !is.na(partitioning_component_weights[['leaf']]) &&
             partitioning_component_weights[['leaf']] == 0) {
         stop("It is not possible for a leaf with zero mass to have a nonzero area")
     }
